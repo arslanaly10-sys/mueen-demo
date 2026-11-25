@@ -32,7 +32,7 @@ import * as agent from "./agent";
 
 function Card({ children, accent = "line" }: { children: React.ReactNode; accent?: "line" | "green" | "warn" | "err" }) {
   const border = { line: "border-line", green: "border-green/40", warn: "border-warn/40", err: "border-err/40" }[accent];
-  return <div className={`rise w-full rounded-2xl border ${border} bg-white p-4 shadow-[0_1px_2px_rgba(18,59,58,0.05)] sm:p-5`}>{children}</div>;
+  return <div className={`rise w-full rounded-2xl border ${border} bg-white p-4 sm:p-5`}>{children}</div>;
 }
 
 function CardHead({ icon, title, pill }: { icon: React.ReactNode; title: string; pill?: React.ReactNode }) {
@@ -166,7 +166,7 @@ function PlanRow({ personaId, intent }: { personaId: string; intent: Intent }) {
           <ol className="mt-3 grid gap-1.5 text-sm text-muted">
             {T.steps[lang].map((s, i) => (
               <li key={i} className="flex items-center gap-2">
-                <span className="grid size-5 shrink-0 place-items-center rounded-full bg-warm text-[11px] font-semibold text-teal">{i + 1}</span>
+                <span className="grid size-5 shrink-0 place-items-center rounded-full bg-warm text-xs font-semibold text-teal">{i + 1}</span>
                 {s}
               </li>
             ))}
@@ -395,14 +395,14 @@ function Checklist({ tx }: { tx: Transaction }) {
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-x-2">
                 <span className="text-sm font-medium text-teal">{t(c.label)}</span>
-                <span className="text-[11px] text-muted">· {c.source === "authoritative" ? t(T.authoritative) : t(T.userProvided)}</span>
+                <span className="text-xs text-muted">· {c.source === "authoritative" ? t(T.authoritative) : t(T.userProvided)}</span>
               </div>
               <p className="text-sm text-ink">{t(c.detail)}</p>
             </div>
           </li>
         ))}
       </ul>
-      <p className="mt-2 text-[11px] text-muted">
+      <p className="mt-2 text-xs text-muted">
         {t(T.source)}: {t(svc.ruleSource)} · {t(T.checkedAt)} {fmtDate(tx.createdAt, lang)}
       </p>
     </div>
@@ -441,18 +441,18 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
           title={`${t(svc.name)} · ${t(target?.label)}`}
           pill={<StatusPill tone={status.tone}>{t(status.label)}</StatusPill>}
         />
-        <p className="mt-1 font-mono text-[11px] text-muted">{tx.id}</p>
+        <p className="mt-1 font-mono text-xs text-muted">{tx.id}</p>
       </button>
 
       {tx.checks.length > 0 && <Checklist tx={tx} />}
 
       {tx.state === "PREPARED" && tx.preview && (
-        <div className="mt-4 rounded-xl border border-green/30 bg-mint/40 p-4">
+        <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-teal">
             <BadgeCheck size={18} aria-hidden="true" /> {t(T.reviewTitle)}
           </p>
           <p className="mt-1 text-sm text-muted">{t(T.reviewIntro)}</p>
-          <dl className="mt-3 rounded-lg bg-white px-3">
+          <dl className="mt-3">
             {tx.preview.fields.map((f, i) => (
               <KV key={i} k={t(f.label)} v={t(f.value)} />
             ))}
@@ -488,12 +488,12 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       )}
 
       {tx.state === "USER_CONFIRMED" && tx.preview && (
-        <div className="mt-4 rounded-xl border border-sky bg-sky/20 p-4">
+        <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-teal">
             <CreditCard size={18} aria-hidden="true" /> {t(T.paymentTitle)}
           </p>
           <p className="mt-1 text-sm text-muted">{t(T.paymentIntro)}</p>
-          <dl className="mt-3 rounded-lg bg-white px-3">
+          <dl className="mt-3">
             <KV k={t(T.amount)} v={fmtSAR(tx.preview.fee, lang)} />
             <KV k={t(T.payee)} v={t(tx.preview.payee)} />
             <KV k={t(T.duration)} v={fmtDuration(tx.preview.duration, lang)} />
@@ -511,13 +511,13 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       )}
 
       {tx.state === "RECONCILIATION_REQUIRED" && (
-        <div className="mt-4 rounded-xl border border-warn/30 bg-warn-bg p-4">
+        <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-warn">
             <AlertTriangle size={18} aria-hidden="true" /> {t(T.reconTitle)}
           </p>
           <p className="mt-1 text-sm text-[#6b430c]">{t(T.reconBody)}</p>
           {tx.payment && (
-            <dl className="mt-3 rounded-lg bg-white px-3">
+            <dl className="mt-3">
               <KV k={t(T.paymentRef)} v={tx.payment.reference} mono />
               <KV k={t(T.amount)} v={fmtSAR(tx.payment.amount, lang)} />
             </dl>
@@ -531,7 +531,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       )}
 
       {(tx.state === "PAYMENT_CONFIRMED" || tx.state === "SUBMITTED") && (
-        <div className="mt-4 flex items-center gap-3 rounded-xl border border-sky bg-sky/20 p-4 text-sm text-teal">
+        <div className="mt-4 flex items-center gap-3 border-t border-line pt-4 text-sm text-teal">
           <Loader2 size={18} className="animate-spin" aria-hidden="true" />
           <span className="flex-1">{tx.state === "PAYMENT_CONFIRMED" ? t(T.submitting) : t(T.awaitingAgency)}</span>
           <button onClick={() => run(async () => { await agent.resume(tx); })} className="text-xs text-green underline">
@@ -541,12 +541,12 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       )}
 
       {tx.state === "RECEIPT_ISSUED" && tx.receipt && (
-        <div className="mt-4 rounded-xl border border-green/40 bg-mint p-4">
+        <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-green">
             <BadgeCheck size={20} aria-hidden="true" /> {t(T.receiptTitle)} {t(svc.agencyShort)}
           </p>
           <p className="mt-1 text-sm text-teal">{t(T.receiptBody)}</p>
-          <dl className="mt-3 rounded-lg bg-white px-3">
+          <dl className="mt-3">
             <KV k={t(T.receiptNo)} v={tx.receipt.number} mono />
             <KV k={t(T.newExpiry)} v={`${fmtDate(tx.receipt.newExpiry, lang)} · ${fmtHijri(tx.receipt.newExpiry, lang)}`} />
             {tx.submission && <KV k={t(T.agencyRef)} v={tx.submission.reference} mono />}
@@ -558,14 +558,14 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       )}
 
       {tx.state === "BLOCKED" && tx.blocker && (
-        <div className="mt-4 rounded-xl border border-warn/30 bg-warn-bg p-4">
+        <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-warn">
             <AlertTriangle size={18} aria-hidden="true" /> {t(T.blockedTitle)}
           </p>
           <p className="mt-1 text-sm text-[#6b430c]">{t(tx.blocker.reason)}</p>
           {tx.blocker.nextStep && (
-            <div className="mt-3 rounded-lg bg-white p-3 text-sm">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted">{t(T.nextStep)}</p>
+            <div className="mt-3 text-sm">
+              <p className="text-[13px] font-medium text-muted">{t(T.nextStep)}</p>
               <p className="mt-1 text-ink">{t(tx.blocker.nextStep)}</p>
             </div>
           )}
@@ -586,7 +586,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       )}
 
       {tx.state === "HUMAN_REVIEW" && (
-        <div className="mt-4 rounded-xl border border-warn/30 bg-warn-bg p-4">
+        <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-warn">
             <UserRound size={18} aria-hidden="true" /> {t(T.reviewRequired)}
           </p>

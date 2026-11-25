@@ -2,9 +2,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, KeyRound, Loader2, ShieldCheck } from "lucide-react";
-import { Wordmark } from "@/components/Logo";
+import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
-import { ConceptBadge, Disclaimer } from "@/components/Disclaimer";
+import { Disclaimer } from "@/components/Disclaimer";
 import { useT } from "@/components/useT";
 import { PERSONAS } from "@/lib/personas";
 import { useStore } from "@/lib/store";
@@ -37,19 +37,11 @@ export default function Login() {
 
   return (
     <main className="min-h-dvh">
-      <header className="bg-teal">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <a href="/" className="flex items-center gap-3">
-            <Wordmark onDark />
-          </a>
-          <div className="flex items-center gap-2">
-            <ConceptBadge onDark />
-            <LangToggle onDark />
-          </div>
-        </div>
-      </header>
+      <AppNav>
+        <LangToggle />
+      </AppNav>
 
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <div className="wrap py-10">
         {!picked ? (
           <>
             <h1 className="text-2xl font-semibold text-teal">{ar ? "اختر شخصية تجريبية" : "Choose a demo persona"}</h1>
@@ -63,7 +55,7 @@ export default function Login() {
                 <li key={p.id}>
                   <button
                     onClick={() => setPicked(p)}
-                    className="group flex h-full w-full flex-col rounded-2xl border border-line bg-white p-5 text-start transition hover:border-green hover:shadow-md"
+                    className="group flex h-full w-full flex-col rounded-2xl border border-line bg-white p-5 text-start transition hover:-translate-y-0.5 hover:border-green"
                   >
                     <div className="flex items-center gap-3">
                       <span className="grid size-12 shrink-0 place-items-center rounded-full bg-teal font-semibold text-mint">{p.initials}</span>
@@ -91,7 +83,7 @@ export default function Login() {
             <button onClick={() => { setPicked(null); setCode(""); setErr(false); }} className="text-sm text-green hover:underline">
               {ar ? "← تغيير الشخصية" : "← Change persona"}
             </button>
-            <div className="mt-4 rounded-3xl border border-line bg-white p-6 shadow-sm">
+            <div className="mt-4 rounded-[20px] border border-line bg-white p-6">
               <div className="flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-xl bg-mint text-green">
                   <ShieldCheck size={22} aria-hidden="true" />

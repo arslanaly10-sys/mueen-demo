@@ -13,7 +13,7 @@ const TONES = {
 export function StatusPill({ tone, children }: { tone: keyof typeof TONES; children: React.ReactNode }) {
   const { cls, Icon } = TONES[tone];
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cls}`}>
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium ${cls}`}>
       <Icon size={13} aria-hidden="true" />
       {children}
     </span>

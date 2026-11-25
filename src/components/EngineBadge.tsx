@@ -4,7 +4,7 @@ import { Cpu, Sparkles } from "lucide-react";
 import { T } from "@/lib/i18n";
 import { useT } from "./useT";
 
-export function EngineBadge({ onDark = false }: { onDark?: boolean }) {
+export function EngineBadge() {
   const { t } = useT();
   const [engine, setEngine] = useState<"claude" | "scripted" | null>(null);
   useEffect(() => {
@@ -17,9 +17,7 @@ export function EngineBadge({ onDark = false }: { onDark?: boolean }) {
   const Icon = engine === "claude" ? Sparkles : Cpu;
   return (
     <span
-      className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs md:inline-flex ${
-        onDark ? "border-white/20 text-mint/90" : "border-line bg-white text-muted"
-      }`}
+      className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs md:inline-flex border-line bg-white text-muted`}
       title={engine === "claude" ? "Requests are interpreted by Claude; decisions are made by the policy engine." : "No API key configured — using the deterministic scripted interpreter."}
     >
       <Icon size={13} aria-hidden="true" />

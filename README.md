@@ -68,6 +68,7 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 
 - **Deal:** software page, product-stage hero, centred nav, close-word ending with the statement footer, surface-pairs rhythm, pill buttons, and the `line-carries-colour` moment on the rules section. It uses the brand's own colours and the Host Grotesk + JetBrains Mono pairing, with Noto Sans Arabic for Arabic.
 - **3D hero:** the doorway of connected steps is a product-render spec (`public/assets/objects/product-render/specs/doorway.json`), drawn live with one WebGL context. Phones and reduced-motion visitors get the rendered still. Run `make-posters.mjs` from the skill after changing the spec.
+- **App pages:** the workspace, governance console and sign-in use the same system. That means the landing's nav bar and edge lines, the dealt fonts (self-hosted through Fontsource), one app frame with hairline panes, two boxes deep at most, and nothing under 13px. The gate does not apply to them, because they are app screens, not pages.
 - **Checks:** `gate.mjs` passes, with three waivers listed in `.taste-skill/waivers.json`. copy-lint and `perf.mjs` pass with 0 FAIL, and the layout check is clean at 1440, 1024, 820, 768 and 390.
 
 ## Working on this repo with an AI agent

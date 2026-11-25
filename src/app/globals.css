@@ -14,12 +14,18 @@
   --color-err-bg: #f8e7e5;
   --color-ink: #24313a;
   --color-muted: #5b6870;
-  --color-line: #e2e6df;
-  --font-sans: "Inter Variable", "Noto Sans Arabic", ui-sans-serif, system-ui, sans-serif;
-  --font-arabic: "Noto Sans Arabic", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-line: #dcdedb; /* the ink at about 13%: the kit's hairline */
+  --font-sans: "Host Grotesk Variable", "Noto Sans Arabic Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Noto Sans Arabic Variable", "Host Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --text-xs: 0.8125rem; /* taste-skill: nothing under 13px */
+  --text-xs--line-height: 1.25rem;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 }
 
 html { -webkit-text-size-adjust: 100%; }
+.wrap { width: min(100% - 48px, 1280px); margin-inline: auto; }
+@media (min-width: 640px) { .wrap { width: min(100% - 96px, 1280px); } }
+@media (min-width: 1024px) { .wrap { width: min(100% - 160px, 1280px); } }
 body {
   background: var(--color-warm);
   color: var(--color-ink);
@@ -27,6 +33,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 [dir="rtl"] body, [lang="ar"] body { font-family: var(--font-arabic); }
+h1, h2, h3 { letter-spacing: -0.02em; }
+[lang="ar"] :is(h1, h2, h3) { letter-spacing: 0; } /* Arabic letters join: never tracked */
 [dir="rtl"] .num-ltr { direction: ltr; unicode-bidi: isolate; }
 
 :focus-visible { outline: 3px solid var(--color-green); outline-offset: 2px; border-radius: 6px; }

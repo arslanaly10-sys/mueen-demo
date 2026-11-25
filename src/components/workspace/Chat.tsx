@@ -123,7 +123,7 @@ function Bubble({ m, personaId }: { m: ChatMessage; personaId: string }) {
       <div className="max-w-[85%]">
         <p className="rounded-2xl rounded-ss-md border border-line bg-white px-4 py-2.5 text-[15px] leading-relaxed text-ink">{m.text}</p>
         {m.engine && (
-          <p className="mt-1 inline-flex items-center gap-1 text-[11px] text-muted">
+          <p className="mt-1 inline-flex items-center gap-1 text-xs text-muted">
             {m.engine === "claude" ? <Sparkles size={11} aria-hidden="true" /> : <Cpu size={11} aria-hidden="true" />}
             {m.engine === "claude" ? t(T.aiInterpreted) : t(T.scripted)} · {t({ en: "guidance, not an official decision", ar: "إرشاد وليس قرارًا رسميًا" })}
           </p>
@@ -164,7 +164,7 @@ export function Chat({ personaId }: { personaId: string }) {
   }, [messages.length, thinking]);
 
   return (
-    <section className="flex min-h-0 flex-col rounded-2xl border border-line bg-warm/60">
+    <section className="flex min-h-0 flex-1 flex-col">
       <div className="scroll-thin min-h-0 flex-1 space-y-4 overflow-y-auto p-3 sm:p-5" aria-live="polite">
         {messages.length === 0 && (
           <div className="rise mx-auto max-w-lg py-6 text-center">
@@ -187,7 +187,7 @@ export function Chat({ personaId }: { personaId: string }) {
         <div ref={endRef} />
       </div>
 
-      <div className="border-t border-line bg-white p-3 sm:rounded-b-2xl">
+      <div className="border-t border-line bg-white p-3">
         {prompts.length > 0 && (
           <div className="scroll-thin -mx-1 mb-2.5 flex gap-2 overflow-x-auto px-1 pb-1">
             <span className="shrink-0 self-center text-xs text-muted">{t(T.tryAsking)}:</span>
@@ -246,7 +246,7 @@ export function Chat({ personaId }: { personaId: string }) {
             <SendHorizontal size={19} className="rtl:-scale-x-100" aria-hidden="true" />
           </button>
         </form>
-        {!speech.supported && <p className="mt-1.5 text-[11px] text-muted">{t(T.voiceUnsupported)}</p>}
+        {!speech.supported && <p className="mt-1.5 text-xs text-muted">{t(T.voiceUnsupported)}</p>}
       </div>
     </section>
   );

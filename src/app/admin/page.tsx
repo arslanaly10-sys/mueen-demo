@@ -17,9 +17,9 @@ import {
   ShieldX,
   Users,
 } from "lucide-react";
-import { Wordmark } from "@/components/Logo";
+import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
-import { ConceptBadge, Disclaimer } from "@/components/Disclaimer";
+import { Disclaimer } from "@/components/Disclaimer";
 import { EngineBadge } from "@/components/EngineBadge";
 import { ServiceIcon } from "@/components/ServiceIcon";
 import { StatusPill } from "@/components/StatusPill";
@@ -98,19 +98,13 @@ export default function Admin() {
 
   return (
     <div className="min-h-dvh">
-      <header className="bg-teal text-white">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
-          <a href="/"><Wordmark onDark /></a>
-          <ConceptBadge onDark />
-          <div className="ms-auto flex items-center gap-2">
-            <EngineBadge onDark />
-            <Link href="/workspace" className="rounded-full px-3 py-1.5 text-sm text-mint/90 hover:bg-white/10">{lang === "ar" ? "مساحة المستفيد" : "Beneficiary view"}</Link>
-            <LangToggle onDark />
-          </div>
-        </div>
-      </header>
+      <AppNav>
+        <EngineBadge />
+        <Link href="/workspace" className="rounded-full px-3 py-1.5 text-sm text-teal hover:bg-mint">{lang === "ar" ? "مساحة المستفيد" : "Beneficiary view"}</Link>
+        <LangToggle />
+      </AppNav>
 
-      <main className="mx-auto max-w-7xl space-y-5 px-4 py-6 sm:px-6">
+      <main className="wrap space-y-5 py-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold text-teal">{lang === "ar" ? "لوحة الحوكمة والتشغيل" : "Governance & operations console"}</h1>
@@ -130,9 +124,9 @@ export default function Admin() {
           {kpis.map((k, i) => (
             <div key={i} className="rounded-2xl border border-line bg-white p-4">
               <k.Icon size={18} className={k.tone} aria-hidden="true" />
-              <p className="mt-2 text-2xl font-semibold text-teal">{fmtNum(k.v, lang)}</p>
+              <p className="mt-2 text-[28px] font-medium leading-tight text-teal sm:text-[38px]">{fmtNum(k.v, lang)}</p>
               <p className="text-xs text-muted">{t(k.l)}</p>
-              {k.note && <p className="mt-1 text-[11px] text-green">{t(k.note)}</p>}
+              {k.note && <p className="mt-1 text-xs text-green">{t(k.note)}</p>}
             </div>
           ))}
         </div>
@@ -189,7 +183,7 @@ export default function Admin() {
                         <span className="flex items-center gap-2 font-medium text-teal">
                           <ServiceIcon id={svc.id} size={16} className="text-green" /> {t(svc.name)}
                         </span>
-                        <span className="mt-0.5 block text-[11px] text-muted">{t(svc.channel)}</span>
+                        <span className="mt-0.5 block text-xs text-muted">{t(svc.channel)}</span>
                       </td>
                       <td className="px-2 py-3 text-muted">{t(svc.agency)}</td>
                       <td className="px-2 py-3">
@@ -341,7 +335,7 @@ export default function Admin() {
                     <tr key={e.seq} className={`border-t border-line ${verify && !verify.ok && verify.brokenAt === e.seq ? "bg-err-bg" : ""}`}>
                       <td className="px-4 py-2 font-mono text-muted sm:px-2">{e.seq}</td>
                       <td className="num-ltr whitespace-nowrap px-2 py-2 text-muted">{fmtTime(e.at, lang)}</td>
-                      <td className="px-2 py-2 font-semibold uppercase text-teal">{e.actor}</td>
+                      <td className="px-2 py-2 font-medium capitalize text-teal">{e.actor}</td>
                       <td className="px-2 py-2 font-mono text-muted">{e.type}</td>
                       <td className="px-2 py-2 text-ink">{t(e.summary)}</td>
                       <td className="px-2 py-2 font-mono text-muted" title={e.hash}>{e.hash.slice(0, 12)}…</td>

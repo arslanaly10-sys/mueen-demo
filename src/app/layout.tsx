@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import "@fontsource-variable/inter";
-import "@fontsource/noto-sans-arabic/400.css";
-import "@fontsource/noto-sans-arabic/500.css";
-import "@fontsource/noto-sans-arabic/600.css";
-import "@fontsource/noto-sans-arabic/700.css";
+// The pairing taste-skill dealt for the landing page (start.mjs: host), plus an Arabic face; self-hosted.
+import "@fontsource-variable/host-grotesk";
+import "@fontsource-variable/jetbrains-mono";
+import "@fontsource-variable/noto-sans-arabic";
 import "./globals.css";
 import { LangSync } from "@/components/LangSync";
 
