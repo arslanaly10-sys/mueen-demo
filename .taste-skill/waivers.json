@@ -8,5 +8,15 @@
     "check": "text-contrast",
     "target": "article.card.card--row:nth-of-type(1) > p",
     "reason": "the controls moment's pre-reveal state: the cards fade in from the mint ground as the scene plays, and settle in the ink at 7:1"
+  },
+  {
+    "check": "split-pair",
+    "target": "div.hero__window > div.ly-piece.app",
+    "reason": "the kit's centred hero sets this window to min(880px) and centres it (layout.css .hero--centred .hero__window > .ly-piece); it is a framed product window, not a page split"
+  },
+  {
+    "check": "container-edges",
+    "target": "div.bits-lead > p.hero__lead",
+    "reason": "the centred hero's lead, centred on the page's axis; React Bits BlurText sets it as a centred flex row of word spans, so each line's first word reads as a left edge"
   }
 ]

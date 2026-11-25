@@ -47,3 +47,4 @@ next-env.d.ts
 !.taste-skill/waivers.json
 !.taste-skill/history.json
 !.taste-skill/layout-history.json
+public/assets/bits/

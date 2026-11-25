@@ -68,7 +68,10 @@
   @media (max-width: 639px) { .hero__window > .app { grid-template-columns: minmax(0, 1fr); } .app > .app__pane--list { display: none; } }
   /* the frame hands its ground to an effect through --fx-*: the window keeps the fragments' own white */
   .hero__window > .app { --fx-bg: initial; --fx-surface: initial; --fx-ink: initial; --fx-accent: initial; }
-  .hero--centred .hero__lead { color: var(--ink); } /* body text in the ink, 7:1 */
+  .hero--centred .hero__lead { color: var(--ink); }
+  /* React Bits islands (src/islands/landing.tsx): the lead stays centred as BlurText's flex row; the gradient sits under the window */
+  .bits-lead > .hero__lead { justify-content: center; text-align: center; margin: 0 auto; }
+  .bits-ground { position: absolute; inset: 0; z-index: 0; } /* body text in the ink, 7:1 */
   /* nav-mega: each service with its Phosphor duotone icon (the client asked for icons in the columns) */
   @media (max-width: 1023px) { [dir="rtl"] .nav__toggle { margin-left: 0; margin-right: auto; } } /* the menu button at the far end in Arabic too */
   .mm-name { display: flex; align-items: center; gap: var(--s-2); font-weight: 500; }
@@ -77,6 +80,7 @@
   html[lang="ar"] { --font-display: "Noto Sans Arabic", "Host Grotesk", system-ui, sans-serif; --font-text: "Noto Sans Arabic", "Host Grotesk", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
   html[lang="ar"] body, html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] .close__word { letter-spacing: 0; }
 </style>
+<link rel="stylesheet" href="assets/bits/landing.css">
 </head>
 <body>
 <!-- type: software (site-kind software, page-type software)
@@ -438,6 +442,7 @@
 
 <script src="site.js"></script>
 <script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/bits/landing.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
 <script type="module" src="assets/diagrams/mount.js"></script>
