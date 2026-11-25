@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- a CommonJS Node script, run with plain node */
 // End-to-end scenarios for the Saudi Government AI Services Platform demo (English UI for stable selectors).
 // Run against a started server: npm run build && npm start -- -p 3100, then npm run e2e.
 const { chromium } = require("playwright");
@@ -38,7 +39,7 @@ async function ask(page, text) {
   await page.locator("#ask").press("Enter");
 }
 
-async function grantFromPlan(page, pick) {
+async function grantFromPlan(page) {
   const btn = page.locator('button:has-text("Set up authority"):not([disabled])').last();
   await btn.waitFor();
   await btn.click();

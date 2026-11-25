@@ -18,6 +18,7 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "public/assets/bits/**", // the built landing-page islands bundle (generated, git-ignored)
     ],
   },
 ];
