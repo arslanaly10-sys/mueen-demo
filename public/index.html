@@ -58,6 +58,7 @@
   #how .panel { --p-h: 336px; }
   #controls .panel { --p-h: 300px; }
   #services .panel { --p-h: 440px; }
+  #controls .ui-win__body { grid-template-columns: minmax(0, 1fr); } /* the audit window has no sidebar column */
   @media (min-width: 640px) and (max-width: 1023px) { #how { --h: 2 } }
   .nav__actions button.nav__link { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
   /* the render's focus target is empty in the kit: give it the stage, so its focus ring shows */
@@ -93,8 +94,6 @@
   html[lang="ar"] body, html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] .close__word { letter-spacing: 0; }
   /* the path reads in the page's direction: from the request on the start side to the confirmation on the end side */
   html[dir="rtl"] .hero__stage .frame > :not(button) { transform: scaleX(-1); }
-  /* the drawn product windows and diagrams are English screens: keep them left to right on the Arabic page */
-  html[dir="rtl"] :is(.ui, .dg) { direction: ltr; }
 </style>
 </head>
 <body>
@@ -171,39 +170,39 @@
     <div class="wrap">
       <div class="grid">
         <h2 id="agent-h" class="span-5" data-ar="كل تجديد في محادثة واحدة">Every renewal followed in one conversation</h2>
-        <p class="span-6 start-7"><span data-ar="الطلبات على اليسار بحالتها كما تراها الجهة. الطلب المفتوح يبيّن ما تم التحقق منه، وما ينتظر موافقتك، وما ردّت به الجهة.">Requests sit on the left with the status the agency gave them. The open one shows what was checked, what waits for you, and the agency’s reply.</span> <a class="link" href="#services" data-ar="اطّلع على الخدمات السبع">See the seven services</a></p>
+        <p class="span-6 start-7"><span data-ar="الطلبات على اليمين بحالتها كما تراها الجهة. الطلب المفتوح يبيّن ما تم التحقق منه، وما ينتظر موافقتك، وما ردّت به الجهة.">Requests sit on the left with the status the agency gave them. The open one shows what was checked, what waits for you, and the agency’s reply.</span> <a class="link" href="#services" data-ar="اطّلع على الخدمات السبع">See the seven services</a></p>
       </div>
       <div class="ui app fill" role="img" aria-label="The MUEEN window: nine renewal requests beside an open conversation about renewing a domestic worker's iqama" data-ar-aria="نافذة مُعين: تسعة طلبات تجديد بجانب محادثة مفتوحة لتجديد إقامة عاملة منزلية" data-ui-pause-host>
         <div class="app__pane app__pane--list">
           <div class="ui ui-panel ui-win" data-ui="window" data-open="Waiting" data-work="Checking" data-done="Confirmed">
             <div class="ui-win__bar">
               <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-win__crumb">MUEEN <i>/</i> <b>Requests</b></span>
+              <span class="ui-win__crumb"><span data-ar="مُعين">MUEEN</span> <i>/</i> <b data-ar="الطلبات">Requests</b></span>
               <span class="ui-spacer"></span>
-              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
+              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph" data-ar="بحث">Search</span><span class="ui-kbd">/</span></span>
             </div>
             <div class="ui-win__body">
               <nav class="ui-win__side" aria-hidden="true">
-                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 9h3l1 1.5h3l1-1.5h3"/><path d="M2.5 9 4 3.5h8L13.5 9v3.5h-11z"/></svg>Requests<em>9</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M3.5 13.5c.6-2.3 2.4-3.5 4.5-3.5s3.9 1.2 4.5 3.5"/></svg>Needs you<em>2</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Waiting<em>4</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg>Confirmed</span>
-                <span class="ui-win__label">Agencies</span>
-                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Traffic</span>
-                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Passports</span>
+                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 9h3l1 1.5h3l1-1.5h3"/><path d="M2.5 9 4 3.5h8L13.5 9v3.5h-11z"/></svg><span data-ar="الطلبات">Requests</span><em>9</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M3.5 13.5c.6-2.3 2.4-3.5 4.5-3.5s3.9 1.2 4.5 3.5"/></svg><span data-ar="بانتظارك">Needs you</span><em>2</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg><span data-ar="قيد الانتظار">Waiting</span><em>4</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span data-ar="مؤكدة">Confirmed</span></span>
+                <span class="ui-win__label" data-ar="الجهات">Agencies</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span><span data-ar="المرور">Traffic</span></span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span><span data-ar="الجوازات">Passports</span></span>
               </nav>
               <div class="ui-win__main">
-                <div class="ui-win__cols" aria-hidden="true"><span>Person</span><span>Request</span><span>Status</span><span>Age</span></div>
+                <div class="ui-win__cols" aria-hidden="true"><span data-ar="الشخص">Person</span><span data-ar="الطلب">Request</span><span data-ar="الحالة">Status</span><span data-ar="المدة">Age</span></div>
                 <ul class="ui-win__rows">
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NQ</span><span class="ui-win__who">Noura Al-Qahtani</span><span class="ui-win__sub">Iqama · Maria Santos</span><span class="ui-win__st is-you" data-st>Needs you</span><span class="ui-win__age">1m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">FH</span><span class="ui-win__who">Faisal Al-Harbi</span><span class="ui-win__sub">Driving licence · 2 years</span><span class="ui-win__st is-done" data-st>Confirmed</span><span class="ui-win__age">4m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">KO</span><span class="ui-win__who">Khalid Al-Otaibi</span><span class="ui-win__sub">Work permit · Rajesh Kumar</span><span class="ui-win__st" data-st>Checking</span><span class="ui-win__age">6m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SM</span><span class="ui-win__who">Sara Al-Mutairi</span><span class="ui-win__sub">Passport · 10 years</span><span class="ui-win__st" data-st>Waiting</span><span class="ui-win__age">9m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NQ</span><span class="ui-win__who">Noura Al-Qahtani</span><span class="ui-win__sub">Driving licence · medical exam</span><span class="ui-win__st is-you" data-st>Needs you</span><span class="ui-win__age">12m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">AH</span><span class="ui-win__who">Ahmed Hassan</span><span class="ui-win__sub">Driving licence · 1 year</span><span class="ui-win__st is-done" data-st>Confirmed</span><span class="ui-win__age">15m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SM</span><span class="ui-win__who">Sara Al-Mutairi</span><span class="ui-win__sub">Consulting licence · 3 years</span><span class="ui-win__st is-done" data-st>Confirmed</span><span class="ui-win__age">21m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">KO</span><span class="ui-win__who">Khalid Al-Otaibi</span><span class="ui-win__sub">Health certificate · Anwar</span><span class="ui-win__st" data-st>Waiting</span><span class="ui-win__age">26m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">FH</span><span class="ui-win__who">Faisal Al-Harbi</span><span class="ui-win__sub">Istimara · inspection due</span><span class="ui-win__st" data-st>Waiting</span><span class="ui-win__age">32m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NQ</span><span class="ui-win__who" data-ar="نورة القحطاني">Noura Al-Qahtani</span><span class="ui-win__sub" data-ar="إقامة · ماريا سانتوس">Iqama · Maria Santos</span><span class="ui-win__st is-you" data-st data-ar="بانتظارك">Needs you</span><span class="ui-win__age" data-ar="1د">1m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">FH</span><span class="ui-win__who" data-ar="فيصل الحربي">Faisal Al-Harbi</span><span class="ui-win__sub" data-ar="رخصة القيادة · سنتان">Driving licence · 2 years</span><span class="ui-win__st is-done" data-st data-ar="مؤكد">Confirmed</span><span class="ui-win__age" data-ar="4د">4m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">KO</span><span class="ui-win__who" data-ar="خالد العتيبي">Khalid Al-Otaibi</span><span class="ui-win__sub" data-ar="رخصة عمل · راجيش كومار">Work permit · Rajesh Kumar</span><span class="ui-win__st" data-st data-ar="قيد التحقق">Checking</span><span class="ui-win__age" data-ar="6د">6m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SM</span><span class="ui-win__who" data-ar="سارة المطيري">Sara Al-Mutairi</span><span class="ui-win__sub" data-ar="الجواز · 10 سنوات">Passport · 10 years</span><span class="ui-win__st" data-st data-ar="قيد الانتظار">Waiting</span><span class="ui-win__age" data-ar="9د">9m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NQ</span><span class="ui-win__who" data-ar="نورة القحطاني">Noura Al-Qahtani</span><span class="ui-win__sub" data-ar="رخصة القيادة · الفحص الطبي">Driving licence · medical exam</span><span class="ui-win__st is-you" data-st data-ar="بانتظارك">Needs you</span><span class="ui-win__age" data-ar="12د">12m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">AH</span><span class="ui-win__who" data-ar="أحمد حسن">Ahmed Hassan</span><span class="ui-win__sub" data-ar="رخصة القيادة · سنة">Driving licence · 1 year</span><span class="ui-win__st is-done" data-st data-ar="مؤكد">Confirmed</span><span class="ui-win__age" data-ar="15د">15m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SM</span><span class="ui-win__who" data-ar="سارة المطيري">Sara Al-Mutairi</span><span class="ui-win__sub" data-ar="الترخيص الاستشاري · 3 سنوات">Consulting licence · 3 years</span><span class="ui-win__st is-done" data-st data-ar="مؤكد">Confirmed</span><span class="ui-win__age" data-ar="21د">21m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">KO</span><span class="ui-win__who" data-ar="خالد العتيبي">Khalid Al-Otaibi</span><span class="ui-win__sub" data-ar="الشهادة الصحية · أنور">Health certificate · Anwar</span><span class="ui-win__st" data-st data-ar="قيد الانتظار">Waiting</span><span class="ui-win__age" data-ar="26د">26m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">FH</span><span class="ui-win__who" data-ar="فيصل الحربي">Faisal Al-Harbi</span><span class="ui-win__sub" data-ar="الاستمارة · الفحص مستحق">Istimara · inspection due</span><span class="ui-win__st" data-st data-ar="قيد الانتظار">Waiting</span><span class="ui-win__age" data-ar="32د">32m</span></li>
                 </ul>
               </div>
             </div>
@@ -213,31 +212,31 @@
           <div class="ui ui-panel ui-chat" data-ui="chat">
             <div class="ui-head">
               <span class="ui-agent" aria-hidden="true"></span>
-              <div class="ui-title">MUEEN</div>
-              <span class="ui-chat__online">Online</span>
+              <div class="ui-title" data-ar="مُعين">MUEEN</div>
+              <span class="ui-chat__online" data-ar="متصل">Online</span>
               <span class="ui-spacer"></span>
             </div>
             <div class="ui-chat__body">
-              <div class="ui-chat__day">Today, 9:41</div>
+              <div class="ui-chat__day" data-ar="اليوم، 9:41">Today, 9:41</div>
               <div class="ui-msg ui-msg--me" data-chat-q>
-                <span class="ui-msg__text">Renew Maria’s iqama for one year.</span>
+                <span class="ui-msg__text" data-ar="جدّد إقامة ماريا لمدة سنة.">Renew Maria’s iqama for one year.</span>
               </div>
               <div class="ui-msg ui-msg--bot" data-chat-a>
                 <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
                 <span class="ui-msg__col">
-                  <span class="ui-chat__answer">Maria Santos is registered to you, her passport is valid and no absence report exists. Approve <b>SAR 600 to Passports</b> and I submit once.</span>
+                  <span class="ui-chat__answer"><span data-ar="ماريا سانتوس مسجّلة على كفالتك، وجوازها ساري، ولا يوجد بلاغ تغيّب. وافق على">Maria Santos is registered to you, her passport is valid and no absence report exists. Approve</span> <b data-ar="600 ريال للجوازات">SAR 600 to Passports</b> <span data-ar="وسأرسل الطلب مرة واحدة.">and I submit once.</span></span>
                   <span class="ui-chat__srcs">
-                    <span class="ui-chat__src"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M4 2.5h5l3 3v8H4z"/><path d="M9 2.5v3h3"/></svg>Resident ID renewal rules</span>
-                    <span class="ui-chat__src"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/></svg>Mandate MND-4F2A, 24 h</span>
+                    <span class="ui-chat__src"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M4 2.5h5l3 3v8H4z"/><path d="M9 2.5v3h3"/></svg><span data-ar="شروط تجديد هوية مقيم">Resident ID renewal rules</span></span>
+                    <span class="ui-chat__src"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/></svg><span data-ar="الصلاحية MND-4F2A، 24 ساعة">Mandate MND-4F2A, 24 h</span></span>
                   </span>
                 </span>
               </div>
               <div class="ui-msg ui-msg--me">
-                <span class="ui-msg__text">Approve the details, then the payment.</span>
+                <span class="ui-msg__text" data-ar="أوافق على التفاصيل، ثم على الدفع.">Approve the details, then the payment.</span>
               </div>
             </div>
             <div class="ui-chat__input">
-              <span class="ui-chat__ph">Write or speak a request</span>
+              <span class="ui-chat__ph" data-ar="اكتب طلبك أو قله">Write or speak a request</span>
               <span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </div>
@@ -259,12 +258,12 @@
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px" data-ui-loop>
               <div class="ui ui-panel ui-apps" data-ui="integrations">
-                <div class="ui-head"><div class="ui-title">What MUEEN may do</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count>3 allowed</div></div>
+                <div class="ui-head"><div class="ui-title" data-ar="ما يُسمح لمُعين به">What MUEEN may do</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count data-ar="3 مسموحة">3 allowed</div></div>
                 <ul class="ui-apps__list">
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Read records</span><span class="ui-app__sub">Licence, fines, medical exam</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="m9 14 2 2 4-4"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Prepare the request</span><span class="ui-app__sub">Nothing is sent yet</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
-                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-4 16-4-6z"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Submit after you approve</span><span class="ui-app__sub">Once, with an idempotency key</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
-                  <li class="ui-app" data-apps-target><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v10H3z"/><path d="M3 11h18"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Pay after you approve</span><span class="ui-app__sub">Exact amount and payee shown</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="قراءة السجلات">Read records</span><span class="ui-app__sub" data-ar="الرخصة، المخالفات، الفحص الطبي">Licence, fines, medical exam</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="m9 14 2 2 4-4"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="تجهيز الطلب">Prepare the request</span><span class="ui-app__sub" data-ar="لا يُرسل شيء بعد">Nothing is sent yet</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-4 16-4-6z"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="الإرسال بعد موافقتك">Submit after you approve</span><span class="ui-app__sub" data-ar="مرة واحدة، بمفتاح منع التكرار">Once, with an idempotency key</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
+                  <li class="ui-app" data-apps-target><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v10H3z"/><path d="M3 11h18"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="الدفع بعد موافقتك">Pay after you approve</span><span class="ui-app__sub" data-ar="يظهر المبلغ والجهة بدقة">Exact amount and payee shown</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
                 </ul>
               </div>
             </div></div>
@@ -277,13 +276,13 @@
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:340px;--ax:max(24px, 50% - 170px);--ay:40px;--ay-sm:24px">
               <div class="ui ui-panel ui-checks" data-ui="checklist">
-                <div class="ui-checks__head"><div class="ui-title">Driving licence renewal</div><span class="ui-spacer"></span><div class="ui-meta" data-checks-count>3 of 4</div></div>
+                <div class="ui-checks__head"><div class="ui-title" data-ar="تجديد رخصة القيادة">Driving licence renewal</div><span class="ui-spacer"></span><div class="ui-meta" data-checks-count data-ar="3 من 4">3 of 4</div></div>
                 <div class="ui-checks__bar"><i data-checks-bar style="--k:0.75"></i></div>
                 <ul class="ui-checks__list">
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Licence DL-4471 linked to you</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Inside the 180-day window</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Medical exam on record</span></li>
-                  <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">No unpaid traffic fines</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label" data-ar="الرخصة DL-4471 مرتبطة بك">Licence DL-4471 linked to you</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label" data-ar="ضمن فترة الـ180 يومًا">Inside the 180-day window</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label" data-ar="الفحص الطبي مسجّل">Medical exam on record</span></li>
+                  <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label" data-ar="لا مخالفات مرورية غير مسددة">No unpaid traffic fines</span></li>
                 </ul>
               </div>
             </div></div>
@@ -297,9 +296,9 @@
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px">
               <div class="ui ui-notify" data-ui="notify">
                 <ul class="ui-notify__list" data-notify-list>
-                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title">Traffic confirmed your renewal<time>now</time></span><span class="ui-note__body">Receipt RCPT-D422, valid to 2029</span></span></li>
-                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 5h11v7h-11z"/><path d="M2.5 7.5h11"/></svg></span><span class="ui-note__text"><span class="ui-note__title">Payment confirmed<time>1m</time></span><span class="ui-note__body">SAR 80 to General Directorate of Traffic</span></span></li>
-                  <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="1">FH</span><span class="ui-note__text"><span class="ui-note__title">You approved the details<time>2m</time></span><span class="ui-note__body">Private licence, 2 years</span></span></li>
+                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="أكد المرور تجديدك">Traffic confirmed your renewal</span><time data-ar="الآن">now</time></span><span class="ui-note__body" data-ar="الإيصال RCPT-D422، ساري حتى 2029">Receipt RCPT-D422, valid to 2029</span></span></li>
+                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 5h11v7h-11z"/><path d="M2.5 7.5h11"/></svg></span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="تم تأكيد الدفع">Payment confirmed</span><time data-ar="1د">1m</time></span><span class="ui-note__body" data-ar="80 ريال للإدارة العامة للمرور">SAR 80 to General Directorate of Traffic</span></span></li>
+                  <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="1">FH</span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="وافقت على التفاصيل">You approved the details</span><time data-ar="2د">2m</time></span><span class="ui-note__body" data-ar="رخصة خاصة، سنتان">Private licence, 2 years</span></span></li>
                 </ul>
               </div>
             </div></div>
@@ -319,7 +318,7 @@
           <article class="card card--row card--open span-6">
             <h3 data-ar="يمنع ما يتجاوز صلاحية الوكيل">Blocks agent actions outside your mandate</h3>
             <p data-ar="محرك سياسات يفحص كل قراءة وإرسال ودفع. إلغاء الصلاحية يوقف الخطوة التالية.">A policy engine checks every read, submission and payment. A revoked mandate stops the next step.</p>
-            <div class="panel"><div class="dg" data-diagram><script type="application/json">{"layout": "lanes", "alt": "A request goes to the policy engine, which allows reading records and submitting, and blocks a payment after the mandate was revoked.", "input": {"label": "Your request", "sub": "Renew licence"}, "core": {"label": "Policy engine"}, "lanes": [{"label": "Read records", "done": true, "sub": "Allowed"}, {"label": "Submit", "done": true, "sub": "Allowed"}, {"label": "Pay", "done": false, "sub": "Blocked: revoked"}]}</script></div></div>
+            <div class="panel"><div class="dg" data-diagram><script type="application/json">{"layout": "lanes", "alt": "A request goes to the policy engine, which allows reading records and submitting, and blocks a payment after the mandate was revoked.", "input": {"label": "Your request", "sub": "Renew licence"}, "core": {"label": "Policy engine"}, "lanes": [{"label": "Read records", "done": true, "sub": "Allowed"}, {"label": "Submit", "done": true, "sub": "Allowed"}, {"label": "Pay", "done": false, "sub": "Blocked: revoked"}]}</script><script type="application/json" data-ar-json>{"layout": "lanes", "alt": "يصل الطلب إلى محرك السياسات، فيسمح بقراءة السجلات والإرسال، ويمنع الدفع بعد إلغاء الصلاحية.", "input": {"label": "طلبك", "sub": "تجديد الرخصة"}, "core": {"label": "محرك السياسات"}, "lanes": [{"label": "قراءة السجلات", "done": true, "sub": "مسموح"}, {"label": "الإرسال", "done": true, "sub": "مسموح"}, {"label": "الدفع", "done": false, "sub": "ممنوع: أُلغيت الصلاحية"}]}</script></div></div>
           </article>
           <article class="card card--row card--open span-6">
             <h3 data-ar="يوقّع كل خطوة للوكيل في سجل تدقيق">Signs every agent step in an audit log</h3>
@@ -327,15 +326,15 @@
             <div class="panel">
               <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:456px;--ax:max(24px, 50% - 228px);--ay:40px;--ay-sm:24px">
                 <div class="ui ui-panel ui-win" data-ui="window" data-ui-opts='{"compact":true}' data-open="Policy" data-work="Agent" data-done="Agency">
-                  <div class="ui-win__bar"><span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ui-win__crumb">Audit <i>/</i> <b>Chain intact</b></span><span class="ui-spacer"></span></div>
+                  <div class="ui-win__bar"><span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ui-win__crumb"><span data-ar="التدقيق">Audit</span> <i>/</i> <b data-ar="السلسلة سليمة">Chain intact</b></span><span class="ui-spacer"></span></div>
                   <div class="ui-win__body">
                     <div class="ui-win__main">
-                      <div class="ui-win__cols" aria-hidden="true"><span>#</span><span>Event</span><span>Actor</span><span>Hash</span></div>
+                      <div class="ui-win__cols" aria-hidden="true"><span>#</span><span data-ar="الحدث">Event</span><span data-ar="الفاعل">Actor</span><span data-ar="البصمة">Hash</span></div>
                       <ul class="ui-win__rows">
-                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">48</span><span class="ui-win__who">Receipt issued</span><span class="ui-win__sub">RCPT-D422 from Traffic</span><span class="ui-win__st is-done" data-st>Agency</span><span class="ui-win__age">9f3a</span></li>
-                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">47</span><span class="ui-win__who">Submitted once</span><span class="ui-win__sub">Reference REQ-3B71</span><span class="ui-win__st" data-st>Agent</span><span class="ui-win__age">c210</span></li>
-                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">46</span><span class="ui-win__who">Payment allowed</span><span class="ui-win__sub">Mandate MND-0A51</span><span class="ui-win__st" data-st>Policy</span><span class="ui-win__age">7e44</span></li>
-                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">45</span><span class="ui-win__who">Details approved</span><span class="ui-win__sub">Faisal Al-Harbi</span><span class="ui-win__st" data-st>Policy</span><span class="ui-win__age">02bd</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">48</span><span class="ui-win__who" data-ar="صدر الإيصال">Receipt issued</span><span class="ui-win__sub" data-ar="RCPT-D422 من المرور">RCPT-D422 from Traffic</span><span class="ui-win__st is-done" data-st data-ar="الجهة">Agency</span><span class="ui-win__age">9f3a</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">47</span><span class="ui-win__who" data-ar="أُرسل مرة واحدة">Submitted once</span><span class="ui-win__sub" data-ar="المرجع REQ-3B71">Reference REQ-3B71</span><span class="ui-win__st" data-st data-ar="الوكيل">Agent</span><span class="ui-win__age">c210</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">46</span><span class="ui-win__who" data-ar="سُمح بالدفع">Payment allowed</span><span class="ui-win__sub" data-ar="الصلاحية MND-0A51">Mandate MND-0A51</span><span class="ui-win__st" data-st data-ar="السياسة">Policy</span><span class="ui-win__age">7e44</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">45</span><span class="ui-win__who" data-ar="تمت الموافقة على التفاصيل">Details approved</span><span class="ui-win__sub" data-ar="فيصل الحربي">Faisal Al-Harbi</span><span class="ui-win__st" data-st data-ar="السياسة">Policy</span><span class="ui-win__age">02bd</span></li>
                       </ul>
                     </div>
                   </div>
@@ -352,18 +351,18 @@
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:400px;--ax:max(24px, 50% - 200px);--ay:40px;--ay-sm:24px">
               <div class="ui ui-panel ui-chat" data-ui="chat">
-                <div class="ui-head"><span class="ui-agent" aria-hidden="true"></span><div class="ui-title">MUEEN</div><span class="ui-chat__online">Online</span><span class="ui-spacer"></span></div>
+                <div class="ui-head"><span class="ui-agent" aria-hidden="true"></span><div class="ui-title" data-ar="مُعين">MUEEN</div><span class="ui-chat__online" data-ar="متصل">Online</span><span class="ui-spacer"></span></div>
                 <div class="ui-chat__body">
-                  <div class="ui-chat__day">Today, 10:12</div>
-                  <div class="ui-msg ui-msg--me" data-chat-q><span class="ui-msg__text">Renew Lakshmi’s iqama.</span></div>
+                  <div class="ui-chat__day" data-ar="اليوم، 10:12">Today, 10:12</div>
+                  <div class="ui-msg ui-msg--me" data-chat-q><span class="ui-msg__text" data-ar="جدّد إقامة لاكشمي.">Renew Lakshmi’s iqama.</span></div>
                   <div class="ui-msg ui-msg--bot" data-chat-a>
                     <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
                     <span class="ui-msg__col">
-                      <span class="ui-chat__answer">An absence report is registered for Lakshmi Nair. I stopped and opened <b>case CASE-7Q2K</b> for a Passports officer.</span>
+                      <span class="ui-chat__answer"><span data-ar="يوجد بلاغ تغيّب مسجّل على لاكشمي ناير. توقفت وفتحت">An absence report is registered for Lakshmi Nair. I stopped and opened</span> <b data-ar="الحالة CASE-7Q2K">case CASE-7Q2K</b> <span data-ar="لموظف الجوازات.">for a Passports officer.</span></span>
                     </span>
                   </div>
                 </div>
-                <div class="ui-chat__input"><span class="ui-chat__ph">Write or speak a request</span><span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                <div class="ui-chat__input"><span class="ui-chat__ph" data-ar="اكتب طلبك أو قله">Write or speak a request</span><span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
               </div>
             </div></div>
           </div>
@@ -374,13 +373,13 @@
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-right to-edge" style="--ax:32px;--ay:40px;--ay-sm:24px">
               <div class="ui ui-panel ui-toggles" data-ui="toggles">
-                <div class="ui-head"><svg class="ui-icon ui-toggles__ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/><path d="m5.8 8 1.6 1.6 3-3.2"/></svg><div class="ui-title">Governance console</div><span class="ui-spacer"></span><div class="ui-meta" data-tg-count>4 of 5 on</div></div>
+                <div class="ui-head"><svg class="ui-icon ui-toggles__ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/><path d="m5.8 8 1.6 1.6 3-3.2"/></svg><div class="ui-title" data-ar="لوحة الحوكمة">Governance console</div><span class="ui-spacer"></span><div class="ui-meta" data-tg-count data-ar="4 من 5 مفعّلة">4 of 5 on</div></div>
                 <ul class="ui-toggles__list">
-                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Emergency stop</span><span class="ui-tg__sub">Pauses all agent actions</span></span><button class="ui-switch" type="button" role="switch" aria-checked="false" aria-label="Emergency stop"><i></i></button></li>
-                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Driving licence</span><span class="ui-tg__sub">Traffic connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Driving licence service"><i></i></button></li>
-                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Domestic-worker iqama</span><span class="ui-tg__sub">Passports connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Domestic-worker iqama service"><i></i></button></li>
-                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Work permit</span><span class="ui-tg__sub">HRSD connector degraded</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Work permit service"><i></i></button></li>
-                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Health certificate</span><span class="ui-tg__sub">Municipality connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Health certificate service"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-ar="الإيقاف الطارئ">Emergency stop</span><span class="ui-tg__sub" data-ar="يوقف كل إجراءات الوكيل">Pauses all agent actions</span></span><button class="ui-switch" type="button" role="switch" aria-checked="false" aria-label="Emergency stop" data-ar-aria="الإيقاف الطارئ"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-ar="رخصة القيادة">Driving licence</span><span class="ui-tg__sub" data-ar="موصل المرور سليم">Traffic connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Driving licence service" data-ar-aria="خدمة رخصة القيادة"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-ar="إقامة العمالة المنزلية">Domestic-worker iqama</span><span class="ui-tg__sub" data-ar="موصل الجوازات سليم">Passports connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Domestic-worker iqama service" data-ar-aria="خدمة إقامة العمالة المنزلية"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-ar="رخصة العمل">Work permit</span><span class="ui-tg__sub" data-ar="موصل الموارد البشرية متدهور">HRSD connector degraded</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Work permit service" data-ar-aria="خدمة رخصة العمل"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-ar="الشهادة الصحية">Health certificate</span><span class="ui-tg__sub" data-ar="موصل البلدية سليم">Municipality connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Health certificate service" data-ar-aria="خدمة الشهادة الصحية"><i></i></button></li>
                 </ul>
               </div>
             </div></div>
@@ -424,7 +423,7 @@
           <li><span class="rows__name" data-ar="وزارة البلديات والإسكان">Municipalities ministry</span><span class="rows__value" data-ar="الشهادة الصحية">Health certificate</span></li>
           <li><span class="rows__name" data-ar="وزارة التجارة">Ministry of Commerce</span><span class="rows__value" data-ar="الترخيص الاستشاري">Consulting licence</span></li>
         </ul>
-        <div class="panel span-6 start-7"><div class="dg" data-diagram><script type="application/json">{"layout": "hub", "alt": "MUEEN in the centre, connected to seven renewal services: driving licence, Istimara, passport, domestic-worker iqama, work permit, health certificate and consulting licence.", "center": {"label": "MUEEN"}, "spokes": [{"label": "Driving licence"}, {"label": "Istimara"}, {"label": "Passport"}, {"label": "Iqama"}, {"label": "Work permit"}, {"label": "Health certificate"}, {"label": "Consulting licence"}], "motion": {"pulse": "none"}}</script></div></div>
+        <div class="panel span-6 start-7"><div class="dg" data-diagram><script type="application/json">{"layout": "hub", "alt": "MUEEN in the centre, connected to seven renewal services: driving licence, Istimara, passport, domestic-worker iqama, work permit, health certificate and consulting licence.", "center": {"label": "MUEEN"}, "spokes": [{"label": "Driving licence"}, {"label": "Istimara"}, {"label": "Passport"}, {"label": "Iqama"}, {"label": "Work permit"}, {"label": "Health certificate"}, {"label": "Consulting licence"}], "motion": {"pulse": "none"}}</script><script type="application/json" data-ar-json>{"layout": "hub", "alt": "مُعين في المركز، متصل بسبع خدمات تجديد: رخصة القيادة، الاستمارة، الجواز، إقامة العمالة المنزلية، رخصة العمل، الشهادة الصحية، والترخيص الاستشاري.", "center": {"label": "مُعين"}, "spokes": [{"label": "رخصة القيادة"}, {"label": "الاستمارة"}, {"label": "الجواز"}, {"label": "الإقامة"}, {"label": "رخصة العمل"}, {"label": "الشهادة الصحية"}, {"label": "الترخيص الاستشاري"}], "motion": {"pulse": "none"}}</script></div></div>
       </div>
     </div>
   </section>

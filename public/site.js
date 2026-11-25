@@ -34,6 +34,17 @@
     } catch { /* storage blocked: the choice lasts for this page only */ }
   }
 
+  // Diagrams are drawn once from their JSON (diagram.js reads the first one): keep only this language's spec.
+  for (const arSpec of document.querySelectorAll('script[data-ar-json]')) {
+    if (lang === 'ar') arSpec.previousElementSibling.textContent = arSpec.textContent;
+    arSpec.remove();
+  }
+  // The kit's windows write these status words into their rows as they animate.
+  if (lang === 'ar') {
+    const WORDS = { Waiting: 'قيد الانتظار', Checking: 'قيد التحقق', Confirmed: 'مؤكد', Policy: 'السياسة', Agent: 'الوكيل', Agency: 'الجهة' };
+    for (const w of document.querySelectorAll('[data-ui="window"]')) for (const k of ['open', 'work', 'done']) w.dataset[k] = WORDS[w.dataset[k]] ?? w.dataset[k];
+  }
   apply(lang);
-  toggle?.addEventListener('click', () => { lang = lang === 'ar' ? 'en' : 'ar'; apply(lang); });
+  // The kit draws its diagrams and loops once, so a switch reloads the page in the other language.
+  toggle?.addEventListener('click', () => { apply(lang === 'ar' ? 'en' : 'ar'); location.search = '?lang=' + root.lang; });
 })();
