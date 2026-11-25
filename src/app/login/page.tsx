@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CircleNotchIcon, KeyIcon, ShieldCheckIcon } from "@phosphor-icons/react";
 import Grainient from "@/components/bits/Grainient";
@@ -26,6 +26,8 @@ export default function Login() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<"short" | "wrong" | null>(null);
   const reduce = useReducedMotion();
+  const [timedOut, setTimedOut] = useState(false);
+  useEffect(() => setTimedOut(new URLSearchParams(location.search).has("timeout")), []);
   const Arrow = ar ? ArrowLeftIcon : ArrowRightIcon;
   const Back = ar ? ArrowRightIcon : ArrowLeftIcon;
 
@@ -50,6 +52,11 @@ export default function Login() {
       {/* refero.design login pattern: a narrow form column beside a product panel; the account chooser, then the code */}
       <div className="wrap grid flex-1 gap-10 py-10 lg:grid-cols-2 lg:items-center">
         <div className="mx-auto w-full min-w-0 max-w-md">
+          {timedOut && (
+            <p role="status" className="mb-6 rounded-xl bg-warn-bg p-3 text-sm text-warn">
+              {ar ? "سجّلنا خروجك بعد 10 دقائق دون نشاط. لم يُرسل أي شيء. سجّل الدخول للمتابعة." : "We signed you out after 10 minutes without activity. Nothing was submitted. Sign in to continue."}
+            </p>
+          )}
           {!picked ? (
             <>
               <h1 className="text-3xl font-semibold text-teal">{ar ? "تسجيل الدخول إلى مُعين" : "Sign in to MUEEN"}</h1>

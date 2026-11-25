@@ -1,14 +1,20 @@
 "use client";
+import Link from "next/link";
 import { ShieldWarningIcon } from "@phosphor-icons/react";
 import { useT } from "./useT";
 import { T } from "@/lib/i18n";
 
 export function Disclaimer({ compact = false }: { compact?: boolean }) {
-  const { t } = useT();
+  const { t, ar } = useT();
   return (
     <p className={`flex items-start gap-2 text-muted ${compact ? "text-xs leading-snug" : "text-xs leading-relaxed"}`}>
       <ShieldWarningIcon size={compact ? 13 : 15} className="mt-0.5 shrink-0 text-sand" aria-hidden="true" />
-      <span>{t(T.disclaimer)}</span>
+      <span>
+        {t(T.disclaimer)}{" "}
+        <Link href="/privacy" className="underline underline-offset-2">{ar ? "إشعار الخصوصية" : "Privacy notice"}</Link>
+        {" · "}
+        <Link href="/accessibility" className="underline underline-offset-2">{ar ? "إمكانية الوصول" : "Accessibility"}</Link>
+      </span>
     </p>
   );
 }

@@ -87,7 +87,7 @@ function ServicesMenu() {
 export function AppNav({ children, menu = false }: { children: React.ReactNode; menu?: boolean }) {
   return (
     <header className="sticky top-0 z-20 shrink-0 border-b border-line bg-warm">
-      <div className="wrap flex h-14 items-center gap-3 sm:h-[72px]">
+      <div className="wrap flex h-14 items-center gap-2 sm:h-[72px] sm:gap-3">
         <a href="/" aria-label="MUEEN"><Wordmark /></a>
         <span className="hidden sm:inline"><ConceptBadge /></span>
         {menu && <ServicesMenu />}

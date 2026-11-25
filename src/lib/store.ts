@@ -41,6 +41,8 @@ interface State {
   txs: Transaction[];
   chats: Record<string, ChatMessage[]>;
   reminders: Reminder[];
+  /** personaId → when they accepted the privacy notice */
+  consents: Record<string, string>;
   config: AdminConfig;
   selectedTxId: string | null;
   setLang: (l: Lang) => void;
@@ -52,6 +54,9 @@ interface State {
   patchMessage: (personaId: string, id: string, patch: Partial<ChatMessage>) => void;
   addReminder: (r: Reminder) => void;
   setConfig: (c: Partial<AdminConfig>) => void;
+  setConsent: (personaId: string, at: string | null) => void;
+  /** Deletes one persona's requests, authorities, conversation, reminders and consent; the signed audit log stays. */
+  forgetPersona: (personaId: string) => void;
   selectTx: (id: string | null) => void;
   tamperAudit: () => void;
   reset: () => void;
@@ -67,6 +72,7 @@ export const useStore = create<State>()(
       txs: [],
       chats: {},
       reminders: [],
+      consents: {},
       config: DEFAULT_CONFIG,
       selectedTxId: null,
       setLang: (lang) => set({ lang }),
@@ -80,6 +86,28 @@ export const useStore = create<State>()(
         set((s) => ({ chats: { ...s.chats, [pid]: (s.chats[pid] ?? []).map((m) => (m.id === id ? ({ ...m, ...patch } as ChatMessage) : m)) } })),
       addReminder: (r) => set((s) => ({ reminders: [...s.reminders, r] })),
       setConfig: (c) => set((s) => ({ config: { ...s.config, ...c } })),
+      setConsent: (pid, at) =>
+        set((s) => {
+          const consents = { ...s.consents };
+          if (at) consents[pid] = at;
+          else delete consents[pid];
+          return { consents };
+        }),
+      forgetPersona: (pid) =>
+        set((s) => {
+          const chats = { ...s.chats };
+          delete chats[pid];
+          const consents = { ...s.consents };
+          delete consents[pid];
+          return {
+            txs: s.txs.filter((t) => t.personaId !== pid),
+            mandates: s.mandates.filter((m) => m.personaId !== pid),
+            reminders: s.reminders.filter((r) => r.personaId !== pid),
+            chats,
+            consents,
+            selectedTxId: null,
+          };
+        }),
       selectTx: (selectedTxId) => set({ selectedTxId }),
       tamperAudit: () =>
         set((s) => {
@@ -88,7 +116,7 @@ export const useStore = create<State>()(
           const audit = s.audit.map((e, idx) => (idx === i ? { ...e, summary: { en: e.summary.en + " [edited]", ar: e.summary.ar + " [مُعدّل]" } } : e));
           return { audit };
         }),
-      reset: () => set({ audit: [], mandates: [], txs: [], chats: {}, reminders: [], config: DEFAULT_CONFIG, selectedTxId: null }),
+      reset: () => set({ audit: [], mandates: [], txs: [], chats: {}, reminders: [], consents: {}, config: DEFAULT_CONFIG, selectedTxId: null }),
     }),
     { name: "mueen-demo-v1", storage: createJSONStorage(() => localStorage) },
   ),

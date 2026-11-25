@@ -21,6 +21,7 @@ import * as connectors from "./connectors";
 
 export type EngineAction =
   | "login"
+  | "session"
   | "grant"
   | "revoke"
   | "start"
@@ -46,6 +47,7 @@ export interface EngineRequest {
   grant?: { actions: Action[]; hours: number };
   adminEvent?: { type: string; summary: L; data?: Record<string, unknown> };
   injectionNote?: boolean;
+  sessionEvent?: SessionEvent;
 }
 
 export interface EngineResponse {
@@ -138,6 +140,17 @@ function buildPreview(tx: Transaction, persona: Persona, service: ServiceDef) {
   };
 }
 
+/** Citizen-side events the audit log records. The server owns their wording; the browser only names the event. */
+export type SessionEvent = "CONSENT_GIVEN" | "CONSENT_WITHDRAWN" | "SIGNED_OUT" | "SESSION_TIMEOUT" | "DATA_EXPORTED" | "DATA_DELETED";
+const SESSION_SUMMARY: Record<SessionEvent, L> = {
+  CONSENT_GIVEN: { en: "Consented to the privacy notice (version 2026-11)", ar: "وافق على إشعار الخصوصية (الإصدار 2026-11)" },
+  CONSENT_WITHDRAWN: { en: "Withdrew consent; the agent can no longer act", ar: "سحب الموافقة؛ لم يعد بإمكان الوكيل التصرف" },
+  SIGNED_OUT: { en: "Signed out", ar: "سجّل الخروج" },
+  SESSION_TIMEOUT: { en: "Signed out after 10 minutes without activity", ar: "سُجّل الخروج بعد 10 دقائق دون نشاط" },
+  DATA_EXPORTED: { en: "Exported a copy of their data", ar: "صدّر نسخة من بياناته" },
+  DATA_DELETED: { en: "Deleted their requests, authorities and conversation from this device", ar: "حذف طلباته وصلاحياته ومحادثته من هذا الجهاز" },
+};
+
 export function runEngine(req: EngineRequest): EngineResponse {
   const events: NewEvent[] = [];
   const out: EngineResponse = { events: [] };
@@ -152,6 +165,14 @@ export function runEngine(req: EngineRequest): EngineResponse {
           summary: { en: "Signed in with simulated national single sign-on + one-time code", ar: "تسجيل دخول عبر محاكاة النفاذ الوطني الموحد + رمز التحقق" },
           data: { method: "simulated-sso-otp" },
         });
+        break;
+      }
+
+      case "session": {
+        const { persona } = ctx(req.personaId);
+        const ev = req.sessionEvent;
+        if (!ev || !(ev in SESSION_SUMMARY)) throw new EngineError("BAD_SESSION", { en: "Unknown session event.", ar: "حدث جلسة غير معروف." });
+        events.push({ actor: "user", type: ev, personaId: persona.id, summary: SESSION_SUMMARY[ev], data: ev === "CONSENT_GIVEN" ? { noticeVersion: "2026-11" } : undefined });
         break;
       }
 

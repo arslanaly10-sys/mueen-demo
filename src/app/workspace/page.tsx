@@ -2,7 +2,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChatTextIcon, LayoutIcon, ShieldWarningIcon, SignOutIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { ChatTextIcon, DatabaseIcon, LayoutIcon, ShieldWarningIcon, SignOutIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { ConsentGate } from "@/components/ConsentGate";
+import { endSession, SessionGuard } from "@/components/SessionGuard";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -21,7 +23,7 @@ export default function Workspace() {
   const router = useRouter();
   const personaId = useStore((s) => s.personaId);
   const killSwitch = useStore((s) => s.config.killSwitch);
-  const setPersona = useStore((s) => s.setPersona);
+  const consentAt = useStore((s) => (s.personaId ? s.consents[s.personaId] : undefined));
   const [mobileTab, setMobileTab] = useState<"chat" | "panel">("chat");
   const persona = personaId ? getPersona(personaId) : undefined;
 
@@ -39,14 +41,17 @@ export default function Workspace() {
           <SquaresFourIcon size={15} aria-hidden="true" /> {t(T.openAdmin)}
         </Link>
         <LangToggle />
-        <div className="flex items-center gap-2 border-s border-line ps-3">
+        <div className="flex items-center gap-1 border-line sm:gap-2 sm:border-s sm:ps-3">
+          <Link href="/my-data" className="grid size-11 place-items-center rounded-full text-muted hover:bg-mint hover:text-teal" aria-label={lang === "ar" ? "بياناتي" : "My data"} title={lang === "ar" ? "بياناتي" : "My data"}>
+            <DatabaseIcon size={17} aria-hidden="true" />
+          </Link>
           <span className="hidden size-8 place-items-center rounded-full bg-teal text-xs font-medium text-mint sm:grid" aria-hidden="true">{persona.initials}</span>
           <span className="hidden text-sm leading-tight lg:block">
             <span className="block font-medium text-teal">{t(persona.name)}</span>
             <span className="block text-xs text-muted">{t(persona.nationalityLabel)}</span>
           </span>
           <button
-            onClick={() => { setPersona(null); router.push("/login"); }}
+            onClick={async () => { await endSession(persona.id, "SIGNED_OUT"); router.push("/login"); }}
             className="grid size-11 place-items-center rounded-full text-muted hover:bg-mint hover:text-teal"
             aria-label={t(T.signOut)}
             title={t(T.signOut)}
@@ -56,6 +61,8 @@ export default function Workspace() {
         </div>
       </AppNav>
 
+      <SessionGuard personaId={persona.id} />
+      {!consentAt ? <ConsentGate personaId={persona.id} /> : (<>
       {killSwitch && (
         <div className="shrink-0 bg-err px-4 py-2 text-center text-sm font-medium text-white" role="status">
           <ShieldWarningIcon size={15} className="me-1.5 inline" aria-hidden="true" />
@@ -92,6 +99,7 @@ export default function Workspace() {
           <SidePanel personaId={persona.id} />
         </div>
       </main>
+      </>)}
       <footer className="hidden shrink-0 border-t border-line bg-white px-6 py-2 lg:block">
         <div className="wrap"><Disclaimer compact /></div>
       </footer>

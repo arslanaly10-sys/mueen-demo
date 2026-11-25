@@ -57,6 +57,15 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 | `ANTHROPIC_API_KEY` | Optional. Enables Claude (`claude-opus-5-5`, low effort) to interpret requests. Without it the demo uses the scripted interpreter. The header badge shows which one is active. |
 | `AUDIT_SIGNING_SECRET` | Server key for signing transactions and audit events. Set a long random value when deployed. |
 
+## Citizen data protection (demo)
+
+- **Consent:** the workspace asks once per persona and device before the agent may act (privacy notice v2026-11 at `/privacy`); the acceptance is a signed `CONSENT_GIVEN` audit event.
+- **My data** (`/my-data`): what is held, JSON export, withdraw consent, delete requests, authorities and conversation from the device. The signed audit log is kept and records each action.
+- **Session timeout:** signed out after 10 minutes without activity, with a one-minute warning dialog; sign-outs and timeouts are audit events.
+- **Accessibility statement** at `/accessibility`, linked from every footer.
+
+Citizen events go through the engine's `session` action, which owns their wording, so the browser can only name an event, not write audit text.
+
 ## Demo limitations
 
 - State lives in the viewer's browser (localStorage), and the serverless backend is stateless: it signs every transaction, verifies it, and rejects modified copies. A real deployment would use a database on approved government hosting.
