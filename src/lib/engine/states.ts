@@ -15,7 +15,8 @@ export const TRANSITIONS: Record<TxState, TxState[]> = {
   GOVERNMENT_CONFIRMED: ["RECEIPT_ISSUED"],
   RECEIPT_ISSUED: [],
   BLOCKED: ["CANCELLED", "HUMAN_REVIEW"],
-  HUMAN_REVIEW: ["CANCELLED"],
+  // a human officer decides: approve (back to the beneficiary to approve), return with a note, or reject
+  HUMAN_REVIEW: ["PREPARED", "BLOCKED", "CANCELLED"],
   CANCELLED: [],
 };
 

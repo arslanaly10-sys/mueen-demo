@@ -22,6 +22,7 @@ import * as connectors from "./connectors";
 export type EngineAction =
   | "login"
   | "session"
+  | "review"
   | "grant"
   | "revoke"
   | "start"
@@ -48,6 +49,8 @@ export interface EngineRequest {
   adminEvent?: { type: string; summary: L; data?: Record<string, unknown> };
   injectionNote?: boolean;
   sessionEvent?: SessionEvent;
+  /** a human service officer's decision on a case in the review queue */
+  review?: { decision: "approve" | "return" | "reject"; note?: string; officer?: string };
 }
 
 export interface EngineResponse {
@@ -430,6 +433,48 @@ export function runEngine(req: EngineRequest): EngineResponse {
         const tx = requireTx(req);
         tx.review = tx.review ?? { reason: tx.blocker?.reason ?? { en: "User asked for a human", ar: "طلب المستخدم موظفًا" }, caseId: "CASE-" + randomUUID().slice(0, 6).toUpperCase() };
         move(tx, "HUMAN_REVIEW", { en: "Handed to a human officer with full context and your consent", ar: "حُوّل إلى موظف مختص مع السياق الكامل وبموافقتك" }, events);
+        out.tx = signTx(tx);
+        break;
+      }
+
+      case "review": {
+        const tx = requireTx(req);
+        const { persona, service } = ctx(tx.personaId, tx.serviceId);
+        const r = req.review;
+        if (tx.state !== "HUMAN_REVIEW" || !r || !["approve", "return", "reject"].includes(r.decision))
+          throw new EngineError("BAD_REVIEW", { en: "This case is not waiting for review.", ar: "هذه الحالة ليست بانتظار المراجعة." });
+        // the officer's note is untrusted text: bounded, and carried as data, never as instructions
+        const note = (r.note ?? "").toString().replace(/\s+/g, " ").trim().slice(0, 300);
+        if (r.decision !== "approve" && !note) throw new EngineError("NOTE_REQUIRED", { en: "Write a note for the beneficiary.", ar: "اكتب ملاحظة للمستفيد." });
+        const officer = (r.officer ?? "officer.demo").toString().slice(0, 40);
+        const caseId = tx.review?.caseId ?? tx.id;
+        events.push({
+          actor: "officer",
+          type: r.decision === "approve" ? "REVIEW_APPROVED" : r.decision === "return" ? "REVIEW_RETURNED" : "REVIEW_REJECTED",
+          txId: tx.id,
+          personaId: persona.id,
+          summary: r.decision === "approve"
+            ? { en: `Officer verified the evidence for ${caseId}; returned to the beneficiary to approve`, ar: `تحقق الموظف من أدلة ${caseId}؛ أُعيد إلى المستفيد للموافقة` }
+            : r.decision === "return"
+              ? { en: `Officer returned ${caseId} to the beneficiary with a note`, ar: `أعاد الموظف ${caseId} إلى المستفيد مع ملاحظة` }
+              : { en: `Officer rejected ${caseId}`, ar: `رفض الموظف ${caseId}` },
+          data: { caseId, officer, note: note || null },
+        });
+        if (r.decision === "approve") {
+          // the officer's verification replaces the unresolved checks; the beneficiary still approves the action
+          tx.checks = tx.checks.map((c) => (c.status === "pass" ? c : { ...c, status: "pass", detail: { en: `Verified by a human officer (${caseId})`, ar: `تحقق منه موظف مختص (${caseId})` } }));
+          tx.blocker = undefined;
+          if (policyGate(tx, persona, service, req.mandate, "prepare", req.config, events)) {
+            buildPreview(tx, persona, service);
+            move(tx, "PREPARED", { en: "Officer verified the case. Waiting for your approval; nothing has been sent", ar: "تحقق الموظف من الحالة. بانتظار موافقتك؛ لم يُرسل أي شيء" }, events);
+          }
+        } else if (r.decision === "return") {
+          tx.blocker = { reason: { en: note, ar: note }, nextStep: { en: "Resolve the officer's note, then ask again.", ar: "عالج ملاحظة الموظف ثم اطلب مجددًا." } };
+          move(tx, "BLOCKED", { en: "Returned by a human officer with a note", ar: "أعاده موظف مختص مع ملاحظة" }, events);
+        } else {
+          tx.blocker = { reason: { en: note, ar: note } };
+          move(tx, "CANCELLED", { en: "Rejected by a human officer", ar: "رفضه موظف مختص" }, events);
+        }
         out.tx = signTx(tx);
         break;
       }

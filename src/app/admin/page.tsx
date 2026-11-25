@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowCounterClockwiseIcon, CheckCircleIcon, CircleNotchIcon, ClockIcon, PowerIcon, ProhibitIcon, PulseIcon, ScrollIcon, SealCheckIcon, ShieldCheckIcon, ShieldSlashIcon, UsersIcon, WarningCircleIcon, WarningOctagonIcon } from "@phosphor-icons/react";
+import { ArrowCounterClockwiseIcon, CheckCircleIcon, CircleNotchIcon, PlugsConnectedIcon, PowerIcon, ProhibitIcon, PulseIcon, ScrollIcon, SealCheckIcon, ShieldCheckIcon, ShieldSlashIcon, UsersIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import CountUp from "@/components/bits/CountUp";
 import { tabKeys } from "@/components/tabKeys";
 import SpotlightCard from "@/components/bits/SpotlightCard";
 import { AppNav } from "@/components/AppNav";
+import { ReviewCase } from "@/components/admin/ReviewCase";
+import { OP_LABEL, REGISTRY, WORKLOADS } from "@/lib/registry";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
 import { EngineBadge } from "@/components/EngineBadge";
@@ -82,7 +84,8 @@ export default function Admin() {
     { l: { en: "Policy denials", ar: "رفض السياسات" }, v: audit.filter((e) => e.type === "POLICY_DENY").length, Icon: ShieldSlashIcon, tone: "text-err" },
     { l: { en: "Duplicate payments", ar: "مدفوعات مكررة" }, v: 0, Icon: ShieldCheckIcon, tone: "text-green", note: { en: `${audit.filter((e) => e.type === "PAYMENT_RECONCILED").length} reconciled, never retried`, ar: `${audit.filter((e) => e.type === "PAYMENT_RECONCILED").length} مطابقة دون إعادة` } },
   ];
-  const queue = txs.filter((x) => x.state === "HUMAN_REVIEW" || x.state === "RECONCILIATION_REQUIRED");
+  const queue = txs.filter((x) => x.state === "HUMAN_REVIEW");
+  const unknown = txs.filter((x) => x.state === "RECONCILIATION_REQUIRED");
 
   return (
     <div className="min-h-dvh">
@@ -100,12 +103,15 @@ export default function Admin() {
               {lang === "ar" ? "عرض المشغل (تجريبي) · إصدار السياسة" : "Operator view (demo) · policy version"} <span className="num-ltr font-mono">{config.policyVersion}</span>
             </p>
           </div>
+          <div className="flex flex-wrap gap-2">
+          <Link href="/operations" className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-sm text-teal hover:bg-mint">{lang === "ar" ? "التشغيل والسعة" : "Operations and capacity"}</Link>
           <button
             onClick={() => { if (confirm(lang === "ar" ? "مسح جميع بيانات العرض في هذا المتصفح؟" : "Clear all demo data in this browser?")) { s.reset(); setVerify(null); } }}
             className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-sm text-teal hover:bg-mint"
           >
             <ArrowCounterClockwiseIcon size={14} aria-hidden="true" /> {lang === "ar" ? "إعادة ضبط بيانات العرض" : "Reset demo data"}
           </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
@@ -221,7 +227,7 @@ export default function Admin() {
           </div>
         </Section>
 
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="grid gap-5">
           <Section title={lang === "ar" ? "مراقبة الطلبات" : "Transaction monitoring"} icon={<PulseIcon size={18} />}>
             {txs.length === 0 ? (
               <p className="text-sm text-muted">{lang === "ar" ? "لا توجد طلبات بعد. ابدأ من مساحة المستفيد." : "No requests yet. Start one from the beneficiary view."}</p>
@@ -247,26 +253,53 @@ export default function Admin() {
             )}
           </Section>
 
-          <Section title={lang === "ar" ? "قائمة المراجعة البشرية" : "Human review queue"} icon={<UsersIcon size={18} />}>
-            {queue.length === 0 ? (
-              <p className="flex items-center gap-2 text-sm text-muted"><CheckCircleIcon size={16} className="text-green" aria-hidden="true" /> {lang === "ar" ? "لا توجد حالات بانتظار المراجعة." : "No cases waiting for review."}</p>
-            ) : (
-              <ul className="space-y-2">
-                {queue.map((x) => (
-                  <li key={x.id} className="rounded-xl border border-warn/30 bg-warn-bg p-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <WarningOctagonIcon size={16} className="text-warn" aria-hidden="true" />
-                      <span className="text-sm font-medium text-teal">{t(SERVICE_MAP[x.serviceId].name)}</span>
-                      <span className="font-mono text-xs text-muted">{x.review?.caseId ?? x.id}</span>
-                    </div>
-                    <p className="mt-1 text-sm text-[#6b430c]">{t(x.review?.reason ?? x.history[x.history.length - 1].note)}</p>
-                    <p className="mt-1 flex items-center gap-1 text-xs text-muted"><ClockIcon size={12} aria-hidden="true" /> {t(getPersona(x.personaId)?.name)} · {t(STATE_LABEL[x.state])}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Section>
         </div>
+
+        <Section title={lang === "ar" ? "قائمة المراجعة البشرية" : "Human review queue"} icon={<UsersIcon size={18} />}>
+          {queue.length === 0 && unknown.length === 0 ? (
+            <p className="flex items-center gap-2 text-sm text-muted"><CheckCircleIcon size={16} className="text-green" aria-hidden="true" /> {lang === "ar" ? "لا توجد حالات بانتظار المراجعة." : "No cases waiting for review."}</p>
+          ) : (
+            <div className="space-y-4">
+              {queue.length > 0 && <ul className="space-y-3">{queue.map((x) => <ReviewCase key={x.id} tx={x} />)}</ul>}
+              {unknown.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-teal">{lang === "ar" ? "نتيجة غير معروفة: تجري المطابقة مع الجهة قبل أي إعادة" : "Outcome unknown: reconciling with the authority before any retry"}</p>
+                  <ul className="mt-1 space-y-1 text-sm text-ink">{unknown.map((x) => <li key={x.id}>{t(SERVICE_MAP[x.serviceId].name)} · <span className="font-mono text-xs">{x.id}</span> · {t(getPersona(x.personaId)?.name)}</li>)}</ul>
+                </div>
+              )}
+            </div>
+          )}
+        </Section>
+
+        <Section title={lang === "ar" ? "سجل موصلات الجهات (محاكاة)" : "Agency connector registry (simulated)"} icon={<PlugsConnectedIcon size={18} />}>
+          <p className="text-sm text-ink">{lang === "ar" ? "كل موصل هنا تجريبي ولا يتصل بأي نظام حكومي. لكل موصل هوية عمل خاصة به، منفصلة عن المستخدم وعن الوكيل." : "Every connector here is a mock and contacts no government system. Each has its own workload identity, separate from the user and from the agent."}</p>
+          <ul className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {REGISTRY.map((c) => {
+              const h = config.connectorHealth[c.serviceId] ?? "up";
+              return (
+                <li key={c.serviceId} className="min-w-0 rounded-xl border border-line p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-medium text-teal">{t(SERVICE_MAP[c.serviceId].name)}</p>
+                    <span className="shrink-0 rounded-full border border-sand/70 bg-sand/10 px-2 py-0.5 text-xs font-medium text-[#7a6230]">{lang === "ar" ? "محاكاة" : "Simulated"}</span>
+                  </div>
+                  <p className="mt-0.5 font-mono text-xs text-muted"><bdi>{c.connectorId}</bdi></p>
+                  <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+                    <dt className="text-muted">{lang === "ar" ? "المالك" : "Owner"}</dt><dd className="text-ink">{t(c.owner)}</dd>
+                    <dt className="text-muted">{lang === "ar" ? "العمليات" : "Operations"}</dt><dd className="text-ink">{c.operations.map((o) => t(OP_LABEL[o])).join(" · ")}</dd>
+                    <dt className="text-muted">{lang === "ar" ? "نطاق البيانات" : "Data scope"}</dt><dd className="text-ink">{c.dataScope.map((d) => t(d)).join(lang === "ar" ? "، " : ", ")}</dd>
+                    <dt className="text-muted">{lang === "ar" ? "حد المعدل" : "Rate limit"}</dt><dd className="tabular-nums text-ink">{fmtNum(c.rateLimitPerSec, lang)}/{lang === "ar" ? "ث" : "s"}</dd>
+                    <dt className="text-muted">{lang === "ar" ? "الصحة" : "Health"}</dt><dd className={h === "up" ? "text-green" : h === "degraded" ? "text-warn-ink" : "text-err"}>{t(HEALTH.find((x) => x.v === h)!.l)}</dd>
+                    <dt className="text-muted">{lang === "ar" ? "التكامل" : "Integration"}</dt><dd className="text-ink">{lang === "ar" ? "موصل تجريبي، لا تكامل حي" : "Mock connector, no live integration"}</dd>
+                  </dl>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-5 text-sm font-medium text-teal">{lang === "ar" ? "هويات العمل غير البشرية" : "Non-human workload identities"}</p>
+          <ul className="mt-2 space-y-1.5 text-sm">
+            {WORKLOADS.map((w) => <li key={w.id}><span className="font-mono text-xs text-muted"><bdi>{w.id}</bdi></span> · <span className="text-ink">{t(w.role)}</span> · <span className="text-muted">{t(w.cannot)}</span></li>)}
+          </ul>
+        </Section>
 
         <Section
           title={lang === "ar" ? "سجل التدقيق المقاوم للتلاعب" : "Tamper-evident audit log"}

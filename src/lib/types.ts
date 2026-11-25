@@ -210,7 +210,7 @@ export interface Transaction {
 
 // ---------------------------------------------------------------- Audit
 
-export type AuditActor = "user" | "agent" | "policy" | "connector" | "agency" | "admin" | "system";
+export type AuditActor = "user" | "agent" | "policy" | "connector" | "agency" | "admin" | "officer" | "system";
 
 export interface AuditEvent {
   seq: number;
