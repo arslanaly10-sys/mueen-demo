@@ -61,3 +61,11 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 
 - State lives in the viewer's browser (localStorage), and the serverless backend is stateless: it signs every transaction, verifies it, and rejects modified copies. A real deployment would use a database on approved government hosting.
 - Rules are simplified from public service guides, and fees are illustrative. Live integration would need written authorization and the agreed integration route from each service owner.
+
+## 3D hero
+
+`src/components/HeroScene.tsx` renders the logo's doorway of connected steps in three.js. A light travels from the request (sand) to the verified outcome (green). The scene is lazy-loaded and mirrored for RTL, pauses when off-screen, shows a single still frame under `prefers-reduced-motion`, and falls back to the static background when WebGL is unavailable.
+
+## Working on this repo with an AI agent
+
+This repo uses [Ponytail](https://github.com/DietrichGebert/ponytail) (MIT), a "lazy senior dev" ruleset: the smallest complete change, with no cuts to validation, security or accessibility. Claude Code offers to install it from `.claude/settings.json` when you trust the folder. Other agents read `AGENTS.md`.

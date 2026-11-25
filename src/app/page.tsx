@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowLeft, ArrowRight, CheckCircle2, FileCheck2, Hand, LifeBuoy, ListChecks, MessageSquareText, Scale, ShieldCheck, Stamp } from "lucide-react";
 import { Wordmark } from "@/components/Logo";
 import { LangToggle } from "@/components/LangToggle";
@@ -9,6 +10,9 @@ import { StatusPill } from "@/components/StatusPill";
 import { useT } from "@/components/useT";
 import { T } from "@/lib/i18n";
 import { SERVICES } from "@/lib/services";
+
+// three.js stays out of the first paint and off the server.
+const HeroScene = dynamic(() => import("@/components/HeroScene"), { ssr: false });
 
 const HOW = [
   { icon: MessageSquareText, title: { en: "Tell us what you need", ar: "أخبرنا بما تحتاجه" }, body: { en: "Type or speak in Arabic or English — “renew my license”.", ar: "اكتب أو تحدّث بالعربية أو الإنجليزية — «جدد رخصتي»." } },
@@ -60,8 +64,12 @@ export default function Home() {
               <p className="mt-6 text-sm text-mint/70">{t(T.promise)}</p>
             </div>
 
-            {/* Sample journey — shows the brand's status language, not a robot. */}
-            <div className="rise rounded-3xl border border-white/15 bg-white/[0.06] p-5 backdrop-blur-sm" style={{ animationDelay: "120ms" }} aria-label={ar ? "مثال على رحلة" : "Example journey"}>
+            {/* 3D doorway of connected steps, with the sample journey it leads to. */}
+            <div className="rise relative" style={{ animationDelay: "120ms" }}>
+              <div className="relative h-72 sm:h-80 md:h-96">
+                <HeroScene rtl={ar} />
+              </div>
+              <div className="relative -mt-10 rounded-3xl border border-white/15 bg-white/[0.06] p-3 backdrop-blur-sm sm:p-4" aria-label={ar ? "مثال على رحلة" : "Example journey"}>
               <div className="rounded-2xl bg-white p-4 text-ink shadow-lg">
                 <div className="flex items-start gap-3">
                   <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-mint text-green">
@@ -87,6 +95,7 @@ export default function Home() {
                 </ol>
               </div>
               <p className="mt-3 text-center text-xs text-mint/70">{ar ? "مثال توضيحي ببيانات افتراضية" : "Illustrative example with synthetic data"}</p>
+              </div>
             </div>
           </div>
         </div>
