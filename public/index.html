@@ -153,9 +153,9 @@
           <a class="btn btn--secondary" href="/admin" data-ar="اطّلع على لوحة الحوكمة">See the governance console</a>
         </div>
       </div>
-      <div class="hero__window" role="img" aria-label="MUEEN checking a domestic worker's iqama renewal with Passports and asking for approval before it submits" data-ar-aria="مُعين يتحقق من تجديد إقامة عاملة منزلية لدى الجوازات ويطلب الموافقة قبل الإرسال">
-        <div class="ly-piece app" aria-hidden="true" data-ui-pause-host>
-        <div class="app__pane app__pane--list">
+      <div class="hero__window" role="group" aria-label="MUEEN checking a domestic worker's iqama renewal with Passports and asking for approval before it submits" data-ar-aria="مُعين يتحقق من تجديد إقامة عاملة منزلية لدى الجوازات ويطلب الموافقة قبل الإرسال">
+        <div class="ly-piece app" data-ui-pause-host>
+        <div class="app__pane app__pane--list" aria-hidden="true">
           <div class="ui ui-panel ui-win" data-ui="window" data-open="Waiting" data-work="Checking" data-done="Confirmed">
             <div class="ui-win__bar">
               <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -190,7 +190,7 @@
             </div>
           </div>
         </div>
-        <div class="app__pane app__pane--open" data-ui-loop>
+        <div class="app__pane app__pane--open" aria-hidden="true" data-ui-loop>
           <div class="ui ui-panel ui-chat" data-ui="chat">
             <div class="ui-head">
               <span class="ui-agent" aria-hidden="true"></span>
@@ -355,7 +355,7 @@
           <p data-ar="إيقاف المشغل الطارئ يجمّد كل إجراء للوكيل في الخدمات السبع، من داخل محرك السياسات.">The operator’s emergency stop pauses every agent action across all seven services, inside the policy engine.</p>
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-right to-edge" style="--ax:32px;--ay:40px;--ay-sm:24px">
-              <div class="ui ui-panel ui-toggles" data-ui="toggles">
+              <div class="ui ui-panel ui-toggles" data-ui="toggles" inert>
                 <div class="ui-head"><svg class="ui-icon ui-toggles__ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/><path d="m5.8 8 1.6 1.6 3-3.2"/></svg><div class="ui-title" data-ar="لوحة الحوكمة">Governance console</div><span class="ui-spacer"></span><div class="ui-meta" data-tg-count data-ar="4 من 5 مفعّلة">4 of 5 on</div></div>
                 <ul class="ui-toggles__list">
                   <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label" data-ar="الإيقاف الطارئ">Emergency stop</span><span class="ui-tg__sub" data-ar="يوقف كل إجراءات الوكيل">Pauses all agent actions</span></span><button class="ui-switch" type="button" role="switch" aria-checked="false" aria-label="Emergency stop" data-ar-aria="الإيقاف الطارئ"><i></i></button></li>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowCounterClockwiseIcon, CheckCircleIcon, CircleNotchIcon, ClockIcon, PowerIcon, ProhibitIcon, PulseIcon, ScrollIcon, SealCheckIcon, ShieldCheckIcon, ShieldSlashIcon, UsersIcon, WarningCircleIcon, WarningOctagonIcon } from "@phosphor-icons/react";
 import CountUp from "@/components/bits/CountUp";
+import { tabKeys } from "@/components/tabKeys";
 import SpotlightCard from "@/components/bits/SpotlightCard";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
@@ -155,10 +156,10 @@ export default function Admin() {
               <thead>
                 <tr className="text-start text-xs text-muted">
                   <th className="px-4 py-2 text-start font-medium sm:px-2">{lang === "ar" ? "الخدمة" : "Service"}</th>
-                  <th className="px-2 py-2 text-start font-medium">{lang === "ar" ? "الجهة المالكة" : "Owning agency"}</th>
-                  <th className="px-2 py-2 text-start font-medium">{lang === "ar" ? "مستوى الخطورة" : "Risk tier"}</th>
                   <th className="px-2 py-2 text-start font-medium">{lang === "ar" ? "حالة الموصل" : "Connector"}</th>
                   <th className="px-2 py-2 text-start font-medium">{lang === "ar" ? "مفعّلة" : "Enabled"}</th>
+                  <th className="px-2 py-2 text-start font-medium">{lang === "ar" ? "الجهة المالكة" : "Owning agency"}</th>
+                  <th className="px-2 py-2 text-start font-medium">{lang === "ar" ? "مستوى الخطورة" : "Risk tier"}</th>
                 </tr>
               </thead>
               <tbody>
@@ -173,17 +174,14 @@ export default function Admin() {
                         </span>
                         <span className="mt-0.5 block text-xs text-muted">{t(svc.channel)}</span>
                       </td>
-                      <td className="px-2 py-3 text-muted">{t(svc.agency)}</td>
                       <td className="px-2 py-3">
-                        <StatusPill tone="plain">{lang === "ar" ? `المستوى ${fmtNum(svc.tier, lang)} · إرسال ودفع` : `Tier ${svc.tier} · submit & pay`}</StatusPill>
-                      </td>
-                      <td className="px-2 py-3">
-                        <div className="flex gap-1" role="radiogroup" aria-label={lang === "ar" ? "حالة الموصل" : "Connector health"}>
+                        <div className="flex gap-1" role="radiogroup" aria-label={lang === "ar" ? "حالة الموصل" : "Connector health"} onKeyDown={(e) => tabKeys(e, HEALTH.map((h) => h.v), health, (v) => setHealth(svc.id, v))}>
                           {HEALTH.map((h) => (
                             <button
                               key={h.v}
                               role="radio"
                               aria-checked={health === h.v}
+                              tabIndex={health === h.v ? 0 : -1}
                               onClick={() => setHealth(svc.id, h.v)}
                               className={`rounded-full border px-2.5 py-1 text-xs ${
                                 health === h.v
@@ -205,11 +203,15 @@ export default function Admin() {
                           role="switch"
                           aria-checked={enabled}
                           onClick={() => toggleService(svc.id)}
-                          className={`relative h-6 w-11 rounded-full transition ${enabled ? "bg-green" : "bg-line"}`}
+                          className={`relative h-6 w-11 rounded-full transition-colors ${enabled ? "bg-green" : "bg-line"}`}
                           aria-label={t(svc.name)}
                         >
-                          <span className={`absolute top-0.5 size-5 rounded-full bg-white shadow transition-all ${enabled ? "start-[22px]" : "start-0.5"}`} />
+                          <span className={`absolute top-0.5 size-5 rounded-full bg-white shadow transition-[inset-inline-start] ${enabled ? "start-[22px]" : "start-0.5"}`} />
                         </button>
+                      </td>
+                      <td className="px-2 py-3 text-muted">{t(svc.agency)}</td>
+                      <td className="px-2 py-3">
+                        <StatusPill tone="plain">{lang === "ar" ? `المستوى ${fmtNum(svc.tier, lang)} · إرسال ودفع` : `Tier ${svc.tier} · submit & pay`}</StatusPill>
                       </td>
                     </tr>
                   );
@@ -290,14 +292,17 @@ export default function Admin() {
             </div>
           }
         >
+          {/* the live region is on the page before its result, so screen readers announce it */}
+          <div role="status">
           {verify && (
-            <div className={`mb-4 flex items-center gap-2 rounded-xl p-3 text-sm font-medium ${verify.ok ? "bg-mint text-green" : "bg-err-bg text-err"}`} role="status">
+            <div className={`mb-4 flex items-center gap-2 rounded-xl p-3 text-sm font-medium ${verify.ok ? "bg-mint text-green" : "bg-err-bg text-err"}`}>
               {verify.ok ? <CheckCircleIcon size={18} aria-hidden="true" /> : <ShieldSlashIcon size={18} aria-hidden="true" />}
               {verify.ok
                 ? lang === "ar" ? `السلسلة سليمة — ${fmtNum(verify.count, lang)} حدثًا موقّعًا.` : `Chain intact — ${verify.count} signed events.`
                 : lang === "ar" ? `تم كشف تلاعب عند الحدث #${verify.brokenAt}.` : `Tampering detected at event #${verify.brokenAt}.`}
             </div>
           )}
+          </div>
           <p className="mb-3 text-xs text-muted">
             {lang === "ar"
               ? "كل حدث موقّع من الخادم بـ HMAC-SHA256 ويتضمن بصمة الحدث السابق. تُعرض الملخصات فقط؛ البيانات الشخصية محجوبة."
