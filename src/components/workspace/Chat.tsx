@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import ShinyText from "@/components/bits/ShinyText";
 import { CpuIcon, MicrophoneIcon, MicrophoneSlashIcon, PaperPlaneRightIcon, SparkleIcon } from "@phosphor-icons/react";
 import { useStore, type ChatMessage } from "@/lib/store";
 import { T } from "@/lib/i18n";
@@ -188,7 +189,7 @@ export function Chat({ personaId }: { personaId: string }) {
         {thinking && (
           <div className="flex items-center gap-2.5 text-sm text-muted">
             <LogoMark size={28} />
-            <span>{t(T.thinking)}</span>
+            <ShinyText text={t(T.thinking)} color="#5B6B73" shineColor="#187A62" speed={1.6} />
             <span aria-hidden="true"><span className="dot">•</span><span className="dot">•</span><span className="dot">•</span></span>
           </div>
         )}

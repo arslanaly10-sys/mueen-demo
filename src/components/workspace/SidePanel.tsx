@@ -1,6 +1,7 @@
 "use client";
+import StatusMark from "@/components/bits/StatusMark";
 import { useState } from "react";
-import { BellIcon, CheckCircleIcon, CircleIcon, CircleNotchIcon, FolderOpenIcon, ListChecksIcon, RadioButtonIcon, ScrollIcon, ShieldCheckIcon, ShieldSlashIcon } from "@phosphor-icons/react";
+import { BellIcon, CircleNotchIcon, FolderOpenIcon, ListChecksIcon, ScrollIcon, ShieldCheckIcon, ShieldSlashIcon } from "@phosphor-icons/react";
 import { useStore } from "@/lib/store";
 import { useShallow } from "zustand/react/shallow";
 import { getPersona } from "@/lib/personas";
@@ -95,14 +96,14 @@ function Timeline({ personaId }: { personaId: string }) {
           return (
             <li key={st} className="relative flex gap-3 pb-4 last:pb-0">
               {i < HAPPY_PATH.length - 1 && <span className={`absolute top-6 h-[calc(100%-1rem)] w-px ${done ? "bg-green/50" : "bg-line"} start-[9px]`} aria-hidden="true" />}
-              <span className="relative z-10 mt-0.5">
-                {isCurrent && !["RECEIPT_ISSUED"].includes(st) ? (
-                  <RadioButtonIcon size={19} className="pulse-ring rounded-full bg-white text-green" aria-hidden="true" />
-                ) : done ? (
-                  <CheckCircleIcon size={19} className="rounded-full bg-white text-green" aria-hidden="true" />
-                ) : (
-                  <CircleIcon size={19} className="rounded-full bg-white text-line" aria-hidden="true" />
-                )}
+              {/* React Bits StatusMark; hidden from screen readers, the step's own text says the same in both languages */}
+              <span className="relative z-10 mt-0.5 rounded-full bg-white" aria-hidden="true">
+                <StatusMark
+                  status={isCurrent && st !== "RECEIPT_ISSUED" ? "running" : done ? "done" : "pending"}
+                  size={19}
+                  color="#187A62"
+                  doneColor="#187A62"
+                />
               </span>
               <div className="min-w-0 flex-1">
                 <p className={`text-sm font-medium ${done ? "text-teal" : "text-muted/70"}`}>
