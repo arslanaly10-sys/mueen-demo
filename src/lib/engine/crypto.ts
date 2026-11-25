@@ -3,6 +3,8 @@ import { createHmac } from "node:crypto";
 import type { AuditActor, AuditEvent, AuditHead, L, Transaction } from "../types";
 
 // Server-held key. In production this would live in an HSM / KMS managed by the operator.
+// A hosted deploy fails closed without its own key; the fallback is for local demo runs only.
+if (process.env.VERCEL && !process.env.AUDIT_SIGNING_SECRET) throw new Error("AUDIT_SIGNING_SECRET is required on hosted deployments");
 const SECRET = process.env.AUDIT_SIGNING_SECRET || "mueen-demo-local-secret-change-me";
 
 export const GENESIS = "0".repeat(64);

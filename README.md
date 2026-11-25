@@ -88,7 +88,7 @@ Identity (personas and a one-time code), agency records, eligibility rules (simp
 | Name | Purpose |
 |---|---|
 | `ANTHROPIC_API_KEY` | Optional. Enables Claude (`claude-opus-5-5`, low effort) to interpret requests; otherwise the scripted interpreter runs. The header badge shows which. |
-| `AUDIT_SIGNING_SECRET` | Server key for signing sessions, mandates, transactions and audit events. Set a long random value when deployed. |
+| `AUDIT_SIGNING_SECRET` | Server key for signing sessions, mandates, transactions and audit events. Required on Vercel (the server refuses to start without it); local runs fall back to a demo key. |
 | `PLATFORM_KILL_SWITCH` | `1` stops every agent action on the server. |
 
 ## Decisions that need government authorization
