@@ -83,7 +83,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-dvh">
-      <AppNav>
+      <AppNav menu>
         <EngineBadge />
         <Link href="/workspace" className="rounded-full px-3 py-1.5 text-sm text-teal hover:bg-mint">{lang === "ar" ? "مساحة المستفيد" : "Beneficiary view"}</Link>
         <LangToggle />

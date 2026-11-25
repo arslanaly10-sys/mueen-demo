@@ -157,6 +157,15 @@ export function Chat({ personaId }: { personaId: string }) {
     }
   }
 
+  // The nav's Services menu opens the workspace with ?ask=…: say it once, then drop it from the URL.
+  useEffect(() => {
+    const ask = new URLSearchParams(location.search).get("ask");
+    if (!ask) return;
+    history.replaceState(null, "", location.pathname);
+    send(ask);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const speech = useSpeech(lang, (final) => send(final), (partial) => setText(partial));
 
   useEffect(() => {
