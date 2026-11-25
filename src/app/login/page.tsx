@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, KeyRound, Loader2, ShieldCheck } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, CircleNotchIcon, KeyIcon, ShieldCheckIcon } from "@phosphor-icons/react";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -21,7 +21,7 @@ export default function Login() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(false);
-  const Arrow = ar ? ArrowLeft : ArrowRight;
+  const Arrow = ar ? ArrowLeftIcon : ArrowRightIcon;
 
   async function verify() {
     if (!picked) return;
@@ -86,7 +86,7 @@ export default function Login() {
             <div className="mt-4 rounded-[20px] border border-line bg-white p-6">
               <div className="flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-xl bg-mint text-green">
-                  <ShieldCheck size={22} aria-hidden="true" />
+                  <ShieldCheckIcon size={22} aria-hidden="true" />
                 </span>
                 <div>
                   <h1 className="font-semibold text-teal">{ar ? "تسجيل الدخول الموحد (محاكاة)" : "Single sign-on (simulated)"}</h1>
@@ -117,14 +117,14 @@ export default function Login() {
                 onClick={() => setCode(DEMO_CODE)}
                 className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-sand/15 px-3 py-1.5 text-sm text-[#7a6230] hover:bg-sand/25"
               >
-                <KeyRound size={14} aria-hidden="true" /> {ar ? "استخدم رمز العرض" : "Use demo code"} <span className="num-ltr font-mono">{DEMO_CODE}</span>
+                <KeyIcon size={14} aria-hidden="true" /> {ar ? "استخدم رمز العرض" : "Use demo code"} <span className="num-ltr font-mono">{DEMO_CODE}</span>
               </button>
               <button
                 onClick={verify}
                 disabled={code.length !== 6 || busy}
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-teal px-5 py-3 font-semibold text-white transition hover:bg-teal-2 disabled:opacity-50"
               >
-                {busy && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
+                {busy && <CircleNotchIcon size={18} className="animate-spin" aria-hidden="true" />}
                 {ar ? "تحقق وادخل" : "Verify & continue"}
               </button>
             </div>

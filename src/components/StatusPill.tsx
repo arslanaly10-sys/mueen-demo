@@ -1,12 +1,12 @@
-import { AlertTriangle, CheckCircle2, CircleDot, Info, MinusCircle } from "lucide-react";
+import { CheckCircleIcon, InfoIcon, MinusCircleIcon, RadioButtonIcon, WarningIcon } from "@phosphor-icons/react";
 
 const TONES = {
-  ok: { cls: "bg-mint text-green border-green/30", Icon: CheckCircle2 },
-  info: { cls: "bg-sky/40 text-teal border-sky", Icon: CircleDot },
-  warn: { cls: "bg-warn-bg text-warn border-warn/30", Icon: AlertTriangle },
-  error: { cls: "bg-err-bg text-err border-err/30", Icon: AlertTriangle },
-  neutral: { cls: "bg-white text-muted border-line", Icon: MinusCircle },
-  plain: { cls: "bg-white text-teal border-line", Icon: Info },
+  ok: { cls: "bg-mint text-green border-green/30", Icon: CheckCircleIcon },
+  info: { cls: "bg-sky/40 text-teal border-sky", Icon: RadioButtonIcon },
+  warn: { cls: "bg-warn-bg text-warn border-warn/30", Icon: WarningIcon },
+  error: { cls: "bg-err-bg text-err border-err/30", Icon: WarningIcon },
+  neutral: { cls: "bg-white text-muted border-line", Icon: MinusCircleIcon },
+  plain: { cls: "bg-white text-teal border-line", Icon: InfoIcon },
 } as const;
 
 /** Status labels always pair colour with an icon and words. */

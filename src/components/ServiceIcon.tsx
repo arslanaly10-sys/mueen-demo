@@ -1,14 +1,14 @@
-import { Award, BookOpen, Briefcase, Car, CarFront, HeartPulse, IdCard, type LucideProps } from "lucide-react";
+import { BookOpenIcon, BriefcaseIcon, CarIcon, CarProfileIcon, HeartbeatIcon, IdentificationCardIcon, MedalIcon, type Icon } from "@phosphor-icons/react";
 import type { ServiceId } from "@/lib/types";
 
-const MAP: Record<ServiceId, React.ComponentType<LucideProps>> = {
-  driving_license: Car,
-  iqama_domestic: IdCard,
-  passport: BookOpen,
-  vehicle_registration: CarFront,
-  work_permit: Briefcase,
-  health_certificate: HeartPulse,
-  consulting_license: Award,
+const MAP: Record<ServiceId, Icon> = {
+  driving_license: CarIcon,
+  iqama_domestic: IdentificationCardIcon,
+  passport: BookOpenIcon,
+  vehicle_registration: CarProfileIcon,
+  work_permit: BriefcaseIcon,
+  health_certificate: HeartbeatIcon,
+  consulting_license: MedalIcon,
 };
 
 export function ServiceIcon({ id, size = 18, className }: { id: ServiceId; size?: number; className?: string }) {

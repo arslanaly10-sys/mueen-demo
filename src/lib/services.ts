@@ -55,7 +55,6 @@ export interface ServiceDef {
   agency: L;
   agencyShort: L;
   channel: L;
-  icon: string; // lucide icon name
   tier: RiskTier;
   requiredRole: Role;
   citizensOnly?: boolean;
@@ -109,7 +108,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Interior · General Directorate of Traffic", ar: "وزارة الداخلية · الإدارة العامة للمرور" },
     agencyShort: { en: "Traffic", ar: "المرور" },
     channel: { en: "Mock connector modelled on the Absher service guide", ar: "موصل تجريبي مبني على دليل خدمة أبشر" },
-    icon: "car",
     tier: 3,
     requiredRole: "individual",
     description: { en: "Renew a private driving license.", ar: "تجديد رخصة قيادة خاصة." },
@@ -164,7 +162,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Interior · General Directorate of Passports", ar: "وزارة الداخلية · المديرية العامة للجوازات" },
     agencyShort: { en: "Passports", ar: "الجوازات" },
     channel: { en: "Mock connector modelled on the Absher Resident ID Renewal guide", ar: "موصل تجريبي مبني على دليل أبشر لتجديد هوية مقيم" },
-    icon: "id-card",
     tier: 3,
     requiredRole: "sponsor",
     description: { en: "Renew the resident ID of a registered domestic worker you sponsor.", ar: "تجديد هوية مقيم لعامل منزلي مسجّل على كفالتك." },
@@ -232,7 +229,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Interior · General Directorate of Passports", ar: "وزارة الداخلية · المديرية العامة للجوازات" },
     agencyShort: { en: "Passports", ar: "الجوازات" },
     channel: { en: "Mock connector modelled on the Absher passport-renewal guide", ar: "موصل تجريبي مبني على دليل أبشر لتجديد الجواز" },
-    icon: "book-open",
     tier: 3,
     requiredRole: "individual",
     citizensOnly: true,
@@ -280,7 +276,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Interior · General Directorate of Traffic", ar: "وزارة الداخلية · الإدارة العامة للمرور" },
     agencyShort: { en: "Traffic", ar: "المرور" },
     channel: { en: "Mock connector modelled on the Absher vehicle-registration guide", ar: "موصل تجريبي مبني على دليل أبشر لتجديد الاستمارة" },
-    icon: "car-front",
     tier: 3,
     requiredRole: "individual",
     description: { en: "Renew the registration of a vehicle you own.", ar: "تجديد رخصة سير مركبة تملكها." },
@@ -333,7 +328,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Human Resources and Social Development", ar: "وزارة الموارد البشرية والتنمية الاجتماعية" },
     agencyShort: { en: "HRSD", ar: "الموارد البشرية" },
     channel: { en: "Mock connector modelled on the Qiwa work-permit service", ar: "موصل تجريبي مبني على خدمة رخص العمل في قوى" },
-    icon: "briefcase",
     tier: 3,
     requiredRole: "establishment_rep",
     description: { en: "Renew a work permit for an employee of your establishment.", ar: "تجديد رخصة عمل لموظف في منشأتك." },
@@ -386,7 +380,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Municipalities and Housing", ar: "وزارة البلديات والإسكان" },
     agencyShort: { en: "Municipality", ar: "البلدية" },
     channel: { en: "Mock connector modelled on the Balady health-certificate guide", ar: "موصل تجريبي مبني على دليل بلدي للشهادة الصحية" },
-    icon: "heart-pulse",
     tier: 3,
     requiredRole: "establishment_rep",
     description: { en: "Renew a food-handler health certificate for a worker.", ar: "تجديد الشهادة الصحية لعامل في نشاط غذائي." },
@@ -432,7 +425,6 @@ export const SERVICES: ServiceDef[] = [
     agency: { en: "Ministry of Commerce", ar: "وزارة التجارة" },
     agencyShort: { en: "Commerce", ar: "التجارة" },
     channel: { en: "Mock connector modelled on the MoC “Renew license” service", ar: "موصل تجريبي مبني على خدمة «تجديد ترخيص» في وزارة التجارة" },
-    icon: "award",
     tier: 3,
     requiredRole: "professional",
     description: { en: "Renew your consulting professional license (three-year term).", ar: "تجديد ترخيصك المهني الاستشاري (مدة ثلاث سنوات)." },

@@ -1,23 +1,6 @@
 "use client";
 import { useState } from "react";
-import {
-  AlertTriangle,
-  BadgeCheck,
-  Ban,
-  Bell,
-  CheckCircle2,
-  CircleHelp,
-  Clock,
-  CreditCard,
-  FileSearch,
-  Info,
-  Loader2,
-  Lock,
-  RefreshCw,
-  ShieldCheck,
-  UserRound,
-  XCircle,
-} from "lucide-react";
+import { ArrowsClockwiseIcon, BellIcon, CheckCircleIcon, CircleNotchIcon, ClockIcon, CreditCardIcon, FileMagnifyingGlassIcon, InfoIcon, LockIcon, ProhibitIcon, QuestionIcon, SealCheckIcon, ShieldCheckIcon, UserIcon, WarningIcon, XCircleIcon } from "@phosphor-icons/react";
 import { useStore, uid } from "@/lib/store";
 import { getPersona } from "@/lib/personas";
 import { SERVICES, SERVICE_MAP, daysUntil } from "@/lib/services";
@@ -69,7 +52,7 @@ function Btn({
       disabled={busy || disabled}
       className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${cls}`}
     >
-      {busy && <Loader2 size={15} className="animate-spin" aria-hidden="true" />}
+      {busy && <CircleNotchIcon size={15} className="animate-spin" aria-hidden="true" />}
       {children}
     </button>
   );
@@ -94,7 +77,7 @@ export function NoticeCard({ textL, tone }: { textL: L; tone: "warn" | "info" })
   const { t } = useT();
   return (
     <div className={`rise flex gap-3 rounded-2xl border p-4 text-sm leading-relaxed ${tone === "warn" ? "border-warn/30 bg-warn-bg text-[#6b430c]" : "border-sky bg-sky/25 text-teal"}`}>
-      {tone === "warn" ? <ShieldCheck size={18} className="mt-0.5 shrink-0" aria-hidden="true" /> : <Info size={18} className="mt-0.5 shrink-0" aria-hidden="true" />}
+      {tone === "warn" ? <ShieldCheckIcon size={18} className="mt-0.5 shrink-0" aria-hidden="true" /> : <InfoIcon size={18} className="mt-0.5 shrink-0" aria-hidden="true" />}
       <p>{t(textL)}</p>
     </div>
   );
@@ -128,7 +111,7 @@ function PlanRow({ personaId, intent }: { personaId: string; intent: Intent }) {
 
       {!auth.ok ? (
         <div className="mt-3 flex gap-2 rounded-lg bg-err-bg p-3 text-sm text-err">
-          <Ban size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
+          <ProhibitIcon size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
           <div>
             <p className="font-semibold">{t(T.notAuthorizedTitle)}</p>
             <p className="mt-0.5 text-[#7d2f29]">{t(auth.reason)}</p>
@@ -179,7 +162,7 @@ function PlanRow({ personaId, intent }: { personaId: string; intent: Intent }) {
                 agent.openAuthority(personaId, svc.id, targetId!);
               }}
             >
-              <ShieldCheck size={16} aria-hidden="true" /> {t(T.setupAuthority)}
+              <ShieldCheckIcon size={16} aria-hidden="true" /> {t(T.setupAuthority)}
             </Btn>
           </div>
         </>
@@ -192,7 +175,7 @@ export function PlanCard({ personaId, intents, title }: { personaId: string; int
   const { t } = useT();
   return (
     <Card>
-      <CardHead icon={<FileSearch size={18} aria-hidden="true" />} title={title ?? t(T.planTitle)} />
+      <CardHead icon={<FileMagnifyingGlassIcon size={18} aria-hidden="true" />} title={title ?? t(T.planTitle)} />
       <p className="mt-1.5 text-sm text-muted">{t(T.planNote)}</p>
       <ul className="mt-3 space-y-3">
         {intents.map((i, idx) => (
@@ -217,7 +200,7 @@ export function SuggestCard({ personaId }: { personaId: string }) {
   const avail = SERVICES.filter((s) => s.authority(persona).ok && s.targets(persona).length);
   return (
     <Card>
-      <CardHead icon={<CircleHelp size={18} aria-hidden="true" />} title={t({ en: "Services available to you", ar: "الخدمات المتاحة لك" })} />
+      <CardHead icon={<QuestionIcon size={18} aria-hidden="true" />} title={t({ en: "Services available to you", ar: "الخدمات المتاحة لك" })} />
       <div className="mt-3 flex flex-wrap gap-2">
         {avail.map((s) => (
           <button
@@ -237,7 +220,7 @@ export function OutOfScopeCard({ topic }: { topic: string }) {
   const { t, lang } = useT();
   return (
     <Card>
-      <CardHead icon={<Info size={18} aria-hidden="true" />} title={t(T.outOfScopeTitle)} pill={<StatusPill tone="neutral">{lang === "ar" ? "المستوى 0 · معلومات عامة" : "Tier 0 · public information"}</StatusPill>} />
+      <CardHead icon={<InfoIcon size={18} aria-hidden="true" />} title={t(T.outOfScopeTitle)} pill={<StatusPill tone="neutral">{lang === "ar" ? "المستوى 0 · معلومات عامة" : "Tier 0 · public information"}</StatusPill>} />
       {topic === "hiring_domestic_worker" ? (
         <ol className="mt-3 space-y-2">
           {T.hiringSteps[lang].map((s, i) => (
@@ -291,7 +274,7 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
     return (
       <Card accent={revoked ? "err" : "green"}>
         <CardHead
-          icon={<ShieldCheck size={18} aria-hidden="true" />}
+          icon={<ShieldCheckIcon size={18} aria-hidden="true" />}
           title={t(T.granted)}
           pill={<StatusPill tone={revoked ? "error" : "ok"}>{revoked ? t(T.revoked) : t(T.active)}</StatusPill>}
         />
@@ -307,7 +290,7 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
 
   return (
     <Card accent="green">
-      <CardHead icon={<Lock size={18} aria-hidden="true" />} title={t(T.authorityTitle)} />
+      <CardHead icon={<LockIcon size={18} aria-hidden="true" />} title={t(T.authorityTitle)} />
       <p className="mt-1.5 text-sm text-muted">{t(T.authorityIntro)}</p>
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
         <div className="rounded-xl bg-warm p-3">
@@ -349,8 +332,8 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
         </div>
       </fieldset>
       <ul className="mt-4 space-y-1 text-xs text-muted">
-        <li className="flex gap-1.5"><CheckCircle2 size={13} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(T.stillAsks)}</li>
-        <li className="flex gap-1.5"><CheckCircle2 size={13} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(T.noPasswords)}</li>
+        <li className="flex gap-1.5"><CheckCircleIcon size={13} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(T.stillAsks)}</li>
+        <li className="flex gap-1.5"><CheckCircleIcon size={13} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(T.noPasswords)}</li>
       </ul>
       <div className="mt-4">
         <Btn
@@ -368,7 +351,7 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
             )
           }
         >
-          <ShieldCheck size={16} aria-hidden="true" /> {t(T.grantAndCheck)}
+          <ShieldCheckIcon size={16} aria-hidden="true" /> {t(T.grantAndCheck)}
         </Btn>
       </div>
     </Card>
@@ -386,11 +369,11 @@ function Checklist({ tx }: { tx: Transaction }) {
         {tx.checks.map((c, i) => (
           <li key={c.id} className="rise flex gap-2.5 rounded-lg border border-line p-2.5" style={{ animationDelay: `${i * 140}ms` }}>
             {c.status === "pass" ? (
-              <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-green" aria-label={lang === "ar" ? "مستوفى" : "Met"} />
+              <CheckCircleIcon size={18} className="mt-0.5 shrink-0 text-green" aria-label={lang === "ar" ? "مستوفى" : "Met"} />
             ) : c.status === "fail" ? (
-              <XCircle size={18} className="mt-0.5 shrink-0 text-err" aria-label={lang === "ar" ? "غير مستوفى" : "Not met"} />
+              <XCircleIcon size={18} className="mt-0.5 shrink-0 text-err" aria-label={lang === "ar" ? "غير مستوفى" : "Not met"} />
             ) : (
-              <CircleHelp size={18} className="mt-0.5 shrink-0 text-warn" aria-label={lang === "ar" ? "غير موثق" : "Unverified"} />
+              <QuestionIcon size={18} className="mt-0.5 shrink-0 text-warn" aria-label={lang === "ar" ? "غير موثق" : "Unverified"} />
             )}
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-x-2">
@@ -449,7 +432,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       {tx.state === "PREPARED" && tx.preview && (
         <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-teal">
-            <BadgeCheck size={18} aria-hidden="true" /> {t(T.reviewTitle)}
+            <SealCheckIcon size={18} aria-hidden="true" /> {t(T.reviewTitle)}
           </p>
           <p className="mt-1 text-sm text-muted">{t(T.reviewIntro)}</p>
           <dl className="mt-3">
@@ -478,7 +461,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
           )}
           <div className="mt-4 flex flex-wrap gap-2">
             <Btn busy={busy} onClick={() => run(() => agent.approveDetails(tx, durationIndex))}>
-              <CheckCircle2 size={16} aria-hidden="true" /> {t(T.approveDetails)}
+              <CheckCircleIcon size={16} aria-hidden="true" /> {t(T.approveDetails)}
             </Btn>
             <Btn variant="ghost" disabled={busy} onClick={() => run(() => agent.cancelTx(tx))}>
               {t(T.cancel)}
@@ -490,7 +473,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       {tx.state === "USER_CONFIRMED" && tx.preview && (
         <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-teal">
-            <CreditCard size={18} aria-hidden="true" /> {t(T.paymentTitle)}
+            <CreditCardIcon size={18} aria-hidden="true" /> {t(T.paymentTitle)}
           </p>
           <p className="mt-1 text-sm text-muted">{t(T.paymentIntro)}</p>
           <dl className="mt-3">
@@ -501,7 +484,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
           <p className="mt-2 text-xs text-muted">{t(T.simulatedPayment)}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Btn busy={busy} onClick={() => run(() => agent.approvePayment(tx))}>
-              <CreditCard size={16} aria-hidden="true" /> {t(T.approvePay)} {fmtSAR(tx.preview.fee, lang)}
+              <CreditCardIcon size={16} aria-hidden="true" /> {t(T.approvePay)} {fmtSAR(tx.preview.fee, lang)}
             </Btn>
             <Btn variant="ghost" disabled={busy} onClick={() => run(() => agent.cancelTx(tx))}>
               {t(T.cancel)}
@@ -513,7 +496,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       {tx.state === "RECONCILIATION_REQUIRED" && (
         <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-warn">
-            <AlertTriangle size={18} aria-hidden="true" /> {t(T.reconTitle)}
+            <WarningIcon size={18} aria-hidden="true" /> {t(T.reconTitle)}
           </p>
           <p className="mt-1 text-sm text-[#6b430c]">{t(T.reconBody)}</p>
           {tx.payment && (
@@ -524,7 +507,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
           )}
           <div className="mt-4">
             <Btn busy={busy} onClick={() => run(() => agent.reconcile(tx))}>
-              <RefreshCw size={16} aria-hidden="true" /> {t(T.reconcile)}
+              <ArrowsClockwiseIcon size={16} aria-hidden="true" /> {t(T.reconcile)}
             </Btn>
           </div>
         </div>
@@ -532,7 +515,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
 
       {(tx.state === "PAYMENT_CONFIRMED" || tx.state === "SUBMITTED") && (
         <div className="mt-4 flex items-center gap-3 border-t border-line pt-4 text-sm text-teal">
-          <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+          <CircleNotchIcon size={18} className="animate-spin" aria-hidden="true" />
           <span className="flex-1">{tx.state === "PAYMENT_CONFIRMED" ? t(T.submitting) : t(T.awaitingAgency)}</span>
           <button onClick={() => run(async () => { await agent.resume(tx); })} className="text-xs text-green underline">
             {lang === "ar" ? "متابعة" : "Continue"}
@@ -543,7 +526,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       {tx.state === "RECEIPT_ISSUED" && tx.receipt && (
         <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-green">
-            <BadgeCheck size={20} aria-hidden="true" /> {t(T.receiptTitle)} {t(svc.agencyShort)}
+            <SealCheckIcon size={20} aria-hidden="true" /> {t(T.receiptTitle)} {t(svc.agencyShort)}
           </p>
           <p className="mt-1 text-sm text-teal">{t(T.receiptBody)}</p>
           <dl className="mt-3">
@@ -560,7 +543,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       {tx.state === "BLOCKED" && tx.blocker && (
         <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-warn">
-            <AlertTriangle size={18} aria-hidden="true" /> {t(T.blockedTitle)}
+            <WarningIcon size={18} aria-hidden="true" /> {t(T.blockedTitle)}
           </p>
           <p className="mt-1 text-sm text-[#6b430c]">{t(tx.blocker.reason)}</p>
           {tx.blocker.nextStep && (
@@ -576,10 +559,10 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
               disabled={reminded}
               onClick={() => useStore.getState().addReminder({ id: uid(), personaId, serviceId: tx.serviceId, targetId: tx.targetId, createdAt: new Date().toISOString() })}
             >
-              <Bell size={15} aria-hidden="true" /> {reminded ? t(T.reminderSet) : t(T.remindMe)}
+              <BellIcon size={15} aria-hidden="true" /> {reminded ? t(T.reminderSet) : t(T.remindMe)}
             </Btn>
             <Btn variant="ghost" busy={busy} onClick={() => run(() => agent.escalate(tx))}>
-              <UserRound size={15} aria-hidden="true" /> {t(T.talkToHuman)}
+              <UserIcon size={15} aria-hidden="true" /> {t(T.talkToHuman)}
             </Btn>
           </div>
         </div>
@@ -588,14 +571,14 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
       {tx.state === "HUMAN_REVIEW" && (
         <div className="mt-4 border-t border-line pt-4">
           <p className="flex items-center gap-2 font-semibold text-warn">
-            <UserRound size={18} aria-hidden="true" /> {t(T.reviewRequired)}
+            <UserIcon size={18} aria-hidden="true" /> {t(T.reviewRequired)}
           </p>
           {tx.review && <p className="mt-1 text-sm text-[#6b430c]">{t(tx.review.reason)}</p>}
           {tx.blocker?.nextStep && <p className="mt-2 text-sm text-ink">{t(tx.blocker.nextStep)}</p>}
           <p className="mt-2 text-sm text-ink">{t(T.humanBody)}</p>
           {tx.review && (
             <p className="mt-2 flex items-center gap-1.5 text-xs text-muted">
-              <Clock size={13} aria-hidden="true" /> {t(T.caseId)} <span className="font-mono">{tx.review.caseId}</span>
+              <ClockIcon size={13} aria-hidden="true" /> {t(T.caseId)} <span className="font-mono">{tx.review.caseId}</span>
             </p>
           )}
         </div>

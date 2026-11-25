@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LayoutDashboard, LogOut, MessageSquare, PanelsTopLeft, ShieldAlert } from "lucide-react";
+import { ChatTextIcon, LayoutIcon, ShieldWarningIcon, SignOutIcon, SquaresFourIcon } from "@phosphor-icons/react";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -35,7 +35,7 @@ export default function Workspace() {
       <AppNav>
         <EngineBadge />
         <Link href="/admin" className="hidden items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-teal hover:bg-mint sm:inline-flex">
-          <LayoutDashboard size={15} aria-hidden="true" /> {t(T.openAdmin)}
+          <SquaresFourIcon size={15} aria-hidden="true" /> {t(T.openAdmin)}
         </Link>
         <LangToggle />
         <div className="flex items-center gap-2 border-s border-line ps-3">
@@ -50,22 +50,22 @@ export default function Workspace() {
             aria-label={t(T.signOut)}
             title={t(T.signOut)}
           >
-            <LogOut size={16} className="rtl:-scale-x-100" aria-hidden="true" />
+            <SignOutIcon size={16} className="rtl:-scale-x-100" aria-hidden="true" />
           </button>
         </div>
       </AppNav>
 
       {killSwitch && (
         <div className="shrink-0 bg-err px-4 py-2 text-center text-sm font-medium text-white" role="status">
-          <ShieldAlert size={15} className="me-1.5 inline" aria-hidden="true" />
+          <ShieldWarningIcon size={15} className="me-1.5 inline" aria-hidden="true" />
           {lang === "ar" ? "الإيقاف الطارئ مفعّل: جميع إجراءات الوكيل متوقفة من قبل مشغل المنصة." : "Emergency stop is on: all agent actions are paused by the platform operator."}
         </div>
       )}
 
       <div className="flex shrink-0 gap-1 border-b border-line bg-white p-1.5 lg:hidden" role="tablist">
         {([
-          ["chat", MessageSquare, lang === "ar" ? "المحادثة" : "Conversation"],
-          ["panel", PanelsTopLeft, lang === "ar" ? "المسار والسجلات" : "Timeline & records"],
+          ["chat", ChatTextIcon, lang === "ar" ? "المحادثة" : "Conversation"],
+          ["panel", LayoutIcon, lang === "ar" ? "المسار والسجلات" : "Timeline & records"],
         ] as const).map(([id, Icon, label]) => (
           <button
             key={id}

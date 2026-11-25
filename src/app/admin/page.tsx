@@ -1,22 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import {
-  Activity,
-  AlertOctagon,
-  BadgeCheck,
-  Ban,
-  CheckCircle2,
-  Clock,
-  FileWarning,
-  Loader2,
-  Power,
-  RotateCcw,
-  ScrollText,
-  ShieldCheck,
-  ShieldX,
-  Users,
-} from "lucide-react";
+import { ArrowCounterClockwiseIcon, CheckCircleIcon, CircleNotchIcon, ClockIcon, PowerIcon, ProhibitIcon, PulseIcon, ScrollIcon, SealCheckIcon, ShieldCheckIcon, ShieldSlashIcon, UsersIcon, WarningCircleIcon, WarningOctagonIcon } from "@phosphor-icons/react";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -87,12 +72,12 @@ export default function Admin() {
 
   const count = (pred: (st: string) => boolean) => txs.filter((x) => pred(x.state)).length;
   const kpis = [
-    { l: { en: "Requests", ar: "الطلبات" }, v: txs.length, Icon: Activity, tone: "text-teal" },
-    { l: { en: "Confirmed by agency", ar: "أكدتها الجهة" }, v: count((x) => x === "RECEIPT_ISSUED"), Icon: BadgeCheck, tone: "text-green" },
-    { l: { en: "Action needed", ar: "إجراء مطلوب" }, v: count((x) => x === "BLOCKED"), Icon: FileWarning, tone: "text-warn" },
-    { l: { en: "Human review queue", ar: "قائمة المراجعة البشرية" }, v: count((x) => x === "HUMAN_REVIEW" || x === "RECONCILIATION_REQUIRED"), Icon: Users, tone: "text-warn" },
-    { l: { en: "Policy denials", ar: "رفض السياسات" }, v: audit.filter((e) => e.type === "POLICY_DENY").length, Icon: ShieldX, tone: "text-err" },
-    { l: { en: "Duplicate payments", ar: "مدفوعات مكررة" }, v: 0, Icon: ShieldCheck, tone: "text-green", note: { en: `${audit.filter((e) => e.type === "PAYMENT_RECONCILED").length} reconciled, never retried`, ar: `${audit.filter((e) => e.type === "PAYMENT_RECONCILED").length} مطابقة دون إعادة` } },
+    { l: { en: "Requests", ar: "الطلبات" }, v: txs.length, Icon: PulseIcon, tone: "text-teal" },
+    { l: { en: "Confirmed by agency", ar: "أكدتها الجهة" }, v: count((x) => x === "RECEIPT_ISSUED"), Icon: SealCheckIcon, tone: "text-green" },
+    { l: { en: "Action needed", ar: "إجراء مطلوب" }, v: count((x) => x === "BLOCKED"), Icon: WarningCircleIcon, tone: "text-warn" },
+    { l: { en: "Human review queue", ar: "قائمة المراجعة البشرية" }, v: count((x) => x === "HUMAN_REVIEW" || x === "RECONCILIATION_REQUIRED"), Icon: UsersIcon, tone: "text-warn" },
+    { l: { en: "Policy denials", ar: "رفض السياسات" }, v: audit.filter((e) => e.type === "POLICY_DENY").length, Icon: ShieldSlashIcon, tone: "text-err" },
+    { l: { en: "Duplicate payments", ar: "مدفوعات مكررة" }, v: 0, Icon: ShieldCheckIcon, tone: "text-green", note: { en: `${audit.filter((e) => e.type === "PAYMENT_RECONCILED").length} reconciled, never retried`, ar: `${audit.filter((e) => e.type === "PAYMENT_RECONCILED").length} مطابقة دون إعادة` } },
   ];
   const queue = txs.filter((x) => x.state === "HUMAN_REVIEW" || x.state === "RECONCILIATION_REQUIRED");
 
@@ -116,7 +101,7 @@ export default function Admin() {
             onClick={() => { if (confirm(lang === "ar" ? "مسح جميع بيانات العرض في هذا المتصفح؟" : "Clear all demo data in this browser?")) { s.reset(); setVerify(null); } }}
             className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-sm text-teal hover:bg-mint"
           >
-            <RotateCcw size={14} aria-hidden="true" /> {lang === "ar" ? "إعادة ضبط بيانات العرض" : "Reset demo data"}
+            <ArrowCounterClockwiseIcon size={14} aria-hidden="true" /> {lang === "ar" ? "إعادة ضبط بيانات العرض" : "Reset demo data"}
           </button>
         </div>
 
@@ -134,7 +119,7 @@ export default function Admin() {
         <section className={`rounded-2xl border p-4 sm:p-5 ${config.killSwitch ? "border-err bg-err-bg" : "border-line bg-white"}`}>
           <div className="flex flex-wrap items-center gap-4">
             <span className={`grid size-12 place-items-center rounded-xl ${config.killSwitch ? "bg-err text-white" : "bg-err-bg text-err"}`}>
-              <Power size={22} aria-hidden="true" />
+              <PowerIcon size={22} aria-hidden="true" />
             </span>
             <div className="min-w-0 flex-1">
               <h2 className="font-semibold text-teal">{lang === "ar" ? "الإيقاف الطارئ" : "Emergency stop"}</h2>
@@ -161,7 +146,7 @@ export default function Admin() {
           </div>
         </section>
 
-        <Section title={lang === "ar" ? "سجل الخدمات والموصلات" : "Service registry & connectors"} icon={<ShieldCheck size={18} />}>
+        <Section title={lang === "ar" ? "سجل الخدمات والموصلات" : "Service registry & connectors"} icon={<ShieldCheckIcon size={18} />}>
           <div className="-mx-4 overflow-x-auto sm:mx-0">
             <table className="w-full min-w-[760px] text-sm">
               <thead>
@@ -232,7 +217,7 @@ export default function Admin() {
         </Section>
 
         <div className="grid gap-5 xl:grid-cols-2">
-          <Section title={lang === "ar" ? "مراقبة الطلبات" : "Transaction monitoring"} icon={<Activity size={18} />}>
+          <Section title={lang === "ar" ? "مراقبة الطلبات" : "Transaction monitoring"} icon={<PulseIcon size={18} />}>
             {txs.length === 0 ? (
               <p className="text-sm text-muted">{lang === "ar" ? "لا توجد طلبات بعد. ابدأ من مساحة المستفيد." : "No requests yet. Start one from the beneficiary view."}</p>
             ) : (
@@ -257,20 +242,20 @@ export default function Admin() {
             )}
           </Section>
 
-          <Section title={lang === "ar" ? "قائمة المراجعة البشرية" : "Human review queue"} icon={<Users size={18} />}>
+          <Section title={lang === "ar" ? "قائمة المراجعة البشرية" : "Human review queue"} icon={<UsersIcon size={18} />}>
             {queue.length === 0 ? (
-              <p className="flex items-center gap-2 text-sm text-muted"><CheckCircle2 size={16} className="text-green" aria-hidden="true" /> {lang === "ar" ? "لا توجد حالات بانتظار المراجعة." : "No cases waiting for review."}</p>
+              <p className="flex items-center gap-2 text-sm text-muted"><CheckCircleIcon size={16} className="text-green" aria-hidden="true" /> {lang === "ar" ? "لا توجد حالات بانتظار المراجعة." : "No cases waiting for review."}</p>
             ) : (
               <ul className="space-y-2">
                 {queue.map((x) => (
                   <li key={x.id} className="rounded-xl border border-warn/30 bg-warn-bg p-3">
                     <div className="flex flex-wrap items-center gap-2">
-                      <AlertOctagon size={16} className="text-warn" aria-hidden="true" />
+                      <WarningOctagonIcon size={16} className="text-warn" aria-hidden="true" />
                       <span className="text-sm font-medium text-teal">{t(SERVICE_MAP[x.serviceId].name)}</span>
                       <span className="font-mono text-xs text-muted">{x.review?.caseId ?? x.id}</span>
                     </div>
                     <p className="mt-1 text-sm text-[#6b430c]">{t(x.review?.reason ?? x.history[x.history.length - 1].note)}</p>
-                    <p className="mt-1 flex items-center gap-1 text-xs text-muted"><Clock size={12} aria-hidden="true" /> {t(getPersona(x.personaId)?.name)} · {t(STATE_LABEL[x.state])}</p>
+                    <p className="mt-1 flex items-center gap-1 text-xs text-muted"><ClockIcon size={12} aria-hidden="true" /> {t(getPersona(x.personaId)?.name)} · {t(STATE_LABEL[x.state])}</p>
                   </li>
                 ))}
               </ul>
@@ -280,7 +265,7 @@ export default function Admin() {
 
         <Section
           title={lang === "ar" ? "سجل التدقيق المقاوم للتلاعب" : "Tamper-evident audit log"}
-          icon={<ScrollText size={18} />}
+          icon={<ScrollIcon size={18} />}
           action={
             <div className="flex flex-wrap gap-2">
               <button
@@ -288,7 +273,7 @@ export default function Admin() {
                 disabled={verifying}
                 className="inline-flex items-center gap-1.5 rounded-full bg-teal px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-2 disabled:opacity-50"
               >
-                {verifying ? <Loader2 size={13} className="animate-spin" aria-hidden="true" /> : <ShieldCheck size={13} aria-hidden="true" />}
+                {verifying ? <CircleNotchIcon size={13} className="animate-spin" aria-hidden="true" /> : <ShieldCheckIcon size={13} aria-hidden="true" />}
                 {lang === "ar" ? "تحقق من السلسلة" : "Verify chain"}
               </button>
               <button
@@ -297,14 +282,14 @@ export default function Admin() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-err/30 px-3 py-1.5 text-xs font-semibold text-err hover:bg-err-bg disabled:opacity-40"
                 title={lang === "ar" ? "يعدّل حدثًا محليًا لإظهار كشف التلاعب" : "Edits one event locally to demonstrate tamper detection"}
               >
-                <Ban size={13} aria-hidden="true" /> {lang === "ar" ? "محاكاة تلاعب" : "Simulate tampering"}
+                <ProhibitIcon size={13} aria-hidden="true" /> {lang === "ar" ? "محاكاة تلاعب" : "Simulate tampering"}
               </button>
             </div>
           }
         >
           {verify && (
             <div className={`mb-4 flex items-center gap-2 rounded-xl p-3 text-sm font-medium ${verify.ok ? "bg-mint text-green" : "bg-err-bg text-err"}`} role="status">
-              {verify.ok ? <CheckCircle2 size={18} aria-hidden="true" /> : <ShieldX size={18} aria-hidden="true" />}
+              {verify.ok ? <CheckCircleIcon size={18} aria-hidden="true" /> : <ShieldSlashIcon size={18} aria-hidden="true" />}
               {verify.ok
                 ? lang === "ar" ? `السلسلة سليمة — ${fmtNum(verify.count, lang)} حدثًا موقّعًا.` : `Chain intact — ${verify.count} signed events.`
                 : lang === "ar" ? `تم كشف تلاعب عند الحدث #${verify.brokenAt}.` : `Tampering detected at event #${verify.brokenAt}.`}

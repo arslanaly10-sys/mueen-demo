@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Mic, MicOff, SendHorizontal, Sparkles, Cpu } from "lucide-react";
+import { CpuIcon, MicrophoneIcon, MicrophoneSlashIcon, PaperPlaneRightIcon, SparkleIcon } from "@phosphor-icons/react";
 import { useStore, type ChatMessage } from "@/lib/store";
 import { T } from "@/lib/i18n";
 import type { L } from "@/lib/types";
@@ -124,7 +124,7 @@ function Bubble({ m, personaId }: { m: ChatMessage; personaId: string }) {
         <p className="rounded-2xl rounded-ss-md border border-line bg-white px-4 py-2.5 text-[15px] leading-relaxed text-ink">{m.text}</p>
         {m.engine && (
           <p className="mt-1 inline-flex items-center gap-1 text-xs text-muted">
-            {m.engine === "claude" ? <Sparkles size={11} aria-hidden="true" /> : <Cpu size={11} aria-hidden="true" />}
+            {m.engine === "claude" ? <SparkleIcon size={11} aria-hidden="true" /> : <CpuIcon size={11} aria-hidden="true" />}
             {m.engine === "claude" ? t(T.aiInterpreted) : t(T.scripted)} · {t({ en: "guidance, not an official decision", ar: "إرشاد وليس قرارًا رسميًا" })}
           </p>
         )}
@@ -220,7 +220,7 @@ export function Chat({ personaId }: { personaId: string }) {
               speech.listening ? "pulse-ring border-green bg-green text-white" : "border-line bg-white text-teal hover:bg-mint"
             } ${speech.supported ? "" : "opacity-50"}`}
           >
-            {speech.supported ? <Mic size={19} aria-hidden="true" /> : <MicOff size={19} aria-hidden="true" />}
+            {speech.supported ? <MicrophoneIcon size={19} aria-hidden="true" /> : <MicrophoneSlashIcon size={19} aria-hidden="true" />}
           </button>
           <label htmlFor="ask" className="sr-only">{t(T.askPlaceholder)}</label>
           <textarea
@@ -243,7 +243,7 @@ export function Chat({ personaId }: { personaId: string }) {
             aria-label={t(T.send)}
             className="grid size-11 shrink-0 place-items-center rounded-full bg-teal text-white transition hover:bg-teal-2 disabled:opacity-40"
           >
-            <SendHorizontal size={19} className="rtl:-scale-x-100" aria-hidden="true" />
+            <PaperPlaneRightIcon size={19} className="rtl:-scale-x-100" aria-hidden="true" />
           </button>
         </form>
         {!speech.supported && <p className="mt-1.5 text-xs text-muted">{t(T.voiceUnsupported)}</p>}

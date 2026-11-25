@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Bell, CheckCircle2, Circle, CircleDot, ListTree, ScrollText, ShieldCheck, ShieldOff, FolderOpen, Loader2 } from "lucide-react";
+import { BellIcon, CheckCircleIcon, CircleIcon, CircleNotchIcon, FolderOpenIcon, ListChecksIcon, RadioButtonIcon, ScrollIcon, ShieldCheckIcon, ShieldSlashIcon } from "@phosphor-icons/react";
 import { useStore } from "@/lib/store";
 import { useShallow } from "zustand/react/shallow";
 import { getPersona } from "@/lib/personas";
@@ -19,11 +19,11 @@ type Tab = "timeline" | "records" | "authorities" | "activity";
 export function SidePanel({ personaId }: { personaId: string }) {
   const { t } = useT();
   const [tab, setTab] = useState<Tab>("timeline");
-  const tabs: { id: Tab; label: string; Icon: typeof ListTree }[] = [
-    { id: "timeline", label: t(T.timeline), Icon: ListTree },
-    { id: "records", label: t(T.records), Icon: FolderOpen },
-    { id: "authorities", label: t(T.authorities), Icon: ShieldCheck },
-    { id: "activity", label: t(T.activity), Icon: ScrollText },
+  const tabs: { id: Tab; label: string; Icon: typeof ListChecksIcon }[] = [
+    { id: "timeline", label: t(T.timeline), Icon: ListChecksIcon },
+    { id: "records", label: t(T.records), Icon: FolderOpenIcon },
+    { id: "authorities", label: t(T.authorities), Icon: ShieldCheckIcon },
+    { id: "activity", label: t(T.activity), Icon: ScrollIcon },
   ];
   return (
     <section className="flex min-h-0 flex-1 flex-col">
@@ -97,11 +97,11 @@ function Timeline({ personaId }: { personaId: string }) {
               {i < HAPPY_PATH.length - 1 && <span className={`absolute top-6 h-[calc(100%-1rem)] w-px ${done ? "bg-green/50" : "bg-line"} start-[9px]`} aria-hidden="true" />}
               <span className="relative z-10 mt-0.5">
                 {isCurrent && !["RECEIPT_ISSUED"].includes(st) ? (
-                  <CircleDot size={19} className="pulse-ring rounded-full bg-white text-green" aria-hidden="true" />
+                  <RadioButtonIcon size={19} className="pulse-ring rounded-full bg-white text-green" aria-hidden="true" />
                 ) : done ? (
-                  <CheckCircle2 size={19} className="rounded-full bg-white text-green" aria-hidden="true" />
+                  <CheckCircleIcon size={19} className="rounded-full bg-white text-green" aria-hidden="true" />
                 ) : (
-                  <Circle size={19} className="rounded-full bg-white text-line" aria-hidden="true" />
+                  <CircleIcon size={19} className="rounded-full bg-white text-line" aria-hidden="true" />
                 )}
               </span>
               <div className="min-w-0 flex-1">
@@ -167,7 +167,7 @@ function Records({ personaId }: { personaId: string }) {
                   </p>
                   {reminded && (
                     <p className="mt-1 inline-flex items-center gap-1 text-xs text-green">
-                      <Bell size={12} aria-hidden="true" /> {t(T.reminderSet)}
+                      <BellIcon size={12} aria-hidden="true" /> {t(T.reminderSet)}
                     </p>
                   )}
                 </div>
@@ -224,7 +224,7 @@ function Authorities({ personaId }: { personaId: string }) {
                 disabled={busy === m.id}
                 className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-err/30 px-3 py-1 text-xs font-semibold text-err hover:bg-err-bg"
               >
-                {busy === m.id ? <Loader2 size={13} className="animate-spin" aria-hidden="true" /> : <ShieldOff size={13} aria-hidden="true" />} {t(T.revoke)}
+                {busy === m.id ? <CircleNotchIcon size={13} className="animate-spin" aria-hidden="true" /> : <ShieldSlashIcon size={13} aria-hidden="true" />} {t(T.revoke)}
               </button>
             )}
           </li>

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Cpu, Sparkles } from "lucide-react";
+import { CpuIcon, SparkleIcon } from "@phosphor-icons/react";
 import { T } from "@/lib/i18n";
 import { useT } from "./useT";
 
@@ -14,7 +14,7 @@ export function EngineBadge() {
       .catch(() => setEngine("scripted"));
   }, []);
   if (!engine) return null;
-  const Icon = engine === "claude" ? Sparkles : Cpu;
+  const Icon = engine === "claude" ? SparkleIcon : CpuIcon;
   return (
     <span
       className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs md:inline-flex border-line bg-white text-muted`}
