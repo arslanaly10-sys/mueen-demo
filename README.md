@@ -75,6 +75,6 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 
 This repo uses [Ponytail](https://github.com/DietrichGebert/ponytail) (MIT), a "lazy senior dev" ruleset: the smallest complete change, with no cuts to validation, security or accessibility. It also uses [Taste Skill](https://github.com/Leonxlnx/taste-skill) (MIT), a design-quality skill for website and UI work. Claude Code offers to install both plugins from `.claude/settings.json` when you trust the folder. Other agents read `AGENTS.md`, which holds the Ponytail rules.
 
-Icons are [Phosphor](https://phosphoricons.com) (MIT). The app uses `@phosphor-icons/react` (the `…Icon` exports), and the landing page inlines the regular SVGs from `@phosphor-icons/core`.
+Icons are [Phosphor](https://phosphoricons.com) (MIT). The app uses `@phosphor-icons/react` (the `…Icon` exports), set to the duotone weight once in `src/components/IconWeight.tsx`. The landing page inlines the duotone SVGs from `@phosphor-icons/core`.
 
 The UI skills from [ibelick/ui-skills](https://github.com/ibelick/ui-skills) (MIT, commit `15e16e6`) sit in `.claude/skills/`, which Claude Code loads as project skills. They include baseline-ui, fixing-accessibility, fixing-metadata, fixing-motion-performance and improve-ui. Their license is `.claude/skills/LICENSE.ui-skills`.

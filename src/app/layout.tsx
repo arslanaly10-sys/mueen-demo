@@ -5,6 +5,7 @@ import "@fontsource-variable/jetbrains-mono";
 import "@fontsource-variable/noto-sans-arabic";
 import "./globals.css";
 import { LangSync } from "@/components/LangSync";
+import { IconWeight } from "@/components/IconWeight";
 
 export const metadata: Metadata = {
   title: "MUEEN · مُعين — Concept demo",
@@ -17,7 +18,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className="min-h-dvh">
         <LangSync />
-        {children}
+        <IconWeight>{children}</IconWeight>
       </body>
     </html>
   );
