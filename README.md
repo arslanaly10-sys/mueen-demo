@@ -62,9 +62,13 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 - State lives in the viewer's browser (localStorage), and the serverless backend is stateless: it signs every transaction, verifies it, and rejects modified copies. A real deployment would use a database on approved government hosting.
 - Rules are simplified from public service guides, and fees are illustrative. Live integration would need written authorization and the agreed integration route from each service owner.
 
-## 3D hero
+## Landing page
 
-`src/components/HeroScene.tsx` renders the logo's doorway of connected steps in three.js. A light travels from the request (sand) to the verified outcome (green). The scene is lazy-loaded and mirrored for RTL, pauses when off-screen, shows a single still frame under `prefers-reduced-motion`, and falls back to the static background when WebGL is unavailable.
+`/` serves `public/index.html`, a static page built with [Taste Skill](https://github.com/Leonxlnx/taste-skill)'s kit (`public/assets`) and rewritten to `/index.html` in `next.config.ts`. It is Arabic first; `public/site.js` switches the language (`?lang=en` or the toggle) and shares the choice with the demo app.
+
+- **Deal:** software page, product-stage hero, centred nav, close-word ending with the statement footer, surface-pairs rhythm, pill buttons, and the `line-carries-colour` moment on the rules section. It uses the brand's own colours and the Host Grotesk + JetBrains Mono pairing, with Noto Sans Arabic for Arabic.
+- **3D hero:** the doorway of connected steps is a product-render spec (`public/assets/objects/product-render/specs/doorway.json`), drawn live with one WebGL context. Phones and reduced-motion visitors get the rendered still. Run `make-posters.mjs` from the skill after changing the spec.
+- **Checks:** `gate.mjs` passes, with three waivers listed in `.taste-skill/waivers.json`. copy-lint and `perf.mjs` pass with 0 FAIL, and the layout check is clean at 1440, 1024, 820, 768 and 390.
 
 ## Working on this repo with an AI agent
 

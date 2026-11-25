@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, KeyRound, Loader2, ShieldCheck } from "lucide-react";
@@ -40,9 +39,9 @@ export default function Login() {
     <main className="min-h-dvh">
       <header className="bg-teal">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <Wordmark onDark />
-          </Link>
+          </a>
           <div className="flex items-center gap-2">
             <ConceptBadge onDark />
             <LangToggle onDark />

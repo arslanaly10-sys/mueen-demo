@@ -1,0 +1,38 @@
+{
+ "id": "doorway",
+ "made": "2026-11-25T10:07:23.198Z",
+ "px": 1100,
+ "grounds": [
+  "light"
+ ],
+ "colors": [
+  "green"
+ ],
+ "variants": {
+  "side": {
+   "view": "side",
+   "scene": null,
+   "off": false,
+   "grounds": [
+    "light"
+   ],
+   "stills": {
+    "light": {
+     "green": {
+      "file": "stills/doorway-side-green.webp",
+      "half": "stills/doorway-side-green-half.webp",
+      "w": 1132,
+      "h": 547
+     }
+    }
+   },
+   "box": [
+    0.0053,
+    0.011,
+    0.9797,
+    0.9397
+   ],
+   "px": 1100
+  }
+ }
+}

@@ -100,7 +100,7 @@ export default function Admin() {
     <div className="min-h-dvh">
       <header className="bg-teal text-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
-          <Link href="/"><Wordmark onDark /></Link>
+          <a href="/"><Wordmark onDark /></a>
           <ConceptBadge onDark />
           <div className="ms-auto flex items-center gap-2">
             <EngineBadge onDark />

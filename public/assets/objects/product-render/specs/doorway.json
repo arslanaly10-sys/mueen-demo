@@ -1,0 +1,327 @@
+{
+  "id": "doorway",
+  "name": "MUEEN doorway",
+  "label": "A path of five steps on a long plinth, from a sand-coloured request to a green confirmation, passing through a doorway with two fainter doorways behind it",
+  "units": "m",
+  "angle": -14,
+  "camera": {
+    "elev": 8
+  },
+  "turn": {
+    "mode": "sway",
+    "amp": 16,
+    "period": 20
+  },
+  "materials": {
+    "post": {
+      "kind": "paint",
+      "color": "#e4f1eb",
+      "finish": "satin"
+    },
+    "plinth": {
+      "kind": "paint",
+      "color": "#123b3a",
+      "finish": "satin"
+    },
+    "ghost": {
+      "kind": "paint",
+      "color": "#b9d8e0",
+      "finish": "matte"
+    },
+    "start": {
+      "kind": "paint",
+      "color": "#c6a96b",
+      "finish": "gloss"
+    },
+    "step": {
+      "kind": "paint",
+      "color": "#ffffff",
+      "finish": "gloss"
+    },
+    "done": {
+      "kind": "paint",
+      "color": "accent",
+      "finish": "gloss"
+    }
+  },
+  "colors": [
+    {
+      "id": "green",
+      "name": "Service green",
+      "accent": "#187a62"
+    }
+  ],
+  "supports": [
+    "three-quarter",
+    "side"
+  ],
+  "make": {
+    "variants": [
+      "side",
+      "three-quarter"
+    ],
+    "grounds": [
+      "light"
+    ],
+    "px": 1100
+  },
+  "parts": [
+    {
+      "name": "plinth",
+      "type": "box",
+      "at": [
+        0,
+        0.04,
+        -0.2
+      ],
+      "size": [
+        3.9,
+        0.08,
+        0.84
+      ],
+      "round": 0.02,
+      "mat": "plinth"
+    },
+    {
+      "name": "path rail",
+      "type": "tube",
+      "from": [
+        -1.85,
+        0.3,
+        0
+      ],
+      "to": [
+        1.85,
+        0.3,
+        0
+      ],
+      "r": 0.024,
+      "mat": "post"
+    },
+    {
+      "name": "rail post start",
+      "type": "tube",
+      "from": [
+        -1.85,
+        0.08,
+        0
+      ],
+      "to": [
+        -1.85,
+        0.3,
+        0
+      ],
+      "r": 0.024,
+      "mat": "post"
+    },
+    {
+      "name": "rail post end",
+      "type": "tube",
+      "from": [
+        1.85,
+        0.08,
+        0
+      ],
+      "to": [
+        1.85,
+        0.3,
+        0
+      ],
+      "r": 0.024,
+      "mat": "post"
+    },
+    {
+      "name": "step request",
+      "type": "sphere",
+      "at": [
+        -1.72,
+        0.3,
+        0
+      ],
+      "r": 0.1,
+      "mat": "start"
+    },
+    {
+      "name": "step checked",
+      "type": "sphere",
+      "at": [
+        -0.95,
+        0.3,
+        0
+      ],
+      "r": 0.08,
+      "mat": "step"
+    },
+    {
+      "name": "step approved",
+      "type": "sphere",
+      "at": [
+        0,
+        0.3,
+        0
+      ],
+      "r": 0.08,
+      "mat": "step"
+    },
+    {
+      "name": "step submitted",
+      "type": "sphere",
+      "at": [
+        0.95,
+        0.3,
+        0
+      ],
+      "r": 0.08,
+      "mat": "step"
+    },
+    {
+      "name": "step confirmed",
+      "type": "sphere",
+      "at": [
+        1.72,
+        0.3,
+        0
+      ],
+      "r": 0.1,
+      "mat": "done"
+    },
+    {
+      "name": "door post left",
+      "type": "tube",
+      "from": [
+        -0.55,
+        0.08,
+        0
+      ],
+      "to": [
+        -0.55,
+        1.05,
+        0
+      ],
+      "r": 0.05,
+      "mat": "post"
+    },
+    {
+      "name": "door post right",
+      "type": "tube",
+      "from": [
+        0.55,
+        0.08,
+        0
+      ],
+      "to": [
+        0.55,
+        1.05,
+        0
+      ],
+      "r": 0.05,
+      "mat": "post"
+    },
+    {
+      "name": "door arch",
+      "type": "arc",
+      "at": [
+        0,
+        1.05,
+        0
+      ],
+      "R": 0.55,
+      "a0": 0,
+      "a1": 180,
+      "r": 0.05,
+      "mat": "post"
+    },
+    {
+      "name": "ghost 1 post left",
+      "type": "tube",
+      "from": [
+        -0.63,
+        0.08,
+        -0.3
+      ],
+      "to": [
+        -0.63,
+        1.05,
+        -0.3
+      ],
+      "r": 0.02,
+      "mat": "ghost"
+    },
+    {
+      "name": "ghost 1 post right",
+      "type": "tube",
+      "from": [
+        0.63,
+        0.08,
+        -0.3
+      ],
+      "to": [
+        0.63,
+        1.05,
+        -0.3
+      ],
+      "r": 0.02,
+      "mat": "ghost"
+    },
+    {
+      "name": "ghost 1 arch",
+      "type": "arc",
+      "at": [
+        0,
+        1.05,
+        -0.3
+      ],
+      "R": 0.63,
+      "a0": 0,
+      "a1": 180,
+      "r": 0.02,
+      "mat": "ghost"
+    },
+    {
+      "name": "ghost 2 post left",
+      "type": "tube",
+      "from": [
+        -0.71,
+        0.08,
+        -0.6
+      ],
+      "to": [
+        -0.71,
+        1.05,
+        -0.6
+      ],
+      "r": 0.015,
+      "mat": "ghost"
+    },
+    {
+      "name": "ghost 2 post right",
+      "type": "tube",
+      "from": [
+        0.71,
+        0.08,
+        -0.6
+      ],
+      "to": [
+        0.71,
+        1.05,
+        -0.6
+      ],
+      "r": 0.015,
+      "mat": "ghost"
+    },
+    {
+      "name": "ghost 2 arch",
+      "type": "arc",
+      "at": [
+        0,
+        1.05,
+        -0.6
+      ],
+      "R": 0.71,
+      "a0": 0,
+      "a1": 180,
+      "r": 0.015,
+      "mat": "ghost"
+    }
+  ]
+}

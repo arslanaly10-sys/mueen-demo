@@ -34,7 +34,7 @@ export default function Workspace() {
     <div className="flex h-dvh flex-col">
       <header className="shrink-0 bg-teal text-white">
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
-          <Link href="/" aria-label="Home"><Wordmark onDark /></Link>
+          <a href="/" aria-label="Home"><Wordmark onDark /></a>
           <span className="hidden sm:inline"><ConceptBadge onDark /></span>
           <div className="ms-auto flex items-center gap-2">
             <EngineBadge onDark />

@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en" data-type="software" data-radius="soft" data-ground="sage" data-buttons="pill" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MUEEN: AI agent for Saudi government renewals</title>
+<meta name="description" content="A concept demo of a governed AI agent that renews seven Saudi government documents, with your approval before every submission and payment.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MUEEN: AI agent for Saudi government renewals">
+<meta property="og:description" content="A concept demo of a governed AI agent that renews seven Saudi government documents, with your approval at every step.">
+<meta property="og:image" content="share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f7f7f2">
+<!-- <link rel="canonical" href="https://[the client's domain]/"> : no domain yet -->
+<meta name="site-kind" content="software">
+<meta name="page-type" content="software">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=JetBrains+Mono:wght@400..500&family=Noto+Sans+Arabic:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="assets/icons/icon.css">
+<!-- start.mjs brand --page software --bg #F7F7F2 --ink #24313A --accent #123B3A --surface #E4F1EB --muted #5B6870 --type host -->
+<style>
+:root {
+  --p-bg: #f7f7f2; --p-surface: #e4f1eb; --p-ink: #24313a; --p-muted: #5b6870;
+  --p-accent: #123b3a; --p-accent-ink: #f7f7f2; --p-action: #123b3a; --p-action-ink: #f7f7f2;
+  --p-inv-bg: #24313a; --p-inv-surface: #313d45; --p-inv-ink: #f7f7f2; --p-inv-muted: #a7acad;
+  --p-inv-accent: #f7f7f2; --p-inv-accent-ink: #24313a; --p-inv-action: #f7f7f2; --p-inv-action-ink: #24313a;
+  --font-display: "Host Grotesk", system-ui, sans-serif;
+  --font-text: "Host Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 500;
+  --display-tracking: -0.035em;
+  --display-tracking-xl: -0.04em;
+}
+</style>
+<link rel="stylesheet" href="assets/ui/base.css">
+<link rel="stylesheet" href="assets/ui/window/fragment.css">
+<link rel="stylesheet" href="assets/ui/chat/fragment.css">
+<link rel="stylesheet" href="assets/ui/integrations/fragment.css">
+<link rel="stylesheet" href="assets/ui/checklist/fragment.css">
+<link rel="stylesheet" href="assets/ui/notify/fragment.css">
+<link rel="stylesheet" href="assets/ui/toggles/fragment.css">
+<link rel="stylesheet" href="assets/diagrams/diagram.css">
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="assets/backgrounds/backgrounds.js"></script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js">
+<link rel="modulepreload" href="assets/moments/lib.js">
+<link rel="modulepreload" href="assets/moments/line-carries-colour/moment.js">
+<!-- page CSS: inside visuals only, one --p-h per card group, and the Arabic face (Arabic letters must never be tracked) -->
+<style>
+  #how .panel { --p-h: 336px; }
+  #controls .panel { --p-h: 300px; }
+  #services .panel { --p-h: 440px; }
+  @media (min-width: 640px) and (max-width: 1023px) { #how { --h: 2 } }
+  .nav__actions button.nav__link { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+  /* the render's focus target is empty in the kit: give it the stage, so its focus ring shows */
+  .hero__stage .print3d__hit { position: absolute; inset: 0; }
+  .hero__stage .print3d__hit:focus-visible { outline: 2px solid var(--action); outline-offset: -2px; }
+  /* keep the render frame inside the stage, so nothing of it crosses the fold */
+  .hero--product .hero__stage > [data-product] { inset: 0; }
+  /* the kit sizes its poster canvas from the poster's own ratio (inline styles), which spills past a short stage: fit it to the stage */
+  .hero--product .hero__stage .print3d__still { inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: contain; }
+  .close__word { line-height: 1.04; }
+  @media (max-width: 639px) { #how .panel { --p-h: 290px; } #controls .panel { --p-h: 160px; } #controls .ui-chat__day { display: none; } }
+  .app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
+  .app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+  .app > .app__pane + .app__pane { border-inline-start: 1px solid var(--u-line); }
+  .app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
+  .app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
+  @media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
+  @media (max-width: 1023px) {
+    .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .app > .app__pane--list { max-height: 252px; }
+    .app > .app__pane--list::after { display: none; }
+    .app .ui-win__side { display: none; }
+    .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
+    .app > .app__pane + .app__pane { border-inline-start: 0; border-top: 1px solid var(--u-line); }
+  }
+  @media (max-width: 639px) {
+    .app.ui { grid-template-rows: minmax(0, 1fr); }
+    .app > .app__pane--list { display: none; }
+    .app > .app__pane + .app__pane { border-top: 0; }
+  }
+  .ui-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  html[lang="ar"] { --font-display: "Noto Sans Arabic", "Host Grotesk", system-ui, sans-serif; --font-text: "Noto Sans Arabic", "Host Grotesk", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
+  html[lang="ar"] body, html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] .close__word { letter-spacing: 0; }
+  /* the path reads in the page's direction: from the request on the start side to the confirmation on the end side */
+  html[dir="rtl"] .hero__stage .frame > :not(button) { transform: scaleX(-1); }
+  /* the drawn product windows and diagrams are English screens: keep them left to right on the Arabic page */
+  html[dir="rtl"] :is(.ui, .dg) { direction: ltr; }
+</style>
+</head>
+<body>
+<!-- type: software (site-kind software, page-type software)
+     deal: hero product (the MUEEN doorway, product-render, live turn: the brief asks for a 3D hero), nav nav-centre,
+           close close-word, footer footer-statement, rhythm surface-pairs, buttons pill, mark: the client's own doorway logo,
+           palette: the client's own colours (start.mjs brand), pairing host (+ Noto Sans Arabic for the Arabic page)
+     effect: the hero's product render (the one live WebGL context)
+     moments: line-carries-colour on #controls (the one .ground-surface band) -->
+
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top" data-ar="تخطَّ إلى المحتوى">Skip to content</a>
+    <a class="nav__logo" href="#top" aria-label="MUEEN, home" data-ar-aria="مُعين، الصفحة الرئيسية">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#123B3A"/><path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#E4F1EB" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="25" r="2.4" fill="#C6A96B"/><circle cx="16" cy="8" r="2.4" fill="#E4F1EB"/><circle cx="23" cy="25" r="2.4" fill="#187A62" stroke="#E4F1EB" stroke-width="1.2"/></svg>
+      <span data-ar="مُعين">MUEEN</span>
+    </a>
+    <nav class="nav__links" aria-label="Main" data-ar-aria="القائمة الرئيسية">
+      <div class="nav__item"><a class="nav__link" href="#agent" data-ar="التجديدات">Renewals</a></div>
+      <div class="nav__item"><a class="nav__link" href="#how" data-ar="الخطوات">Steps</a></div>
+      <div class="nav__item"><a class="nav__link" href="#controls" data-ar="القواعد">Rules</a></div>
+      <div class="nav__item">
+        <a class="nav__link" href="#services"><span data-ar="الخدمات">Services</span> <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu">
+          <div class="wrap grid">
+            <div class="menu-col span-4">
+              <p class="t-label" data-ar="وزارة الداخلية">Ministry of Interior</p>
+              <a href="#services"><span data-ar="رخصة القيادة">Driving licence</span><span data-ar="الإدارة العامة للمرور">General Directorate of Traffic</span></a>
+              <a href="#services"><span data-ar="رخصة السير (الاستمارة)">Istimara</span><span data-ar="الإدارة العامة للمرور">General Directorate of Traffic</span></a>
+              <a href="#services"><span data-ar="الجواز السعودي">Saudi passport</span><span data-ar="المديرية العامة للجوازات">General Directorate of Passports</span></a>
+              <a href="#services"><span data-ar="إقامة العمالة المنزلية">Domestic-worker iqama</span><span data-ar="المديرية العامة للجوازات">General Directorate of Passports</span></a>
+            </div>
+            <div class="menu-col span-4">
+              <p class="t-label" data-ar="العمل والأعمال">Work and business</p>
+              <a href="#services"><span data-ar="رخصة العمل">Work permit</span><span data-ar="وزارة الموارد البشرية">Human Resources ministry</span></a>
+              <a href="#services"><span data-ar="الشهادة الصحية">Health certificate</span><span data-ar="وزارة البلديات والإسكان">Municipalities ministry</span></a>
+              <a href="#services"><span data-ar="الترخيص الاستشاري">Consulting licence</span><span data-ar="وزارة التجارة">Ministry of Commerce</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item"><a class="nav__link" href="#questions" data-ar="الأسئلة">Questions</a></div>
+    </nav>
+    <div class="nav__actions">
+      <button class="nav__link" type="button" data-lang-toggle lang="ar">العربية</button>
+      <a class="btn btn--primary" href="/login" data-ar="جرّب العرض">Try the demo</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu" data-ar-aria="القائمة">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero hero--product" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text hero__in">
+      <div class="hero__head">
+        <div>
+          <h1 id="hero-h" data-ar="وكيل ذكي لتجديد الوثائق في السعودية">AI agent for Saudi renewals</h1>
+          <p class="hero__lead" data-ar="يتحقق من شروط كل جهة، ويستأذنك قبل أي إرسال أو دفع، ويعرض الإيصال. نموذج مفاهيمي لسبع خدمات حكومية.">It checks each agency’s rules, asks before it submits or pays, and shows the receipt. A concept demo of 7 government services.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/login"><span data-ar="جرّب العرض">Try the demo</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a class="btn btn--secondary" href="/admin" data-ar="اطّلع على لوحة الحوكمة">See the governance console</a>
+        </div>
+      </div>
+      <div class="hero__stage">
+        <div class="frame" data-product="assets/objects/product-render/specs/doorway.json" data-product-place="stage" data-product-view="side" data-product-color="green" data-product-mode="live" data-product-params='{"turn":1}'></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="agent" aria-labelledby="agent-h">
+    <div class="wrap">
+      <div class="grid">
+        <h2 id="agent-h" class="span-5" data-ar="كل تجديد في محادثة واحدة">Every renewal followed in one conversation</h2>
+        <p class="span-6 start-7"><span data-ar="الطلبات على اليسار بحالتها كما تراها الجهة. الطلب المفتوح يبيّن ما تم التحقق منه، وما ينتظر موافقتك، وما ردّت به الجهة.">Requests sit on the left with the status the agency gave them. The open one shows what was checked, what waits for you, and the agency’s reply.</span> <a class="link" href="#services" data-ar="اطّلع على الخدمات السبع">See the seven services</a></p>
+      </div>
+      <div class="ui app fill" role="img" aria-label="The MUEEN window: nine renewal requests beside an open conversation about renewing a domestic worker's iqama" data-ar-aria="نافذة مُعين: تسعة طلبات تجديد بجانب محادثة مفتوحة لتجديد إقامة عاملة منزلية" data-ui-pause-host>
+        <div class="app__pane app__pane--list">
+          <div class="ui ui-panel ui-win" data-ui="window" data-open="Waiting" data-work="Checking" data-done="Confirmed">
+            <div class="ui-win__bar">
+              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="ui-win__crumb">MUEEN <i>/</i> <b>Requests</b></span>
+              <span class="ui-spacer"></span>
+              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
+            </div>
+            <div class="ui-win__body">
+              <nav class="ui-win__side" aria-hidden="true">
+                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 9h3l1 1.5h3l1-1.5h3"/><path d="M2.5 9 4 3.5h8L13.5 9v3.5h-11z"/></svg>Requests<em>9</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M3.5 13.5c.6-2.3 2.4-3.5 4.5-3.5s3.9 1.2 4.5 3.5"/></svg>Needs you<em>2</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Waiting<em>4</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg>Confirmed</span>
+                <span class="ui-win__label">Agencies</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Traffic</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Passports</span>
+              </nav>
+              <div class="ui-win__main">
+                <div class="ui-win__cols" aria-hidden="true"><span>Person</span><span>Request</span><span>Status</span><span>Age</span></div>
+                <ul class="ui-win__rows">
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NQ</span><span class="ui-win__who">Noura Al-Qahtani</span><span class="ui-win__sub">Iqama · Maria Santos</span><span class="ui-win__st is-you" data-st>Needs you</span><span class="ui-win__age">1m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">FH</span><span class="ui-win__who">Faisal Al-Harbi</span><span class="ui-win__sub">Driving licence · 2 years</span><span class="ui-win__st is-done" data-st>Confirmed</span><span class="ui-win__age">4m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">KO</span><span class="ui-win__who">Khalid Al-Otaibi</span><span class="ui-win__sub">Work permit · Rajesh Kumar</span><span class="ui-win__st" data-st>Checking</span><span class="ui-win__age">6m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SM</span><span class="ui-win__who">Sara Al-Mutairi</span><span class="ui-win__sub">Passport · 10 years</span><span class="ui-win__st" data-st>Waiting</span><span class="ui-win__age">9m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NQ</span><span class="ui-win__who">Noura Al-Qahtani</span><span class="ui-win__sub">Driving licence · medical exam</span><span class="ui-win__st is-you" data-st>Needs you</span><span class="ui-win__age">12m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">AH</span><span class="ui-win__who">Ahmed Hassan</span><span class="ui-win__sub">Driving licence · 1 year</span><span class="ui-win__st is-done" data-st>Confirmed</span><span class="ui-win__age">15m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SM</span><span class="ui-win__who">Sara Al-Mutairi</span><span class="ui-win__sub">Consulting licence · 3 years</span><span class="ui-win__st is-done" data-st>Confirmed</span><span class="ui-win__age">21m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">KO</span><span class="ui-win__who">Khalid Al-Otaibi</span><span class="ui-win__sub">Health certificate · Anwar</span><span class="ui-win__st" data-st>Waiting</span><span class="ui-win__age">26m</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">FH</span><span class="ui-win__who">Faisal Al-Harbi</span><span class="ui-win__sub">Istimara · inspection due</span><span class="ui-win__st" data-st>Waiting</span><span class="ui-win__age">32m</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app__pane app__pane--open" data-ui-loop>
+          <div class="ui ui-panel ui-chat" data-ui="chat">
+            <div class="ui-head">
+              <span class="ui-agent" aria-hidden="true"></span>
+              <div class="ui-title">MUEEN</div>
+              <span class="ui-chat__online">Online</span>
+              <span class="ui-spacer"></span>
+            </div>
+            <div class="ui-chat__body">
+              <div class="ui-chat__day">Today, 9:41</div>
+              <div class="ui-msg ui-msg--me" data-chat-q>
+                <span class="ui-msg__text">Renew Maria’s iqama for one year.</span>
+              </div>
+              <div class="ui-msg ui-msg--bot" data-chat-a>
+                <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
+                <span class="ui-msg__col">
+                  <span class="ui-chat__answer">Maria Santos is registered to you, her passport is valid and no absence report exists. Approve <b>SAR 600 to Passports</b> and I submit once.</span>
+                  <span class="ui-chat__srcs">
+                    <span class="ui-chat__src"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M4 2.5h5l3 3v8H4z"/><path d="M9 2.5v3h3"/></svg>Resident ID renewal rules</span>
+                    <span class="ui-chat__src"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/></svg>Mandate MND-4F2A, 24 h</span>
+                  </span>
+                </span>
+              </div>
+              <div class="ui-msg ui-msg--me">
+                <span class="ui-msg__text">Approve the details, then the payment.</span>
+              </div>
+            </div>
+            <div class="ui-chat__input">
+              <span class="ui-chat__ph">Write or speak a request</span>
+              <span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" style="--hm: 2" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="how-h"><span data-ar="جدّد وثيقة في 3 خطوات.">Renew a document in 3 steps.</span> <span class="muted" data-ar="كل خطوة بموافقتك.">You approve each one.</span></h2>
+      </div>
+      <div class="grid">
+        <article class="card card--row card--open span-4">
+          <span class="step-num">1</span>
+          <h3 data-ar="امنح الوكيل صلاحية محددة">Give the agent a scoped authority</h3>
+          <p data-ar="اختر الخدمة والشخص والمدة. يمكنك إلغاؤها في أي لحظة.">Pick the service, the person and how long. Revoke it at any moment.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px" data-ui-loop>
+              <div class="ui ui-panel ui-apps" data-ui="integrations">
+                <div class="ui-head"><div class="ui-title">What MUEEN may do</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count>3 allowed</div></div>
+                <ul class="ui-apps__list">
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Read records</span><span class="ui-app__sub">Licence, fines, medical exam</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="m9 14 2 2 4-4"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Prepare the request</span><span class="ui-app__sub">Nothing is sent yet</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
+                  <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-4 16-4-6z"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Submit after you approve</span><span class="ui-app__sub">Once, with an idempotency key</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
+                  <li class="ui-app" data-apps-target><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v10H3z"/><path d="M3 11h18"/></svg></span><span class="ui-app__text"><span class="ui-app__name">Pay after you approve</span><span class="ui-app__sub">Exact amount and payee shown</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Allow</span></button></span></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row card--open span-4">
+          <span class="step-num">2</span>
+          <h3 data-ar="تحقّق من شروط التجديد">Check the renewal rules</h3>
+          <p data-ar="قراءة فقط من سجل الجهة: الفحص الطبي، والمخالفات، وفترة التجديد.">Read-only checks against the agency’s record: medical exam, fines, the renewal window.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:340px;--ax:max(24px, 50% - 170px);--ay:40px;--ay-sm:24px">
+              <div class="ui ui-panel ui-checks" data-ui="checklist">
+                <div class="ui-checks__head"><div class="ui-title">Driving licence renewal</div><span class="ui-spacer"></span><div class="ui-meta" data-checks-count>3 of 4</div></div>
+                <div class="ui-checks__bar"><i data-checks-bar style="--k:0.75"></i></div>
+                <ul class="ui-checks__list">
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Licence DL-4471 linked to you</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Inside the 180-day window</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Medical exam on record</span></li>
+                  <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">No unpaid traffic fines</span></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row card--open span-4">
+          <span class="step-num">3</span>
+          <h3 data-ar="وافق على التجديد واستلم الإيصال">Approve the renewal, get the receipt</h3>
+          <p data-ar="التفاصيل أولًا ثم الدفع، كلٌّ بموافقة. لا يظهر النجاح إلا بعد تأكيد الجهة.">Details first, then payment, each its own tap. Success shows only after the agency confirms.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px">
+              <div class="ui ui-notify" data-ui="notify">
+                <ul class="ui-notify__list" data-notify-list>
+                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title">Traffic confirmed your renewal<time>now</time></span><span class="ui-note__body">Receipt RCPT-D422, valid to 2029</span></span></li>
+                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 5h11v7h-11z"/><path d="M2.5 7.5h11"/></svg></span><span class="ui-note__text"><span class="ui-note__title">Payment confirmed<time>1m</time></span><span class="ui-note__body">SAR 80 to General Directorate of Traffic</span></span></li>
+                  <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="1">FH</span><span class="ui-note__text"><span class="ui-note__title">You approved the details<time>2m</time></span><span class="ui-note__body">Private licence, 2 years</span></span></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section g2 ground-surface" id="controls" aria-labelledby="controls-h" data-moment="line-carries-colour" data-moment-opts='{"from": "base"}'>
+    <div class="wrap">
+      <div class="group">
+        <div class="section-head">
+          <h2 id="controls-h"><span data-ar="الوكيل يقترح.">The agent proposes.</span> <span class="muted" data-ar="القواعد والجهة تقرّران.">Rules and the agency decide.</span></h2>
+        </div>
+        <div class="grid">
+          <article class="card card--row card--open span-6">
+            <h3 data-ar="يمنع ما يتجاوز صلاحية الوكيل">Blocks agent actions outside your mandate</h3>
+            <p data-ar="محرك سياسات يفحص كل قراءة وإرسال ودفع. إلغاء الصلاحية يوقف الخطوة التالية.">A policy engine checks every read, submission and payment. A revoked mandate stops the next step.</p>
+            <div class="panel"><div class="dg" data-diagram><script type="application/json">{"layout": "lanes", "alt": "A request goes to the policy engine, which allows reading records and submitting, and blocks a payment after the mandate was revoked.", "input": {"label": "Your request", "sub": "Renew licence"}, "core": {"label": "Policy engine"}, "lanes": [{"label": "Read records", "done": true, "sub": "Allowed"}, {"label": "Submit", "done": true, "sub": "Allowed"}, {"label": "Pay", "done": false, "sub": "Blocked: revoked"}]}</script></div></div>
+          </article>
+          <article class="card card--row card--open span-6">
+            <h3 data-ar="يوقّع كل خطوة للوكيل في سجل تدقيق">Signs every agent step in an audit log</h3>
+            <p data-ar="كل حدث مرتبط بما قبله بتوقيع HMAC، فأي تعديل على السجل يُكشف.">Each event is chained to the one before with an HMAC signature, so an edited record is caught.</p>
+            <div class="panel">
+              <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:456px;--ax:max(24px, 50% - 228px);--ay:40px;--ay-sm:24px">
+                <div class="ui ui-panel ui-win" data-ui="window" data-ui-opts='{"compact":true}' data-open="Policy" data-work="Agent" data-done="Agency">
+                  <div class="ui-win__bar"><span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ui-win__crumb">Audit <i>/</i> <b>Chain intact</b></span><span class="ui-spacer"></span></div>
+                  <div class="ui-win__body">
+                    <div class="ui-win__main">
+                      <div class="ui-win__cols" aria-hidden="true"><span>#</span><span>Event</span><span>Actor</span><span>Hash</span></div>
+                      <ul class="ui-win__rows">
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">48</span><span class="ui-win__who">Receipt issued</span><span class="ui-win__sub">RCPT-D422 from Traffic</span><span class="ui-win__st is-done" data-st>Agency</span><span class="ui-win__age">9f3a</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">47</span><span class="ui-win__who">Submitted once</span><span class="ui-win__sub">Reference REQ-3B71</span><span class="ui-win__st" data-st>Agent</span><span class="ui-win__age">c210</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">46</span><span class="ui-win__who">Payment allowed</span><span class="ui-win__sub">Mandate MND-0A51</span><span class="ui-win__st" data-st>Policy</span><span class="ui-win__age">7e44</span></li>
+                        <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">45</span><span class="ui-win__who">Details approved</span><span class="ui-win__sub">Faisal Al-Harbi</span><span class="ui-win__st" data-st>Policy</span><span class="ui-win__age">02bd</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card card--row card--open span-6">
+          <h3 data-ar="يحيل التجديدات الخاصة إلى موظف">Hands unusual renewals to a person</h3>
+          <p data-ar="بلاغ تغيّب، أو حالة دفع مجهولة، أو سجل متعارض: يتوقف الوكيل ويفتح حالة.">An absence report, an unknown payment status or a conflicting record stops the agent and opens a case.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:400px;--ax:max(24px, 50% - 200px);--ay:40px;--ay-sm:24px">
+              <div class="ui ui-panel ui-chat" data-ui="chat">
+                <div class="ui-head"><span class="ui-agent" aria-hidden="true"></span><div class="ui-title">MUEEN</div><span class="ui-chat__online">Online</span><span class="ui-spacer"></span></div>
+                <div class="ui-chat__body">
+                  <div class="ui-chat__day">Today, 10:12</div>
+                  <div class="ui-msg ui-msg--me" data-chat-q><span class="ui-msg__text">Renew Lakshmi’s iqama.</span></div>
+                  <div class="ui-msg ui-msg--bot" data-chat-a>
+                    <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
+                    <span class="ui-msg__col">
+                      <span class="ui-chat__answer">An absence report is registered for Lakshmi Nair. I stopped and opened <b>case CASE-7Q2K</b> for a Passports officer.</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="ui-chat__input"><span class="ui-chat__ph">Write or speak a request</span><span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row card--open span-6">
+          <h3 data-ar="يوقف كل إجراءات الوكيل بمفتاح واحد">Stops every agent action with one switch</h3>
+          <p data-ar="إيقاف المشغل الطارئ يجمّد كل إجراء للوكيل في الخدمات السبع، من داخل محرك السياسات.">The operator’s emergency stop pauses every agent action across all seven services, inside the policy engine.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-right to-edge" style="--ax:32px;--ay:40px;--ay-sm:24px">
+              <div class="ui ui-panel ui-toggles" data-ui="toggles">
+                <div class="ui-head"><svg class="ui-icon ui-toggles__ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/><path d="m5.8 8 1.6 1.6 3-3.2"/></svg><div class="ui-title">Governance console</div><span class="ui-spacer"></span><div class="ui-meta" data-tg-count>4 of 5 on</div></div>
+                <ul class="ui-toggles__list">
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Emergency stop</span><span class="ui-tg__sub">Pauses all agent actions</span></span><button class="ui-switch" type="button" role="switch" aria-checked="false" aria-label="Emergency stop"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Driving licence</span><span class="ui-tg__sub">Traffic connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Driving licence service"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Domestic-worker iqama</span><span class="ui-tg__sub">Passports connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Domestic-worker iqama service"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Work permit</span><span class="ui-tg__sub">HRSD connector degraded</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Work permit service"><i></i></button></li>
+                  <li class="ui-tg"><span class="ui-tg__text"><span class="ui-tg__label">Health certificate</span><span class="ui-tg__sub">Municipality connector healthy</span></span><button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Health certificate service"><i></i></button></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="questions" aria-labelledby="questions-h">
+    <div class="wrap">
+      <div class="grid grid--top">
+        <div class="span-5 stack-4">
+          <h2 id="questions-h" data-ar="أسئلة">Questions</h2>
+          <p class="muted" data-ar="ما يسأله الناس قبل أن يمنحوا وكيلًا صلاحية.">What people ask before they give an agent any authority.</p>
+          <p><a class="link" href="#controls" data-ar="اقرأ قواعد الوكيل">Read the agent’s rules</a></p>
+        </div>
+        <div class="faq span-6 start-7">
+          <div class="faq__item"><h3 data-ar="هل هذه خدمة حكومية رسمية؟">Is this an official government service?</h3><p data-ar="لا. هذا مفهوم مستقل للنقاش، غير مرتبط بأي نظام حكومي، وكل السجلات فيه افتراضية.">No. It is an independent concept for discussion, not connected to any government system. Every record in it is synthetic.</p></div>
+          <div class="faq__item"><h3 data-ar="هل يرى الوكيل كلمة مروري أو رموز التحقق؟">Does the agent see my password or codes?</h3><p data-ar="لا. يحصل الوكيل على صلاحية محددة بوقت، لا على كلمة المرور أو الرموز أو الجلسة.">No. The agent gets a time-limited mandate, never your password, one-time codes or session.</p></div>
+          <div class="faq__item"><h3 data-ar="هل يمكن للوكيل الدفع دون أن يسألني؟">Can the agent pay without asking me?</h3><p data-ar="لا. التفاصيل والدفع موافقتان منفصلتان، وكل منهما تعرض المبلغ والجهة المستفيدة بدقة.">No. The details and the payment are two separate approvals, each showing the exact amount and who receives it.</p></div>
+          <div class="faq__item"><h3 data-ar="ماذا لو انقطع دفع التجديد؟">What if a renewal payment times out?</h3><p data-ar="يعتبر الحالة مجهولة ويسأل جهة الدفع، ولا يدفع مرتين ليعرف.">It marks the status unknown and asks the payment authority. It never pays twice to find out.</p></div>
+          <div class="faq__item"><h3 data-ar="هل يمكنني سحب صلاحية الوكيل؟">Can I take the agent’s authority back?</h3><p data-ar="نعم، في أي وقت. تُمنع الخطوة التالية تحت تلك الصلاحية.">Yes, at any time. The next step under that mandate is blocked.</p></div>
+          
+        <div class="faq__item"><h3 data-ar="بأي لغة يتحدث الوكيل؟">Which languages does the agent speak?</h3><p data-ar="العربية والإنجليزية، كتابةً أو صوتًا في متصفحي كروم وإيدج.">Arabic and English, by text or by voice in Chrome and Edge.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services" aria-labelledby="services-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="services-h"><span data-ar="خدماتك الحكومية، بخطوات أوضح.">Your services, clearly connected.</span> <span class="muted" data-ar="سبع خدمات تجديد لدى خمس جهات.">Seven renewals across five government bodies.</span></h2>
+      </div>
+      <div class="grid grid--top">
+        <ul class="rows span-5">
+          <li><span class="rows__name" data-ar="الإدارة العامة للمرور">General Directorate of Traffic</span><span class="rows__value" data-ar="رخصة القيادة، الاستمارة">Driving licence, Istimara</span></li>
+          <li><span class="rows__name" data-ar="المديرية العامة للجوازات">General Directorate of Passports</span><span class="rows__value" data-ar="الجواز، إقامة العمالة المنزلية">Passport, domestic-worker iqama</span></li>
+          <li><span class="rows__name" data-ar="وزارة الموارد البشرية">Human Resources ministry</span><span class="rows__value" data-ar="رخصة العمل">Work permit</span></li>
+          <li><span class="rows__name" data-ar="وزارة البلديات والإسكان">Municipalities ministry</span><span class="rows__value" data-ar="الشهادة الصحية">Health certificate</span></li>
+          <li><span class="rows__name" data-ar="وزارة التجارة">Ministry of Commerce</span><span class="rows__value" data-ar="الترخيص الاستشاري">Consulting licence</span></li>
+        </ul>
+        <div class="panel span-6 start-7"><div class="dg" data-diagram><script type="application/json">{"layout": "hub", "alt": "MUEEN in the centre, connected to seven renewal services: driving licence, Istimara, passport, domestic-worker iqama, work permit, health certificate and consulting licence.", "center": {"label": "MUEEN"}, "spokes": [{"label": "Driving licence"}, {"label": "Istimara"}, {"label": "Passport"}, {"label": "Iqama"}, {"label": "Work permit"}, {"label": "Health certificate"}, {"label": "Consulting licence"}], "motion": {"pulse": "none"}}</script></div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer closing footer--statement" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--word">
+      <div class="section-head--split">
+        <div><h2 id="close-h" data-ar="جرّب العرض بشخصية افتراضية">Try the demo with a synthetic persona</h2><p class="t-lead" data-ar="خمس شخصيات وسبع خدمات، دون حساب.">Five personas, seven services, no account.</p></div>
+        <a class="btn btn--primary" href="/login"><span data-ar="جرّب العرض">Try the demo</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      </div>
+      <p class="close__word" aria-hidden="true" data-ar="مُعين">MUEEN</p>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#123B3A"/><path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#E4F1EB" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="25" r="2.4" fill="#C6A96B"/><circle cx="16" cy="8" r="2.4" fill="#E4F1EB"/><circle cx="23" cy="25" r="2.4" fill="#187A62" stroke="#E4F1EB" stroke-width="1.2"/></svg><span data-ar="مُعين">MUEEN</span></a>
+          <p class="footer__lede" data-ar="وكيل خدمات ذكي تحكمه الجهات الحكومية، معروض كمفهوم للنقاش.">A government-governed AI service agent, shown as a concept for discussion.</p>
+        </div>
+        <div class="span-2 footer__col"><h3 data-ar="المنتج">Product</h3><ul><li><a href="#agent" data-ar="التجديدات">Renewals</a></li><li><a href="#how" data-ar="الخطوات">Steps</a></li><li><a href="#controls" data-ar="القواعد">Rules</a></li></ul></div>
+        <div class="span-3 footer__col"><h3 data-ar="الخدمات">Services</h3><ul><li><a href="#services" data-ar="الجهات السبع">Seven services</a></li><li><a href="#questions" data-ar="الأسئلة">Questions</a></li></ul></div>
+        <div class="span-3 footer__col"><h3 data-ar="العرض">Demo</h3><ul><li><a href="/login" data-ar="مساحة المستفيد">Beneficiary workspace</a></li><li><a href="/admin" data-ar="لوحة الحوكمة">Governance console</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 <span data-ar="مُعين، مفهوم للنقاش. ليس خدمة حكومية رسمية؛ جميع البيانات افتراضية.">MUEEN, a concept for discussion. Not an official government service; all data is synthetic.</span></span>
+        <div class="socials"></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+<script type="module" src="assets/diagrams/mount.js"></script>
+<script type="module" src="assets/objects/product-render/auto.js"></script>
+</body>
+</html>
