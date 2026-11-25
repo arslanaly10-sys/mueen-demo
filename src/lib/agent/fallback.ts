@@ -34,6 +34,11 @@ const EXPIRING_ALL = [
 ];
 
 const HIRING = [/hir(e|ing) (a )?(new )?(domestic worker|maid|housemaid)/i, /(استقدام|أستقدم|استقدم|توظيف) (عاملة|عامل|خادمة)/];
+const TRAVEL = [/(family )?travel|trip abroad|going abroad/i, /(سفر|مسافر|نسافر|السفر)/];
+const BABY = [/(new ?born|new baby|had a (baby|child)|birth registration)/i, /(مولود|ولادة|رزقت)/];
+const STATUS = [/\b(status|where is|track(ing)?|progress)\b.*\b(request|application|renewal|tasks?)\b/i, /(حالة|وين وصل|متابعة) (طلب|طلبي|معاملتي|معاملة|التجديد)/];
+const APPOINTMENT = [/\b(book|reschedule|schedule)\b.*\b(appointment|exam|visit|slot)\b|\bappointment\b/i, /(موعد|احجز|حجز)/];
+const BUSINESS = [/\b(compliance|workforce|my (workers|employees|staff))\b/i, /(امتثال|عمال المنشأة|موظفي|منشأتي|عمالي)/];
 
 function matchServices(text: string, lang: Lang): ServiceId[] {
   const lower = text.toLowerCase();
@@ -71,18 +76,28 @@ export function scriptedInterpret(text: string, persona: Persona): Interpretatio
   const injectionSuspected = detectInjection(text);
   const ar = language === "ar";
 
-  if (HIRING.some((r) => r.test(text)))
+  const base = { language, intents: [] as Intent[], injectionSuspected, engine: "scripted" as const };
+  const lifeEvent = HIRING.some((r) => r.test(text)) ? "hiring_domestic_worker" : BABY.some((r) => r.test(text)) ? "new_baby" : TRAVEL.some((r) => r.test(text)) ? "family_travel" : null;
+  if (lifeEvent)
     return {
-      scope: "out_of_scope",
-      outOfScopeTopic: "hiring_domestic_worker",
-      language,
-      intents: [],
-      injectionSuspected,
-      engine: "scripted",
+      ...base,
+      scope: "life_event",
+      lifeEvent,
       reply: ar
-        ? "استقدام عامل منزلي رحلة متعددة الجهات وليست ضمن الخدمات السبع في هذا العرض. يمكنني شرح الخطوات المعتمدة للعلم فقط، وكل خطوة تحتاج موافقتك والجهة المسؤولة عنها."
-        : "Hiring a domestic worker is a multi-agency journey outside the seven services in this demo. I can explain the approved steps for information only — each step would need your consent and its responsible agency.",
+        ? "هذه رحلة تمر بأكثر من جهة. سأعرض الخطوات ومن يملك كل خطوة وما يمكنني فعله فيها. كل خطوة مؤثرة تحتاج موافقتك المستقلة."
+        : "This journey crosses several agencies. I'll show the steps, who owns each one and what I can do in it. Every consequential step needs its own approval from you.",
     };
+  if (STATUS.some((r) => r.test(text)))
+    return { ...base, scope: "status", reply: ar ? "هذه حالة طلباتك كما سجّلها محرك سير العمل." : "Here is where your requests stand, as the workflow engine recorded them." };
+  if (APPOINTMENT.some((r) => r.test(text)))
+    return {
+      ...base,
+      scope: "appointment",
+      appointmentPurpose: /driv|licen[cs]e|medical exam|رخص|قياد|فحص طبي/i.test(text) ? "driving_medical" : "primary_care",
+      reply: ar ? "سأعرض المواعيد المتاحة. لا يُحجز شيء قبل أن توافق على الموعد المحدد." : "I'll show the available slots. Nothing is booked until you approve the exact slot.",
+    };
+  if (BUSINESS.some((r) => r.test(text)))
+    return { ...base, scope: "business_review", reply: ar ? "سأراجع امتثال عمال منشأتك وأجهّز قائمة بالتجديدات القادمة. كل تجديد يحتاج موافقتك على حدة." : "I'll review your establishment's workforce and prepare a queue of upcoming renewals. Each renewal needs its own approval." };
 
   const ids = matchServices(text, language);
   if (EXPIRING_ALL.some((r) => r.test(text)) && ids.length === 0)

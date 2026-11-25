@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import type {
   Action,
+  AppointmentPurpose,
   AdminConfig,
   AuditEvent,
   AuditHead,
@@ -16,13 +17,14 @@ import { getPersona } from "../personas";
 import { SERVICE_MAP, type ServiceDef } from "../services";
 import { evaluate } from "./policy";
 import { canTransition, STATE_LABEL } from "./states";
-import { chain, signTx, verifyTx, type NewEvent } from "./crypto";
+import { chain, shortHash, signTx, verifyTx, type NewEvent } from "./crypto";
 import * as connectors from "./connectors";
 
 export type EngineAction =
   | "login"
   | "session"
   | "review"
+  | "appointment"
   | "grant"
   | "revoke"
   | "start"
@@ -45,7 +47,8 @@ export interface EngineRequest {
   serviceId?: ServiceId;
   targetId?: string;
   durationIndex?: number;
-  grant?: { actions: Action[]; hours: number };
+  grant?: { actions: Action[]; hours: number; spendLimit?: number };
+  appointment?: { op: "slots" | "reserve" | "cancel"; purpose: AppointmentPurpose; slotId?: string; ref?: string };
   adminEvent?: { type: string; summary: L; data?: Record<string, unknown> };
   injectionNote?: boolean;
   sessionEvent?: SessionEvent;
@@ -53,8 +56,44 @@ export interface EngineRequest {
   review?: { decision: "approve" | "return" | "reject"; note?: string; officer?: string };
 }
 
+// ---------------------------------------------------------------- appointments (mock connectors)
+
+export interface Slot { id: string; label: L; place: L; startsAt: string }
+export interface Booking { ref: string; purpose: AppointmentPurpose; slot: Slot; personaId: string; connectorId: string; status: "reserved" | "cancelled"; at: string }
+
+const APPT_CONNECTOR: Record<AppointmentPurpose, { id: string; places: L[] }> = {
+  driving_medical: { id: "conn.health.medical-exam-centres.mock", places: [{ en: "Approved medical exam centre, Al Olaya (synthetic)", ar: "مركز فحص طبي معتمد، العليا (افتراضي)" }, { en: "Approved medical exam centre, Al Malaz (synthetic)", ar: "مركز فحص طبي معتمد، الملز (افتراضي)" }] },
+  primary_care: { id: "conn.health.primary-care.mock", places: [{ en: "Primary health care centre, Al Nakheel (synthetic)", ar: "مركز الرعاية الصحية الأولية، النخيل (افتراضي)" }] },
+};
+
+/** Deterministic open slots for the next three working days, so the same request sees the same slots. */
+function slotsFor(purpose: AppointmentPurpose): Slot[] {
+  const out: Slot[] = [];
+  const d = new Date();
+  d.setUTCHours(0, 0, 0, 0);
+  const times = [6, 7.5, 10]; // 09:00, 10:30, 13:00 in Riyadh (UTC+3)
+  let days = 0;
+  while (out.length < 6 && days < 10) {
+    d.setUTCDate(d.getUTCDate() + 1);
+    days++;
+    const wd = d.getUTCDay();
+    if (wd === 5 || wd === 6) continue; // Friday and Saturday
+    APPT_CONNECTOR[purpose].places.forEach((place, pi) =>
+      times.slice(0, pi === 0 ? 2 : 1).forEach((h) => {
+        const at = new Date(d.getTime() + h * 3600_000);
+        const day = at.toISOString().slice(0, 10);
+        const hh = String(Math.floor(h + 3)).padStart(2, "0") + ":" + (h % 1 ? "30" : "00");
+        out.push({ id: `${purpose}:${pi}:${at.toISOString()}`, startsAt: at.toISOString(), place, label: { en: `${day} at ${hh}`, ar: `${day} الساعة ${hh}` } });
+      }),
+    );
+  }
+  return out.slice(0, 6);
+}
+
 export interface EngineResponse {
   tx?: Transaction;
+  slots?: Slot[];
+  booking?: Booking;
   mandate?: Mandate;
   events: AuditEvent[];
   error?: { code: string; message: L };
@@ -96,7 +135,7 @@ function policyGate(
   config: AdminConfig,
   events: NewEvent[],
 ): boolean {
-  const d = evaluate({ persona, service, targetId: tx.targetId, mandate, action, config });
+  const d = evaluate({ persona, service, targetId: tx.targetId, mandate, action, config, amount: action === "pay" ? tx.preview?.fee : undefined });
   events.push({
     actor: "policy",
     type: d.allow ? "POLICY_ALLOW" : "POLICY_DENY",
@@ -193,6 +232,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
           actions,
           grantedAt: now(),
           expiresAt: new Date(Date.now() + hours * 3600_000).toISOString(),
+          ...(actions.includes("pay") && Number.isFinite(req.grant.spendLimit) ? { spendLimit: Math.min(Math.max(Math.round(req.grant.spendLimit!), 0), 10_000) } : {}),
         };
         out.mandate = mandate;
         events.push({
@@ -203,7 +243,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
             en: `Granted scoped authority for ${service.name.en} (${actions.join(", ")}) for ${hours}h`,
             ar: `منح صلاحية محددة لخدمة ${service.name.ar} (${actions.join("، ")}) لمدة ${hours} ساعة`,
           },
-          data: { mandateId: mandate.id, serviceId: service.id, targetId: req.targetId, actions, expiresAt: mandate.expiresAt },
+          data: { mandateId: mandate.id, serviceId: service.id, targetId: req.targetId, actions, expiresAt: mandate.expiresAt, spendLimit: mandate.spendLimit ?? null },
         });
         break;
       }
@@ -434,6 +474,30 @@ export function runEngine(req: EngineRequest): EngineResponse {
         tx.review = tx.review ?? { reason: tx.blocker?.reason ?? { en: "User asked for a human", ar: "طلب المستخدم موظفًا" }, caseId: "CASE-" + randomUUID().slice(0, 6).toUpperCase() };
         move(tx, "HUMAN_REVIEW", { en: "Handed to a human officer with full context and your consent", ar: "حُوّل إلى موظف مختص مع السياق الكامل وبموافقتك" }, events);
         out.tx = signTx(tx);
+        break;
+      }
+
+      case "appointment": {
+        const { persona } = ctx(req.personaId);
+        const a = req.appointment;
+        if (!a || !(a.purpose in APPT_CONNECTOR)) throw new EngineError("BAD_APPOINTMENT", { en: "Unknown appointment request.", ar: "طلب موعد غير معروف." });
+        if (req.config.killSwitch) throw new EngineError("KILL_SWITCH", { en: "The platform operator has paused all agent actions (emergency stop).", ar: "أوقف مشغل المنصة جميع إجراءات الوكيل مؤقتًا (إيقاف طارئ)." });
+        const c = APPT_CONNECTOR[a.purpose];
+        if (a.op === "slots") {
+          out.slots = slotsFor(a.purpose);
+          events.push({ actor: "connector", type: "APPOINTMENT_SLOTS_READ", personaId: persona.id, summary: { en: `Read ${out.slots.length} open slots from ${c.id} (simulated)`, ar: `قراءة ${out.slots.length} مواعيد متاحة من ${c.id} (محاكاة)` }, data: { connector: c.id } });
+        } else if (a.op === "reserve") {
+          // a write: the UI sends it only after the person approves the exact slot
+          const slot = slotsFor(a.purpose).find((x) => x.id === a.slotId);
+          if (!slot) throw new EngineError("SLOT_GONE", { en: "That slot is no longer available. Choose another.", ar: "لم يعد هذا الموعد متاحًا. اختر موعدًا آخر." });
+          const booking: Booking = { ref: "APPT-" + shortHash(`appt:${persona.id}:${slot.id}`), purpose: a.purpose, slot, personaId: persona.id, connectorId: c.id, status: "reserved", at: now() };
+          out.booking = booking;
+          events.push({ actor: "user", type: "USER_APPROVED_APPOINTMENT", personaId: persona.id, summary: { en: `Approved reserving ${slot.place.en}, ${slot.label.en}`, ar: `وافق على حجز ${slot.place.ar}، ${slot.label.ar}` }, data: { slotId: slot.id } });
+          events.push({ actor: "connector", type: "APPOINTMENT_RESERVED", personaId: persona.id, summary: { en: `${c.id} reserved ${booking.ref} (simulated)`, ar: `حجز ${c.id} الموعد ${booking.ref} (محاكاة)` }, data: { ref: booking.ref, connector: c.id } });
+        } else {
+          if (!a.ref) throw new EngineError("BAD_APPOINTMENT", { en: "Missing booking reference.", ar: "مرجع الحجز مفقود." });
+          events.push({ actor: "user", type: "APPOINTMENT_CANCELLED", personaId: persona.id, summary: { en: `Cancelled ${a.ref.slice(0, 20)} (simulated)`, ar: `ألغى ${a.ref.slice(0, 20)} (محاكاة)` }, data: { ref: a.ref.slice(0, 20), connector: c.id } });
+        }
         break;
       }
 

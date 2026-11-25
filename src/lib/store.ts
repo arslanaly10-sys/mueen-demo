@@ -2,7 +2,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useEffect, useState } from "react";
-import type { AdminConfig, AuditEvent, Intent, L, Lang, Mandate, ServiceId, Transaction } from "./types";
+import type { AdminConfig, AppointmentPurpose, AuditEvent, Intent, L, Lang, LifeEvent, Mandate, ServiceId, Transaction } from "./types";
+import type { Booking } from "./engine/engine";
 
 // Demo persistence is per-browser (localStorage) so the stateless serverless backend works
 // anywhere. A production deployment would use a government-hosted database instead.
@@ -16,7 +17,11 @@ export type ChatMessage =
   | { id: string; role: "agent"; kind: "suggest"; at: string }
   | { id: string; role: "agent"; kind: "outOfScope"; topic: string; at: string }
   | { id: string; role: "agent"; kind: "authority"; serviceId: ServiceId; targetId: string; mandateId?: string; at: string }
-  | { id: string; role: "agent"; kind: "tx"; txId: string; at: string };
+  | { id: string; role: "agent"; kind: "tx"; txId: string; at: string }
+  | { id: string; role: "agent"; kind: "status"; at: string }
+  | { id: string; role: "agent"; kind: "appointment"; purpose: AppointmentPurpose; at: string }
+  | { id: string; role: "agent"; kind: "lifeEvent"; event: LifeEvent; at: string }
+  | { id: string; role: "agent"; kind: "business"; at: string };
 
 export interface Reminder {
   id: string;
@@ -41,6 +46,7 @@ interface State {
   txs: Transaction[];
   chats: Record<string, ChatMessage[]>;
   reminders: Reminder[];
+  appointments: Booking[];
   /** personaId → when they accepted the privacy notice */
   consents: Record<string, string>;
   config: AdminConfig;
@@ -53,6 +59,7 @@ interface State {
   addMessage: (personaId: string, m: ChatMessage) => void;
   patchMessage: (personaId: string, id: string, patch: Partial<ChatMessage>) => void;
   addReminder: (r: Reminder) => void;
+  upsertBooking: (b: Booking) => void;
   setConfig: (c: Partial<AdminConfig>) => void;
   setConsent: (personaId: string, at: string | null) => void;
   /** Deletes one persona's requests, authorities, conversation, reminders and consent; the signed audit log stays. */
@@ -72,6 +79,7 @@ export const useStore = create<State>()(
       txs: [],
       chats: {},
       reminders: [],
+      appointments: [],
       consents: {},
       config: DEFAULT_CONFIG,
       selectedTxId: null,
@@ -85,6 +93,7 @@ export const useStore = create<State>()(
       patchMessage: (pid, id, patch) =>
         set((s) => ({ chats: { ...s.chats, [pid]: (s.chats[pid] ?? []).map((m) => (m.id === id ? ({ ...m, ...patch } as ChatMessage) : m)) } })),
       addReminder: (r) => set((s) => ({ reminders: [...s.reminders, r] })),
+      upsertBooking: (b) => set((s) => ({ appointments: s.appointments.some((x) => x.ref === b.ref) ? s.appointments.map((x) => (x.ref === b.ref ? b : x)) : [...s.appointments, b] })),
       setConfig: (c) => set((s) => ({ config: { ...s.config, ...c } })),
       setConsent: (pid, at) =>
         set((s) => {
@@ -103,6 +112,7 @@ export const useStore = create<State>()(
             txs: s.txs.filter((t) => t.personaId !== pid),
             mandates: s.mandates.filter((m) => m.personaId !== pid),
             reminders: s.reminders.filter((r) => r.personaId !== pid),
+            appointments: s.appointments.filter((b) => b.personaId !== pid),
             chats,
             consents,
             selectedTxId: null,
@@ -116,7 +126,7 @@ export const useStore = create<State>()(
           const audit = s.audit.map((e, idx) => (idx === i ? { ...e, summary: { en: e.summary.en + " [edited]", ar: e.summary.ar + " [مُعدّل]" } } : e));
           return { audit };
         }),
-      reset: () => set({ audit: [], mandates: [], txs: [], chats: {}, reminders: [], consents: {}, config: DEFAULT_CONFIG, selectedTxId: null }),
+      reset: () => set({ audit: [], mandates: [], txs: [], chats: {}, reminders: [], appointments: [], consents: {}, config: DEFAULT_CONFIG, selectedTxId: null }),
     }),
     { name: "mueen-demo-v1", storage: createJSONStorage(() => localStorage) },
   ),

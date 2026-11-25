@@ -13,12 +13,12 @@ import { StatusPill } from "../StatusPill";
 import { useT } from "../useT";
 import * as agent from "./agent";
 
-function Card({ children, accent = "line" }: { children: React.ReactNode; accent?: "line" | "green" | "warn" | "err" }) {
+export function Card({ children, accent = "line" }: { children: React.ReactNode; accent?: "line" | "green" | "warn" | "err" }) {
   const border = { line: "border-line", green: "border-green/40", warn: "border-warn/40", err: "border-err/40" }[accent];
   return <div className={`rise w-full rounded-2xl border ${border} bg-white p-4 sm:p-5`}>{children}</div>;
 }
 
-function CardHead({ icon, title, pill }: { icon: React.ReactNode; title: string; pill?: React.ReactNode }) {
+export function CardHead({ icon, title, pill }: { icon: React.ReactNode; title: string; pill?: React.ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
       <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-mint text-green">{icon}</span>
@@ -28,7 +28,7 @@ function CardHead({ icon, title, pill }: { icon: React.ReactNode; title: string;
   );
 }
 
-function Btn({
+export function Btn({
   children,
   onClick,
   variant = "primary",
@@ -58,7 +58,7 @@ function Btn({
   );
 }
 
-function useBusy() {
+export function useBusy() {
   const [busy, setBusy] = useState(false);
   const run = async (fn: () => Promise<unknown>) => {
     setBusy(true);
@@ -260,6 +260,10 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
   const [submit, setSubmit] = useState(true);
   const [pay, setPay] = useState(true);
   const [hours, setHours] = useState(24);
+  // spending limit for this mandate: defaults to the highest fee this service can charge
+  const maxFee = Math.max(...svc.durations.map((d) => svc.feeFor(d)));
+  const limits = [...new Set([Math.min(...svc.durations.map((d) => svc.feeFor(d))), maxFee])].filter((x) => x > 0);
+  const [limit, setLimit] = useState(maxFee);
   const { busy, run } = useBusy();
 
   const actions: { a: Action; locked: boolean; on: boolean; set?: (v: boolean) => void }[] = [
@@ -331,6 +335,20 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
           ))}
         </div>
       </fieldset>
+      {pay && limits.length > 0 && (
+        <fieldset className="mt-4">
+          <legend className="text-sm font-medium text-teal">{lang === "ar" ? "الحد الأقصى للدفع" : "Spending limit"}</legend>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {limits.map((v) => (
+              <button key={v} type="button" onClick={() => setLimit(v)} aria-pressed={limit === v}
+                className={`rounded-full border px-3 py-1.5 text-sm ${limit === v ? "border-green bg-mint font-semibold text-green" : "border-line text-teal hover:bg-warm"}`}>
+                {lang === "ar" ? "حتى " : "Up to "}{fmtSAR(v, lang)}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1 text-xs text-muted">{lang === "ar" ? "يمنع محرك السياسات أي دفع أعلى من هذا الحد." : "The policy engine blocks any payment above this limit."}</p>
+        </fieldset>
+      )}
       <ul className="mt-4 space-y-1 text-xs text-muted">
         <li className="flex gap-1.5"><CheckCircleIcon size={13} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(T.stillAsks)}</li>
         <li className="flex gap-1.5"><CheckCircleIcon size={13} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(T.noPasswords)}</li>
@@ -347,6 +365,7 @@ export function AuthorityCard({ personaId, messageId, serviceId, targetId, manda
                 targetId,
                 actions: actions.filter((x) => x.on).map((x) => x.a),
                 hours,
+                spendLimit: pay ? limit : undefined,
               }),
             )
           }

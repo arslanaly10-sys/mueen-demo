@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BellIcon, ListChecksIcon } from "@phosphor-icons/react";
+import { BellIcon, CalendarCheckIcon, ListChecksIcon } from "@phosphor-icons/react";
 import { AccountMenu } from "@/components/AccountMenu";
 import { AppNav } from "@/components/AppNav";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -27,6 +27,7 @@ export default function Tasks() {
   const personaId = useStore((s) => s.personaId);
   const allTxs = useStore((s) => s.txs);
   const reminders = useStore((s) => s.reminders);
+  const bookings = useStore((s) => s.appointments);
   const selectTx = useStore((s) => s.selectTx);
   const [filter, setFilter] = useState<Bucket | "all">("all");
   const persona = personaId ? getPersona(personaId) : undefined;
@@ -113,6 +114,22 @@ export default function Tasks() {
                   </li>
                 );
               })}
+            </ul>
+          )}
+        </section>
+        <section aria-labelledby="appt-h" className="mt-10">
+          <h2 id="appt-h" className="flex items-center gap-2 text-xl font-semibold text-teal"><CalendarCheckIcon size={20} aria-hidden="true" />{ar ? "المواعيد" : "Appointments"}</h2>
+          {bookings.filter((b) => b.personaId === persona.id).length === 0 ? (
+            <p className="mt-2 text-sm text-muted">{ar ? "لا توجد مواعيد. اطلب «احجز موعد فحص طبي للرخصة» في مساحة المستفيد." : "No appointments. Ask “Book a medical exam for my licence” in the workspace."}</p>
+          ) : (
+            <ul className="mt-3 space-y-2">
+              {bookings.filter((b) => b.personaId === persona.id).map((b) => (
+                <li key={b.ref} className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-line bg-white px-4 py-3 text-sm">
+                  <span className="font-mono text-xs text-muted"><bdi>{b.ref}</bdi></span>
+                  <span className="min-w-0 flex-1 text-teal">{t(b.slot.place)} · <span className="num-ltr">{t(b.slot.label)}</span></span>
+                  <StatusPill tone={b.status === "reserved" ? "ok" : "neutral"}>{b.status === "reserved" ? (ar ? "محجوز" : "Reserved") : (ar ? "ملغى" : "Cancelled")}</StatusPill>
+                </li>
+              ))}
             </ul>
           )}
         </section>

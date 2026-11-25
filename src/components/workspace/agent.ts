@@ -38,6 +38,18 @@ export async function handleUserText(personaId: string, text: string) {
     case "unclear":
       add({ id: uid(), role: "agent", kind: "suggest", at: now() });
       break;
+    case "status":
+      add({ id: uid(), role: "agent", kind: "status", at: now() });
+      break;
+    case "appointment":
+      add({ id: uid(), role: "agent", kind: "appointment", purpose: r.appointmentPurpose ?? "primary_care", at: now() });
+      break;
+    case "life_event":
+      add({ id: uid(), role: "agent", kind: "lifeEvent", event: r.lifeEvent ?? "hiring_domestic_worker", at: now() });
+      break;
+    case "business_review":
+      add({ id: uid(), role: "agent", kind: "business", at: now() });
+      break;
     default:
       break;
   }
@@ -65,8 +77,9 @@ export async function grantAndStart(args: {
   targetId: string;
   actions: Action[];
   hours: number;
+  spendLimit?: number;
 }) {
-  const g = await engine({ action: "grant", personaId: args.personaId, serviceId: args.serviceId, targetId: args.targetId, grant: { actions: args.actions, hours: args.hours } });
+  const g = await engine({ action: "grant", personaId: args.personaId, serviceId: args.serviceId, targetId: args.targetId, grant: { actions: args.actions, hours: args.hours, spendLimit: args.spendLimit } });
   if (!g.mandate) return;
   S().patchMessage(args.personaId, args.messageId, { mandateId: g.mandate.id } as never);
   await sleep(350);

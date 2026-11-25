@@ -135,6 +135,8 @@ export interface Mandate {
   grantedAt: string;
   expiresAt: string;
   revokedAt?: string;
+  /** most the agent may pay under this mandate, in SAR; the policy engine blocks anything above */
+  spendLimit?: number;
 }
 
 export type ConnectorHealth = "up" | "degraded" | "down";
@@ -238,7 +240,15 @@ export type InterpretScope =
   | "expiring_all"
   | "out_of_scope"
   | "smalltalk"
-  | "unclear";
+  | "unclear"
+  // daily tasks beyond renewals
+  | "status"
+  | "appointment"
+  | "life_event"
+  | "business_review";
+
+export type LifeEvent = "hiring_domestic_worker" | "family_travel" | "new_baby";
+export type AppointmentPurpose = "driving_medical" | "primary_care";
 
 export interface Intent {
   serviceId: ServiceId;
@@ -253,4 +263,6 @@ export interface Interpretation {
   reply: string;
   engine: "claude" | "scripted";
   outOfScopeTopic?: "hiring_domestic_worker" | "other";
+  lifeEvent?: LifeEvent;
+  appointmentPurpose?: AppointmentPurpose;
 }

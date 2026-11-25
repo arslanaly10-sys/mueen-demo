@@ -5,6 +5,7 @@ import type { ServiceDef } from "../services";
 // Core design rule: the language model may PROPOSE; only this code (and the agency) DECIDES.
 
 export type PolicyCode =
+  | "SPEND_LIMIT"
   | "ALLOW"
   | "KILL_SWITCH"
   | "SERVICE_DISABLED"
@@ -30,6 +31,8 @@ export function evaluate(args: {
   action: Action;
   config: AdminConfig;
   now?: number;
+  /** SAR amount for a pay action, checked against the mandate's spending limit */
+  amount?: number;
 }): PolicyDecision {
   const { persona, service, targetId, mandate, action, config } = args;
   const now = args.now ?? Date.now();
@@ -83,6 +86,16 @@ export function evaluate(args: {
       allow: false,
       code: "ACTION_NOT_GRANTED",
       reason: { en: `Your authority does not include “${action}”.`, ar: `الصلاحية الممنوحة لا تتضمن إجراء «${ACTION_LABEL[action].ar}».` },
+    };
+
+  if (action === "pay" && mandate.spendLimit !== undefined && (args.amount ?? 0) > mandate.spendLimit)
+    return {
+      allow: false,
+      code: "SPEND_LIMIT",
+      reason: {
+        en: `The fee, SAR ${args.amount}, is above the SAR ${mandate.spendLimit} limit you set for this authority. Grant a new authority with a higher limit to continue.`,
+        ar: `الرسوم ${args.amount} ريال أعلى من حد ${mandate.spendLimit} ريال الذي حددته لهذه الصلاحية. امنح صلاحية جديدة بحد أعلى للمتابعة.`,
+      },
     };
 
   return { allow: true, code: "ALLOW", reason: { en: "Permitted by policy and your authority.", ar: "مسموح وفق السياسة والصلاحية الممنوحة." } };
