@@ -245,7 +245,7 @@ export function Chat({ personaId }: { personaId: string }) {
               }
             }}
             placeholder={speech.listening ? t(T.listening) : t(T.askPlaceholder)}
-            className="max-h-32 min-h-11 flex-1 resize-none rounded-2xl border border-line bg-warm px-4 py-2.5 text-[15px] text-ink outline-none placeholder:text-muted/70 focus:border-green"
+            className="max-h-32 min-h-11 min-w-0 flex-1 resize-none rounded-2xl border border-line bg-warm px-4 py-2.5 text-base text-ink outline-none sm:text-[15px] placeholder:text-muted/70 focus:border-green"
           />
           <button
             type="submit"

@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useReducedMotion } from "motion/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CircleNotchIcon, KeyIcon, ShieldCheckIcon } from "@phosphor-icons/react";
 import Grainient from "@/components/bits/Grainient";
 import BlurText from "@/components/bits/BlurText";
@@ -23,14 +24,15 @@ export default function Login() {
   const [picked, setPicked] = useState<Persona | null>(null);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState<"short" | "wrong" | null>(null);
+  const reduce = useReducedMotion();
   const Arrow = ar ? ArrowLeftIcon : ArrowRightIcon;
   const Back = ar ? ArrowRightIcon : ArrowLeftIcon;
 
   async function verify() {
     if (!picked) return;
-    if (code !== DEMO_CODE) {
-      setErr(true);
+    if (code.length !== 6 || code !== DEMO_CODE) {
+      setErr(code.length !== 6 ? "short" : "wrong");
       return;
     }
     setBusy(true);
@@ -59,7 +61,7 @@ export default function Login() {
                       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-teal text-sm font-semibold text-mint">{p.initials}</span>
                       <span className="min-w-0">
                         <span className="block font-semibold text-teal">{t(p.name)}</span>
-                        <span className="block truncate text-sm text-muted">{t(p.nationalityLabel)} · {t(p.scenarioHints[0])}</span>
+                        <span className="block text-sm text-muted">{t(p.nationalityLabel)} · {t(p.scenarioHints[0])}</span>
                       </span>
                       <Arrow size={18} className="ms-auto shrink-0 text-muted transition group-hover:text-green" aria-hidden="true" />
                     </button>
@@ -69,7 +71,7 @@ export default function Login() {
             </>
           ) : (
             <form className="rise" onSubmit={(e) => { e.preventDefault(); verify(); }}>
-              <button type="button" onClick={() => { setPicked(null); setCode(""); setErr(false); }} className="inline-flex min-h-11 items-center gap-1.5 text-sm text-green hover:underline">
+              <button type="button" onClick={() => { setPicked(null); setCode(""); setErr(null); }} className="inline-flex min-h-11 items-center gap-1.5 text-sm text-green hover:underline">
                 <Back size={14} aria-hidden="true" /> {ar ? "تغيير الشخصية" : "Change persona"}
               </button>
               <h1 className="mt-2 text-3xl font-semibold text-teal">{ar ? "أدخل رمز التحقق" : "Enter your code"}</h1>
@@ -79,11 +81,11 @@ export default function Login() {
               </p>
               <p className="mt-6 text-sm font-medium text-teal">{ar ? "رمز التحقق" : "One-time code"}</p>
               {/* React Bits CodeSlots: six digit slots; digits read left to right in Arabic too */}
-              <div dir="ltr" className="mt-1.5 flex justify-center">
+              <div dir="ltr" className="mt-1.5 flex justify-center [&_[data-status]>span]:shadow-[inset_0_0_0_1px_#7C8B85]">
                 <CodeSlots
                   value={code}
-                  onChange={(c) => { setCode(c.replace(/\D/g, "")); if (c) setErr(false); }} /* the slots empty themselves after an error; keep the message until the next digit */
-                  status={err ? "error" : "idle"}
+                  onChange={(c) => { setCode(c.replace(/\D/g, "")); if (c) setErr(null); }} /* the slots empty themselves after a wrong code; keep the message until the next digit */
+                  status={err === "wrong" ? "error" : "idle"}
                   ariaLabel={ar ? "رمز التحقق" : "One-time code"}
                   slotColor="#E4F1EB"
                   accentColor="#123B3A"
@@ -94,10 +96,16 @@ export default function Login() {
                   gap={8}
                 />
               </div>
-              {err && <p className="mt-2 text-sm text-err" role="alert">{ar ? "الرمز غير صحيح." : "That code is not correct."}</p>}
+              {err && (
+                <p className="mt-2 text-sm text-err" role="alert">
+                  {err === "short"
+                    ? ar ? "أدخل الأرقام الستة كلها." : "Enter all 6 digits."
+                    : ar ? "الرمز غير صحيح. أدخل الأرقام الستة مرة أخرى أو استخدم رمز العرض." : "That code is not correct. Enter the 6 digits again or use the demo code."}
+                </p>
+              )}
               <button
                 type="submit"
-                disabled={code.length !== 6 || busy}
+                disabled={busy}
                 className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-teal px-5 py-3 font-semibold text-white transition hover:bg-teal-2 disabled:opacity-50"
               >
                 {busy && <CircleNotchIcon size={18} className="animate-spin" aria-hidden="true" />}
@@ -108,7 +116,7 @@ export default function Login() {
               </div>
               <button
                 type="button"
-                onClick={() => { setCode(DEMO_CODE); setErr(false); }}
+                onClick={() => { setCode(DEMO_CODE); setErr(null); }}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-teal transition hover:border-green"
               >
                 <KeyIcon size={16} aria-hidden="true" /> {ar ? "استخدم رمز العرض" : "Use demo code"} <span className="num-ltr font-mono">{DEMO_CODE}</span>
@@ -128,12 +136,16 @@ export default function Login() {
           <Grainient className="!absolute inset-0 -z-10" colors={["#0E2F2E", "#123B3A", "#1A5446"]} interactive={false} grainAmount={0.06} />
           <ShieldCheckIcon size={40} className="text-mint" aria-hidden="true" />
           <div>
-            <BlurText
-              key={ar ? "ar" : "en"}
-              className="text-2xl font-semibold leading-snug"
-              text={ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}
-              delay={50}
-            />
+            {reduce ? (
+              <p className="text-2xl font-semibold leading-snug">{ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}</p>
+            ) : (
+              <BlurText
+                key={ar ? "ar" : "en"}
+                className="text-2xl font-semibold leading-snug"
+                text={ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}
+                delay={50}
+              />
+            )}
             <ul className="mt-6 space-y-3 text-mint">
               {(ar
                 ? ["سبع خدمات تجديد افتراضية", "دفعة واحدة، دون إعادة محاولة", "كل خطوة في سجل تدقيق موقّع"]

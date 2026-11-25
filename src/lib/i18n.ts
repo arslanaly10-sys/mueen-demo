@@ -161,5 +161,5 @@ export const T = {
   agentSays: { en: "MUEEN", ar: "مُعين" },
   you: { en: "You", ar: "أنت" },
   thinking: { en: "Understanding your request…", ar: "أفهم طلبك…" },
-  error: { en: "Something went wrong. Nothing was submitted.", ar: "حدث خطأ. لم يُرسل أي شيء." },
+  error: { en: "MUEEN couldn't answer. Nothing was submitted. Send your message again.", ar: "تعذّر على مُعين الرد. لم يُرسل أي شيء. أرسل رسالتك مرة أخرى." },
 } satisfies Record<string, L | { en: string[]; ar: string[] }>;

@@ -31,7 +31,12 @@ function ServicesMenu() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const esc = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      // focus inside the closing panel would be left on a hidden link
+      if (ref.current?.contains(document.activeElement)) ref.current.querySelector("button")?.focus();
+      setOpen(false);
+    };
     const out = (e: PointerEvent) => !ref.current?.contains(e.target as Node) && setOpen(false);
     addEventListener("keydown", esc);
     addEventListener("pointerdown", out);

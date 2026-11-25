@@ -4,8 +4,9 @@ import { createRoot } from "react-dom/client";
 import BlurText from "./bits/BlurText";
 import Grainient from "./bits/Grainient";
 
-// Hero lead: the words blur in once (MotionConfig "user" keeps it still under reduced motion).
-const lead = document.querySelector<HTMLParagraphElement>(".hero--centred .hero__lead");
+// Hero lead: the words blur in once.
+// Under reduced motion the static lead stays: BlurText's blur ignores MotionConfig.
+const lead = matchMedia("(prefers-reduced-motion: reduce)").matches ? null : document.querySelector<HTMLParagraphElement>(".hero--centred .hero__lead");
 if (lead) {
   const host = document.createElement("div");
   host.className = "bits-lead";

@@ -13,6 +13,7 @@ import { useT } from "@/components/useT";
 import { useHydrated, useStore } from "@/lib/store";
 import { getPersona } from "@/lib/personas";
 import { T } from "@/lib/i18n";
+import { tabKeys } from "@/components/tabKeys";
 
 export default function Workspace() {
   const { t, lang } = useT();
@@ -62,7 +63,7 @@ export default function Workspace() {
         </div>
       )}
 
-      <div className="flex shrink-0 gap-1 border-b border-line bg-white p-1.5 lg:hidden" role="tablist">
+      <div className="flex shrink-0 gap-1 border-b border-line bg-white p-1.5 lg:hidden" role="tablist" onKeyDown={(e) => tabKeys(e, ["chat", "panel"] as const, mobileTab, setMobileTab)}>
         {([
           ["chat", ChatTextIcon, lang === "ar" ? "المحادثة" : "Conversation"],
           ["panel", LayoutIcon, lang === "ar" ? "المسار والسجلات" : "Timeline & records"],
@@ -70,7 +71,10 @@ export default function Workspace() {
           <button
             key={id}
             role="tab"
+            id={`mtab-${id}`}
             aria-selected={mobileTab === id}
+            aria-controls={`mpanel-${id}`}
+            tabIndex={mobileTab === id ? 0 : -1}
             onClick={() => setMobileTab(id)}
             className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-medium ${mobileTab === id ? "bg-mint text-green" : "text-muted"}`}
           >
@@ -80,11 +84,11 @@ export default function Workspace() {
       </div>
 
       {/* taste-skill app-frame: one window, the open item beside its details, panes parted by a hairline */}
-      <main className="wrap grid min-h-0 flex-1 overflow-hidden border-line bg-white sm:my-4 sm:rounded-[20px] sm:border lg:grid-cols-[minmax(0,1fr)_380px]">
-        <div className={`min-h-0 flex-col ${mobileTab === "chat" ? "flex" : "hidden"} lg:flex`}>
+      <main className="wrap grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] overflow-hidden border-line bg-white sm:my-4 sm:rounded-[20px] sm:border lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div id="mpanel-chat" role="tabpanel" aria-labelledby="mtab-chat" className={`min-h-0 flex-col ${mobileTab === "chat" ? "flex" : "hidden"} lg:flex`}>
           <Chat personaId={persona.id} />
         </div>
-        <div className={`min-h-0 flex-col border-line lg:border-s ${mobileTab === "panel" ? "flex" : "hidden"} lg:flex`}>
+        <div id="mpanel-panel" role="tabpanel" aria-labelledby="mtab-panel" className={`min-h-0 flex-col border-line lg:border-s ${mobileTab === "panel" ? "flex" : "hidden"} lg:flex`}>
           <SidePanel personaId={persona.id} />
         </div>
       </main>

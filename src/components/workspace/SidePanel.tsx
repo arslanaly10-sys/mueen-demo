@@ -1,4 +1,5 @@
 "use client";
+import { tabKeys } from "@/components/tabKeys";
 import StatusMark from "@/components/bits/StatusMark";
 import { useState } from "react";
 import { BellIcon, CircleNotchIcon, FolderOpenIcon, ListChecksIcon, ScrollIcon, ShieldCheckIcon, ShieldSlashIcon } from "@phosphor-icons/react";
@@ -28,23 +29,26 @@ export function SidePanel({ personaId }: { personaId: string }) {
   ];
   return (
     <section className="flex min-h-0 flex-1 flex-col">
-      <div role="tablist" className="grid grid-cols-4 border-b border-line p-1">
+      <div role="tablist" className="grid grid-cols-4 border-b border-line p-1" onKeyDown={(e) => tabKeys(e, tabs.map((x) => x.id), tab, setTab)}>
         {tabs.map(({ id, label, Icon }) => (
           <button
             key={id}
             role="tab"
+            id={`tab-${id}`}
             aria-selected={tab === id}
+            aria-controls="side-panel"
+            tabIndex={tab === id ? 0 : -1}
             onClick={() => setTab(id)}
-            className={`flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-xs font-medium transition sm:flex-row sm:justify-center sm:text-sm ${
+            className={`flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-xs font-medium transition ${
               tab === id ? "bg-mint text-green" : "text-muted hover:bg-warm"
             }`}
           >
             <Icon size={16} aria-hidden="true" />
-            <span className="truncate">{label}</span>
+            <span className="text-center leading-tight">{label}</span>
           </button>
         ))}
       </div>
-      <div className="scroll-thin min-h-0 flex-1 overflow-y-auto p-4">
+      <div id="side-panel" role="tabpanel" tabIndex={0} aria-labelledby={`tab-${tab}`} className="scroll-thin min-h-0 flex-1 overflow-y-auto p-4">
         {tab === "timeline" && <Timeline personaId={personaId} />}
         {tab === "records" && <Records personaId={personaId} />}
         {tab === "authorities" && <Authorities personaId={personaId} />}
@@ -106,9 +110,9 @@ function Timeline({ personaId }: { personaId: string }) {
                 />
               </span>
               <div className="min-w-0 flex-1">
-                <p className={`text-sm font-medium ${done ? "text-teal" : "text-muted/70"}`}>
+                <p className={`text-sm font-medium ${done ? "text-teal" : "text-muted"}`}>
                   {t(STATE_LABEL[st])}
-                  <span className="ms-2 font-mono text-xs font-normal text-muted/70">{st}</span>
+                  <span className="ms-2 font-mono text-xs font-normal text-muted">{st}</span>
                 </p>
                 {entry && (
                   <p className="text-xs text-muted">
@@ -260,7 +264,7 @@ function Activity({ personaId }: { personaId: string }) {
             <span className="num-ltr ms-auto text-muted">{fmtTime(e.at, lang)}</span>
           </div>
           <p className="mt-1 text-xs text-ink">{t(e.summary)}</p>
-          <p className="mt-0.5 truncate font-mono text-xs text-muted/80" title={e.hash}>
+          <p className="mt-0.5 truncate font-mono text-xs text-muted" title={e.hash}>
             {e.hash.slice(0, 24)}…
           </p>
         </li>
