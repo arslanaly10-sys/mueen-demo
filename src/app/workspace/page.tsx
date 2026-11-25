@@ -39,7 +39,7 @@ export default function Workspace() {
         </Link>
         <LangToggle />
         <div className="flex items-center gap-2 border-s border-line ps-3">
-          <span className="grid size-8 place-items-center rounded-full bg-teal text-xs font-medium text-mint" aria-hidden="true">{persona.initials}</span>
+          <span className="hidden size-8 place-items-center rounded-full bg-teal text-xs font-medium text-mint sm:grid" aria-hidden="true">{persona.initials}</span>
           <span className="hidden text-sm leading-tight lg:block">
             <span className="block font-medium text-teal">{t(persona.name)}</span>
             <span className="block text-xs text-muted">{t(persona.nationalityLabel)}</span>

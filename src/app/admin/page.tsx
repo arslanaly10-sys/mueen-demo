@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowCounterClockwiseIcon, CheckCircleIcon, CircleNotchIcon, ClockIcon, PowerIcon, ProhibitIcon, PulseIcon, ScrollIcon, SealCheckIcon, ShieldCheckIcon, ShieldSlashIcon, UsersIcon, WarningCircleIcon, WarningOctagonIcon } from "@phosphor-icons/react";
+import CountUp from "@/components/bits/CountUp";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -109,7 +110,8 @@ export default function Admin() {
           {kpis.map((k, i) => (
             <div key={i} className="rounded-2xl border border-line bg-white p-4">
               <k.Icon size={18} className={k.tone} aria-hidden="true" />
-              <p className="mt-2 text-[28px] font-medium leading-tight text-teal sm:text-[38px]">{fmtNum(k.v, lang)}</p>
+              <p className="mt-2 text-[28px] font-medium leading-tight text-teal sm:text-[38px]">{/* Arabic keeps its Arabic-Indic digits; the vendored counter writes Latin ones */}
+                {lang === "en" ? <CountUp to={k.v} separator="," duration={1.2} /> : fmtNum(k.v, lang)}</p>
               <p className="text-xs text-muted">{t(k.l)}</p>
               {k.note && <p className="mt-1 text-xs text-green">{t(k.note)}</p>}
             </div>

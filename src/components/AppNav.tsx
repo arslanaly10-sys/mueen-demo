@@ -39,20 +39,20 @@ function ServicesMenu() {
   }, [open]);
 
   return (
-    <nav aria-label={t({ en: "Services", ar: "الخدمات" })} ref={ref} className="ms-2 hidden md:block" onMouseLeave={() => setOpen(false)} onBlur={(e) => !ref.current?.contains(e.relatedTarget) && setOpen(false)}>
+    <nav aria-label={t({ en: "Services", ar: "الخدمات" })} ref={ref} className="sm:ms-2" onMouseLeave={() => setOpen(false)} onBlur={(e) => !ref.current?.contains(e.relatedTarget) && setOpen(false)}>
       <button
         type="button"
         aria-expanded={open}
         aria-controls="services-menu"
         onClick={() => setOpen(!open)}
         onMouseEnter={() => setOpen(true)}
-        className="flex h-11 items-center gap-1 rounded-full px-3 text-sm font-medium text-teal hover:bg-mint"
+        className="flex h-11 items-center gap-1 rounded-full px-2 text-sm sm:px-3 font-medium text-teal hover:bg-mint"
       >
         {t({ en: "Services", ar: "الخدمات" })}
         <CaretDownIcon size={12} weight="bold" className={`transition ${open ? "rotate-180" : ""}`} aria-hidden="true" />
       </button>
       {/* full width under the bar; the hover gap is bridged by the panel's own top padding */}
-      <div id="services-menu" hidden={!open} className="absolute inset-x-0 top-full border-y border-line bg-warm py-8 shadow-[0_12px_24px_-16px_rgb(18_59_58/0.25)]">
+      <div id="services-menu" hidden={!open} className="absolute inset-x-0 top-full max-h-[calc(100dvh-56px)] overflow-y-auto overscroll-contain border-y border-line bg-warm py-6 shadow-[0_12px_24px_-16px_rgb(18_59_58/0.25)] sm:py-8">
         <div className="wrap grid gap-8 sm:grid-cols-3">
           {GROUPS.map((g) => (
             <div key={g.title.en}>

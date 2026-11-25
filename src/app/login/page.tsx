@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CircleNotchIcon, KeyIcon, ShieldCheckIcon } from "@phosphor-icons/react";
+import Grainient from "@/components/bits/Grainient";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -117,7 +118,9 @@ export default function Login() {
           <div className="mt-4 lg:hidden"><Disclaimer /></div>
         </div>
 
-        <aside className="hidden h-full min-h-[560px] flex-col justify-between rounded-[24px] bg-teal p-10 text-white lg:flex">
+        <aside className="relative isolate hidden h-full min-h-[560px] flex-col justify-between overflow-hidden rounded-[24px] bg-teal p-10 text-white lg:flex">
+          {/* React Bits Grainient, kept dark in the brand teals so the white text stays at 7:1 */}
+          <Grainient className="!absolute inset-0 -z-10" colors={["#0E2F2E", "#123B3A", "#1A5446"]} interactive={false} grainAmount={0.06} />
           <ShieldCheckIcon size={40} className="text-mint" aria-hidden="true" />
           <div>
             <p className="text-2xl font-semibold leading-snug">
