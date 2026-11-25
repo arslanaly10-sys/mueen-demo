@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # a throwaway key for CI only; production keys live in the hosting platform's secret store
+      AUDIT_SIGNING_SECRET: ci-only-not-a-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit -p .
+      - run: npm run lint
+      - run: npm run check
+      - run: npm run build
+      - name: Install Playwright (not a project dependency)
+        run: |
+          npm install --no-save playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: End-to-end scenarios
+        run: |
+          npx next start -p 3100 &
+          for i in $(seq 60); do curl -sf -o /dev/null http://localhost:3100/login && break; sleep 1; done
+          npm run e2e

@@ -95,7 +95,7 @@ export default function Identity() {
 
         <div className="mt-4">
           <Block id="ben-h" icon={<UsersThreeIcon size={20} aria-hidden="true" />} title={ar ? "المستفيدون والسجلات المرتبطة" : "Beneficiaries and linked records"} lede={ar ? "السجلات التي تخصك أو تخص من تملك صفة عنه، ولماذا." : "The records that are yours or belong to someone you hold a role for, and why."}>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={ar ? "جدول السجلات المرتبطة" : "Linked records table"}>
               <table className="w-full min-w-[600px] text-sm">
                 <thead><tr className="text-xs text-muted"><th className="py-2 text-start font-medium">{ar ? "السجل" : "Record"}</th><th className="py-2 text-start font-medium">{ar ? "الخدمة" : "Service"}</th><th className="py-2 text-start font-medium">{ar ? "ينتهي" : "Expires"}</th><th className="py-2 text-start font-medium">{ar ? "أساس الصفة" : "Basis"}</th></tr></thead>
                 <tbody>

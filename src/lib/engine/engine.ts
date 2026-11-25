@@ -207,6 +207,8 @@ const PERSON_ACTIONS: EngineAction[] = ["grant", "revoke", "start", "confirm", "
 
 // the demo's one-time code; a real deployment verifies through the national identity platform instead
 const DEMO_CODE = "246810";
+/** services where the requester acts on someone else's record */
+const ON_BEHALF: ServiceId[] = ["iqama_domestic", "work_permit", "health_certificate"];
 const APPROVAL_WINDOW_MS = 15 * 60_000;
 const openApprovalWindow = (tx: Transaction) => { tx.approvalExpiresAt = new Date(Date.now() + APPROVAL_WINDOW_MS).toISOString(); };
 
@@ -501,6 +503,18 @@ export function runEngine(req: EngineRequest): EngineResponse {
           data: { reference: r.reference, idempotencyKey: tx.idempotencyKey.slice(0, 8) + "…", connectorHealth: req.config.connectorHealth[service.id] ?? "up" },
         });
         move(tx, "SUBMITTED", { en: `Submitted to ${service.agency.en}`, ar: `أُرسل إلى ${service.agency.ar}` }, events);
+        // the person whose record this is learns of it, even when someone else (a sponsor or employer) asked
+        if (ON_BEHALF.includes(service.id)) {
+          const holder = service.targets(persona).find((t) => t.id === tx.targetId);
+          events.push({
+            actor: "system",
+            type: "RECORD_HOLDER_NOTIFIED",
+            txId: tx.id,
+            personaId: persona.id,
+            summary: { en: `Told ${holder?.label.en ?? "the record holder"} about this renewal by SMS to their registered number (simulated)`, ar: `أُبلغ ${holder?.label.ar ?? "صاحب السجل"} بهذا التجديد برسالة إلى رقمه المسجّل (محاكاة)` },
+            data: { channel: "sms-simulated", targetId: tx.targetId },
+          });
+        }
         out.tx = signTx(tx);
         break;
       }

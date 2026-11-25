@@ -18,5 +18,10 @@
     "check": "container-edges",
     "target": "div.bits-lead > p.hero__lead",
     "reason": "the centred hero's lead, centred on the page's axis; React Bits BlurText sets it as a centred flex row of word spans, so each wrapped line's first word reads as a left edge"
+  },
+  {
+    "check": "copy-headings",
+    "target": "article.card.card--row:nth-of-type(2) > h3",
+    "reason": "the flagged headings name specific things the checker cannot know: Traffic (the General Directorate), Absher and Tawakkalna (national platforms); they are not generic"
   }
 ]

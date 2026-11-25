@@ -47,6 +47,18 @@
   apply(lang);
   // system.js labels the phone sheet's expand button in English after this runs
   if (lang === 'ar') addEventListener('load', () => document.querySelectorAll('.nav__expand').forEach(b => b.setAttribute('aria-label', 'إظهار روابط الخدمات')));
+  // the kit labels its pause buttons in English and swaps the label on each toggle; follow it in Arabic
+  if (lang === 'ar') {
+    const AR = { 'Pause animation': 'إيقاف الحركة', 'Play animation': 'تشغيل الحركة', Pause: 'إيقاف', Play: 'تشغيل' };
+    const fix = (el) => { const v = el.getAttribute('aria-label'); if (AR[v]) el.setAttribute('aria-label', AR[v]); };
+    addEventListener('load', () => {
+      document.querySelectorAll('[aria-label]').forEach(fix);
+      new MutationObserver((ms) => ms.forEach((m) => {
+        if (m.type === 'attributes') fix(m.target);
+        else m.addedNodes.forEach((n) => { if (n.nodeType === 1) { fix(n); n.querySelectorAll?.('[aria-label]').forEach(fix); } });
+      })).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-label'] });
+    });
+  }
   // The kit draws its diagrams and loops once, so a switch reloads the page in the other language.
   toggle?.addEventListener('click', () => { apply(lang === 'ar' ? 'en' : 'ar'); location.search = '?lang=' + root.lang; });
 })();

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "islands": "node scripts/build-islands.mjs",
-    "check": "node tests/run-checks.mjs"
+    "check": "node tests/run-checks.mjs",
+    "e2e": "node tests/e2e.cjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.14.0",

@@ -64,6 +64,7 @@
   .close__word { line-height: 1.04; }
   .nav__bar > .nav__logo > span { font-size: 16px; font-weight: 600; }
   @media (max-width: 1199px) { .nav__bar > .nav__logo > span { display: none; } } /* the mark alone below 1200px; the link keeps its full name */
+  @media (max-width: 639px) { #services .panel { --p-h: 240px; } } /* a shorter hub diagram on phones, so the section ends inside its screen */
   @media (max-width: 639px) { html[lang="ar"] .close__word { font-size: clamp(36px, 11vw, 96px); } } /* the two-word Arabic name on one line at phone width */
   @media (max-width: 639px) { #how .panel { --p-h: 290px; } #controls .panel { --p-h: 160px; } #controls .ui-chat__day { display: none; } }
   .hero__window > .app { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
@@ -148,7 +149,7 @@
   <section class="hero hero--centred" data-enter aria-labelledby="hero-h">
     <div class="wrap"><div class="hero-text">
       <div class="hero__c">
-        <a class="pill" href="#questions"><span data-ar="مفهوم للنقاش">Concept for discussion</span><span class="muted" data-ar="منصة الخدمات الحكومية بالذكاء الاصطناعي">Saudi Government AI Services Platform</span></a>
+        <a class="pill" href="#questions"><span data-ar="مفهوم للنقاش">Concept for discussion</span><span class="muted" data-ar="7 خدمات تجديد، بيانات افتراضية">7 renewals, synthetic data</span></a>
         <h1 id="hero-h" data-ar="وكيل واحد محكوم للخدمات الحكومية السعودية">One governed agent for Saudi public services</h1>
         <p class="hero__lead" data-ar="يخطّط طلبك عبر الجهات، ويتحقق من قواعد كل جهة، ويستأذنك قبل أي إرسال أو دفع، ويعيد الإيصال الرسمي. القرار والسجل يبقيان لدى الجهة.">It plans your request across agencies, checks each rule, asks before it submits or pays, and returns the official receipt. Agencies keep every decision.</p>
         <div class="btn-row">
@@ -436,7 +437,7 @@
         </div>
         <div class="span-2 footer__col"><h3 data-ar="المنتج">Product</h3><ul><li><a href="#how" data-ar="الخطوات">Steps</a></li><li><a href="#controls" data-ar="القواعد">Rules</a></li></ul></div>
         <div class="span-3 footer__col"><h3 data-ar="الخدمات">Services</h3><ul><li><a href="#services" data-ar="الجهات السبع">Seven services</a></li><li><a href="#questions" data-ar="الأسئلة">Questions</a></li></ul></div>
-        <div class="span-3 footer__col"><h3 data-ar="العرض">Demo</h3><ul><li><a href="/login" data-ar="مساحة المستفيد">Beneficiary workspace</a></li><li><a href="/admin" data-ar="لوحة الحوكمة">Governance console</a></li><li><a href="/privacy" data-ar="إشعار الخصوصية">Privacy notice</a></li><li><a href="/accessibility" data-ar="إمكانية الوصول">Accessibility</a></li></ul></div>
+        <div class="span-3 footer__col"><h3 data-ar="العرض">Demo</h3><ul><li><a href="/login" data-ar="مساحة المستفيد">Beneficiary workspace</a></li><li><a href="/admin" data-ar="لوحة الحوكمة">Governance console</a></li><li><a href="/operations" data-ar="التشغيل والسعة">Operations and capacity</a></li><li><a href="/privacy" data-ar="إشعار الخصوصية">Privacy notice</a></li><li><a href="/accessibility" data-ar="إمكانية الوصول">Accessibility</a></li></ul></div>
       </div>
       <div class="footer__legal">
         <span>&copy; 2026 <span data-ar="منصة الخدمات الحكومية بالذكاء الاصطناعي، مفهوم للنقاش. ليس خدمة حكومية رسمية؛ جميع البيانات افتراضية.">Saudi Government AI Services Platform, a concept for discussion. Not an official government service; all data is synthetic.</span></span>

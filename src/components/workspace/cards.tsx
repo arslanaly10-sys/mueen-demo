@@ -426,6 +426,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
   const tx = useStore((s) => s.txs.find((x) => x.id === txId));
   const reminded = useStore((s) => s.reminders.some((r) => tx && r.serviceId === tx.serviceId && r.targetId === tx.targetId && r.personaId === personaId));
   const selectTx = useStore((s) => s.selectTx);
+  const notified = useStore((s) => s.audit.find((e) => e.txId === txId && e.type === "RECORD_HOLDER_NOTIFIED"));
   const [durationIndex, setDurationIndex] = useState(0);
   const { busy, run } = useBusy();
   const stepUp = useStepUp(personaId);
@@ -565,6 +566,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
             {tx.preview && <KV k={t(T.amount)} v={fmtSAR(tx.preview.fee, lang)} />}
             <KV k={t(T.agency)} v={t(tx.receipt.agency)} />
           </dl>
+          {notified && <p className="mt-3 flex items-start gap-2 text-sm text-ink"><BellIcon size={16} className="mt-0.5 shrink-0 text-green" aria-hidden="true" />{t(notified.summary)}</p>}
         </div>
       )}
 

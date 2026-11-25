@@ -344,7 +344,7 @@ export default function Admin() {
           {audit.length === 0 ? (
             <p className="text-sm text-muted">—</p>
           ) : (
-            <div className="scroll-thin -mx-4 max-h-[560px] overflow-auto sm:mx-0">
+            <div className="scroll-thin -mx-4 max-h-[560px] overflow-auto sm:mx-0" tabIndex={0} role="region" aria-label={lang === "ar" ? "جدول سجل التدقيق" : "Audit log table"}>
               <table className="w-full min-w-[720px] text-xs">
                 <thead className="sticky top-0 bg-white">
                   <tr className="text-muted">

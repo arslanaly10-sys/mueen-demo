@@ -149,7 +149,7 @@ export default function Operations() {
               </ul>
             </>
           )}
-          <div className="mt-6 overflow-x-auto rounded-2xl border border-line bg-white">
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-line bg-white" tabIndex={0} role="region" aria-label={ar ? "جدول الحد لكل خدمة" : "Per-service throttling table"}>
             <table className="w-full min-w-[640px] text-sm">
               <caption className="px-4 pt-3 text-start font-medium text-teal">{ar ? "الحد لكل خدمة (موصلات محاكاة)" : "Per-service throttling (simulated connectors)"}</caption>
               <thead><tr className="text-xs text-muted"><th className="px-4 py-2 text-start font-medium">{ar ? "الخدمة" : "Service"}</th><th className="px-2 py-2 text-start font-medium">{ar ? "الموصل" : "Connector"}</th><th className="px-2 py-2 text-end font-medium">{ar ? "الحد المتفق عليه" : "Agreed limit"}</th><th className="px-2 py-2 text-end font-medium">{ar ? "الحد الفعلي الآن" : "Effective now"}</th><th className="px-4 py-2 text-start font-medium">{ar ? "الحالة" : "State"}</th></tr></thead>
@@ -177,7 +177,7 @@ export default function Operations() {
         {/* ---------- arithmetic */}
         <section aria-labelledby="math-h">
           <h2 id="math-h" className="text-xl font-semibold text-teal">{ar ? "ماذا تعني «مليون مهمة»" : "What one million tasks means"}</h2>
-          <div className="mt-3 overflow-x-auto rounded-2xl border border-line bg-white">
+          <div className="mt-3 overflow-x-auto rounded-2xl border border-line bg-white" tabIndex={0} role="region" aria-label={ar ? "جدول الحساب" : "Arithmetic table"}>
             <table className="w-full min-w-[480px] text-sm">
               <thead><tr className="text-xs text-muted"><th className="px-4 py-2 text-start font-medium">{ar ? "الحجم" : "Volume"}</th><th className="px-2 py-2 text-end font-medium">{ar ? "الحساب" : "Arithmetic"}</th><th className="px-4 py-2 text-end font-medium">{ar ? "مهام في الثانية" : "Tasks per second"}</th></tr></thead>
               <tbody>
@@ -285,7 +285,7 @@ export default function Operations() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+              <div className="overflow-x-auto rounded-2xl border border-line bg-white" tabIndex={0} role="region" aria-label={ar ? "جدول الجهات" : "Per-agency table"}>
                 <table className="w-full min-w-[640px] text-sm">
                   <caption className="px-4 pt-3 text-start font-medium text-teal">{ar ? "لكل جهة (محاكاة)" : "Per agency (simulated)"}</caption>
                   <thead><tr className="text-xs text-muted">{[ar ? "الجهة" : "Agency", ar ? "الحد" : "Limit", ar ? "الاستدعاءات" : "Calls", ar ? "مكتملة" : "Completed", ar ? "أقصى تراكم بسبب الحد" : "Peak throttled backlog", ar ? "إخفاقات" : "Failures", ar ? "مهلات" : "Timeouts", ar ? "متبقٍ" : "Left at end"].map((h, i) => <th key={h} className={`px-3 py-2 font-medium ${i ? "text-end" : "text-start"}`}>{h}</th>)}</tr></thead>
@@ -307,7 +307,7 @@ export default function Operations() {
               </div>
               <details className="rounded-2xl border border-line bg-white p-4">
                 <summary className="cursor-pointer font-medium text-teal">{ar ? "عينة من المغلّفات الافتراضية" : "Sample synthetic envelopes"}</summary>
-                <pre className="num-ltr mt-3 overflow-x-auto text-xs text-ink" dir="ltr">{JSON.stringify(r.sampleEnvelopes, null, 2)}</pre>
+                <pre className="num-ltr mt-3 overflow-x-auto text-xs text-ink" dir="ltr" tabIndex={0} aria-label={ar ? "عينة المغلّفات" : "Sample envelopes"}>{JSON.stringify(r.sampleEnvelopes, null, 2)}</pre>
               </details>
             </div>
           )}
