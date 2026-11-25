@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CircleNotchIcon, KeyIcon, ShieldCheckIcon } from "@phosphor-icons/react";
 import Grainient from "@/components/bits/Grainient";
+import BlurText from "@/components/bits/BlurText";
+import CodeSlots from "@/components/bits/CodeSlots";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -66,8 +68,8 @@ export default function Login() {
               </ul>
             </>
           ) : (
-            <div className="rise">
-              <button onClick={() => { setPicked(null); setCode(""); setErr(false); }} className="inline-flex min-h-11 items-center gap-1.5 text-sm text-green hover:underline">
+            <form className="rise" onSubmit={(e) => { e.preventDefault(); verify(); }}>
+              <button type="button" onClick={() => { setPicked(null); setCode(""); setErr(false); }} className="inline-flex min-h-11 items-center gap-1.5 text-sm text-green hover:underline">
                 <Back size={14} aria-hidden="true" /> {ar ? "تغيير الشخصية" : "Change persona"}
               </button>
               <h1 className="mt-2 text-3xl font-semibold text-teal">{ar ? "أدخل رمز التحقق" : "Enter your code"}</h1>
@@ -75,24 +77,26 @@ export default function Login() {
                 {ar ? "أرسلنا رمزًا لمرة واحدة إلى " : "We sent a one-time code to "}
                 <span className="font-semibold text-teal">{t(picked.name)}</span> · <span className="num-ltr">{picked.idNumber}</span>
               </p>
-              <label className="mt-6 block text-sm font-medium text-teal" htmlFor="otp">
-                {ar ? "رمز التحقق" : "One-time code"}
-              </label>
-              <input
-                id="otp"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                maxLength={6}
-                value={code}
-                onChange={(e) => { setCode(e.target.value.replace(/\D/g, "")); setErr(false); }}
-                onKeyDown={(e) => e.key === "Enter" && verify()}
-                aria-invalid={err}
-                className="num-ltr mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-center text-2xl tracking-[0.5em] text-teal outline-none focus:border-green"
-                placeholder="••••••"
-              />
+              <p className="mt-6 text-sm font-medium text-teal">{ar ? "رمز التحقق" : "One-time code"}</p>
+              {/* React Bits CodeSlots: six digit slots; digits read left to right in Arabic too */}
+              <div dir="ltr" className="mt-1.5 flex justify-center">
+                <CodeSlots
+                  value={code}
+                  onChange={(c) => { setCode(c.replace(/\D/g, "")); if (c) setErr(false); }} /* the slots empty themselves after an error; keep the message until the next digit */
+                  status={err ? "error" : "idle"}
+                  ariaLabel={ar ? "رمز التحقق" : "One-time code"}
+                  slotColor="#E4F1EB"
+                  accentColor="#123B3A"
+                  inkColor="#123B3A"
+                  digitColor="#FFFFFF"
+                  dangerColor="#B4463D"
+                  slotSize={48}
+                  gap={8}
+                />
+              </div>
               {err && <p className="mt-2 text-sm text-err" role="alert">{ar ? "الرمز غير صحيح." : "That code is not correct."}</p>}
               <button
-                onClick={verify}
+                type="submit"
                 disabled={code.length !== 6 || busy}
                 className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-teal px-5 py-3 font-semibold text-white transition hover:bg-teal-2 disabled:opacity-50"
               >
@@ -103,12 +107,13 @@ export default function Login() {
                 <span className="h-px flex-1 bg-line" /> {ar ? "أو" : "or"} <span className="h-px flex-1 bg-line" />
               </div>
               <button
-                onClick={() => setCode(DEMO_CODE)}
+                type="button"
+                onClick={() => { setCode(DEMO_CODE); setErr(false); }}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-teal transition hover:border-green"
               >
                 <KeyIcon size={16} aria-hidden="true" /> {ar ? "استخدم رمز العرض" : "Use demo code"} <span className="num-ltr font-mono">{DEMO_CODE}</span>
               </button>
-            </div>
+            </form>
           )}
           <p className="mt-6 text-sm text-muted">
             {ar
@@ -123,9 +128,12 @@ export default function Login() {
           <Grainient className="!absolute inset-0 -z-10" colors={["#0E2F2E", "#123B3A", "#1A5446"]} interactive={false} grainAmount={0.06} />
           <ShieldCheckIcon size={40} className="text-mint" aria-hidden="true" />
           <div>
-            <p className="text-2xl font-semibold leading-snug">
-              {ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}
-            </p>
+            <BlurText
+              key={ar ? "ar" : "en"}
+              className="text-2xl font-semibold leading-snug"
+              text={ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}
+              delay={50}
+            />
             <ul className="mt-6 space-y-3 text-mint">
               {(ar
                 ? ["سبع خدمات تجديد افتراضية", "دفعة واحدة، دون إعادة محاولة", "كل خطوة في سجل تدقيق موقّع"]
