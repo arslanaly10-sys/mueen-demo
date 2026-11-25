@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ArrowUUpLeftIcon, CheckIcon, CircleNotchIcon, WarningOctagonIcon, XIcon } from "@phosphor-icons/react";
 import { engine } from "@/lib/client";
-import { fmtTime } from "@/lib/i18n";
+import { fmtDate, fmtTime } from "@/lib/i18n";
 import { getPersona } from "@/lib/personas";
 import { SERVICE_MAP } from "@/lib/services";
 import { useStore } from "@/lib/store";
@@ -44,7 +44,7 @@ export function ReviewCase({ tx }: { tx: Transaction }) {
           <dt className="text-muted">{ar ? "مقدم الطلب" : "Requester"}</dt><dd className="text-ink">{t(persona?.name)} · <span className="num-ltr">{persona?.idNumber}</span></dd>
           <dt className="text-muted">{ar ? "صاحب السجل" : "Record"}</dt><dd className="text-ink">{target ? t(target.label) : tx.targetId}{target?.sublabel ? ` · ${t(target.sublabel)}` : ""}</dd>
           <dt className="text-muted">{ar ? "الجهة" : "Agency"}</dt><dd className="text-ink">{t(svc.agency)}</dd>
-          <dt className="text-muted">{ar ? "التفويض" : "Mandate"}</dt><dd className="text-ink">{mandate ? `${mandate.actions.join(", ")} · ${ar ? "ينتهي" : "expires"} ${fmtTime(mandate.expiresAt, lang)}${mandate.revokedAt ? (ar ? " · ملغى" : " · revoked") : ""}` : ar ? "غير موجود" : "None"}</dd>
+          <dt className="text-muted">{ar ? "التفويض" : "Mandate"}</dt><dd className="text-ink">{mandate ? `${mandate.actions.join(", ")} · ${ar ? "ينتهي" : "expires"} ${fmtDate(mandate.expiresAt, lang)} ${fmtTime(mandate.expiresAt, lang)}${mandate.revokedAt ? (ar ? " · ملغى" : " · revoked") : ""}` : ar ? "غير موجود" : "None"}</dd>
           <dt className="text-muted">{ar ? "سبب التصعيد" : "Escalation reason"}</dt><dd className="font-medium text-warn-ink">{t(tx.review?.reason ?? tx.history[tx.history.length - 1].note)}</dd>
         </dl>
         <div>

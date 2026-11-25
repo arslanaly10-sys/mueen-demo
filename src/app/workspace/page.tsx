@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChatTextIcon, DatabaseIcon, LayoutIcon, ShieldWarningIcon, SignOutIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { ChatTextIcon, LayoutIcon, ShieldWarningIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { AccountMenu } from "@/components/AccountMenu";
 import { ConsentGate } from "@/components/ConsentGate";
-import { endSession, SessionGuard } from "@/components/SessionGuard";
+import { SessionGuard } from "@/components/SessionGuard";
 import { AppNav } from "@/components/AppNav";
 import { LangToggle } from "@/components/LangToggle";
 import { Disclaimer } from "@/components/Disclaimer";
@@ -41,24 +42,7 @@ export default function Workspace() {
           <SquaresFourIcon size={15} aria-hidden="true" /> {t(T.openAdmin)}
         </Link>
         <LangToggle />
-        <div className="flex items-center gap-1 border-line sm:gap-2 sm:border-s sm:ps-3">
-          <Link href="/my-data" className="grid size-11 place-items-center rounded-full text-muted hover:bg-mint hover:text-teal" aria-label={lang === "ar" ? "بياناتي" : "My data"} title={lang === "ar" ? "بياناتي" : "My data"}>
-            <DatabaseIcon size={17} aria-hidden="true" />
-          </Link>
-          <span className="hidden size-8 place-items-center rounded-full bg-teal text-xs font-medium text-mint sm:grid" aria-hidden="true">{persona.initials}</span>
-          <span className="hidden text-sm leading-tight lg:block">
-            <span className="block font-medium text-teal">{t(persona.name)}</span>
-            <span className="block text-xs text-muted">{t(persona.nationalityLabel)}</span>
-          </span>
-          <button
-            onClick={async () => { await endSession(persona.id, "SIGNED_OUT"); router.push("/login"); }}
-            className="grid size-11 place-items-center rounded-full text-muted hover:bg-mint hover:text-teal"
-            aria-label={t(T.signOut)}
-            title={t(T.signOut)}
-          >
-            <SignOutIcon size={16} className="rtl:-scale-x-100" aria-hidden="true" />
-          </button>
-        </div>
+        <AccountMenu persona={persona} />
       </AppNav>
 
       <SessionGuard personaId={persona.id} />

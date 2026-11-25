@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { DownloadSimpleIcon, ProhibitIcon, TrashIcon } from "@phosphor-icons/react";
+import { AccountMenu } from "@/components/AccountMenu";
 import { AppNav } from "@/components/AppNav";
 import { Disclaimer } from "@/components/Disclaimer";
 import { LangToggle } from "@/components/LangToggle";
@@ -73,8 +74,8 @@ export default function MyData() {
   return (
     <div className="min-h-dvh">
       <AppNav menu>
-        <Link href="/workspace" className="rounded-full px-3 py-1.5 text-sm text-teal hover:bg-mint">{ar ? "مساحة المستفيد" : "Beneficiary view"}</Link>
         <LangToggle />
+        <AccountMenu persona={persona} />
       </AppNav>
       <SessionGuard personaId={pid} />
       <main className="wrap py-10">
