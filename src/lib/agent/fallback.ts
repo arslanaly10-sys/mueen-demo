@@ -59,7 +59,7 @@ function matchServices(text: string, lang: Lang): ServiceId[] {
   return ids;
 }
 
-function matchTarget(text: string, persona: Persona, serviceId: ServiceId): string | null {
+export function matchTarget(text: string, persona: Persona, serviceId: ServiceId): string | null {
   const svc = SERVICES.find((s) => s.id === serviceId)!;
   const targets = svc.targets(persona);
   if (targets.length === 1) return targets[0].id;

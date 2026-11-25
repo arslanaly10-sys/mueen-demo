@@ -59,3 +59,36 @@ export function verifyTx(tx: Transaction): boolean {
 }
 
 export const shortHash = (s: string) => hmac(s).slice(0, 10).toUpperCase();
+
+// ---------------------------------------------------------------- sessions and mandates
+
+const SESSION_MS = 30 * 60_000; // server-side expiry, renewed by each successful request
+
+/** A signed session: proves which synthetic person signed in, until it expires. It grants no authority by itself. */
+export function signSession(personaId: string): string {
+  const body = `${personaId}.${Date.now() + SESSION_MS}`;
+  return `${body}.${hmac("session:" + body)}`;
+}
+
+/** The persona a session belongs to, or null when it is forged or expired. */
+export function verifySession(token: string | undefined): string | null {
+  if (!token || typeof token !== "string") return null;
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  const [personaId, exp, sig] = parts;
+  if (hmac(`session:${personaId}.${exp}`) !== sig) return null;
+  return Number(exp) > Date.now() ? personaId : null;
+}
+
+/** Mandates are signed when granted or revoked, so a copy with a wider scope, later expiry or no revocation is rejected. */
+export function signMandate<M extends { sig?: string }>(m: M): M {
+  const { sig: _omit, ...rest } = m;
+  void _omit;
+  return { ...rest, sig: hmac("mandate:" + JSON.stringify(rest)) } as M;
+}
+
+export function verifyMandate(m: { sig?: string } | null | undefined): boolean {
+  if (!m) return true; // absence is handled by the policy engine (NO_MANDATE)
+  const { sig, ...rest } = m;
+  return !!sig && hmac("mandate:" + JSON.stringify(rest)) === sig;
+}

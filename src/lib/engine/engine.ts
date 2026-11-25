@@ -17,7 +17,7 @@ import { getPersona } from "../personas";
 import { SERVICE_MAP, type ServiceDef } from "../services";
 import { evaluate } from "./policy";
 import { canTransition, STATE_LABEL } from "./states";
-import { chain, shortHash, signTx, verifyTx, type NewEvent } from "./crypto";
+import { chain, shortHash, signMandate, signSession, signTx, verifyMandate, verifySession, verifyTx, type NewEvent } from "./crypto";
 import * as connectors from "./connectors";
 
 export type EngineAction =
@@ -52,6 +52,8 @@ export interface EngineRequest {
   adminEvent?: { type: string; summary: L; data?: Record<string, unknown> };
   injectionNote?: boolean;
   sessionEvent?: SessionEvent;
+  /** signed session from login; person-scoped actions act only for its persona */
+  session?: string;
   /** a human service officer's decision on a case in the review queue */
   review?: { decision: "approve" | "return" | "reject"; note?: string; officer?: string };
 }
@@ -91,6 +93,8 @@ function slotsFor(purpose: AppointmentPurpose): Slot[] {
 }
 
 export interface EngineResponse {
+  /** a renewed session token (the server-side session expires after 30 minutes without activity) */
+  session?: string;
   tx?: Transaction;
   slots?: Slot[];
   booking?: Booking;
@@ -193,10 +197,24 @@ const SESSION_SUMMARY: Record<SessionEvent, L> = {
   DATA_DELETED: { en: "Deleted their requests, authorities and conversation from this device", ar: "حذف طلباته وصلاحياته ومحادثته من هذا الجهاز" },
 };
 
+const PERSON_ACTIONS: EngineAction[] = ["grant", "revoke", "start", "confirm", "pay", "reconcile", "submit", "track", "cancel", "escalate", "session", "appointment"];
+
 export function runEngine(req: EngineRequest): EngineResponse {
   const events: NewEvent[] = [];
   const out: EngineResponse = { events: [] };
+  // the operator's hard stop lives on the server: a browser cannot leave it out of its request
+  if (process.env.PLATFORM_KILL_SWITCH === "1") req = { ...req, config: { ...req.config, killSwitch: true } };
   try {
+    if (PERSON_ACTIONS.includes(req.action)) {
+      // authentication: the session proves who is asking; it does not by itself authorise anything
+      const who = verifySession(req.session);
+      if (!who) throw new EngineError("SESSION_REQUIRED", { en: "Your session has ended. Sign in again to continue; nothing was sent.", ar: "انتهت جلستك. سجّل الدخول مجددًا للمتابعة؛ لم يُرسل أي شيء." });
+      const claimed = req.tx?.personaId ?? req.mandate?.personaId ?? req.personaId ?? who;
+      if (claimed !== who) throw new EngineError("WRONG_PERSON", { en: "This session cannot act for that person.", ar: "لا يمكن لهذه الجلسة التصرف عن هذا الشخص." });
+      req = { ...req, personaId: who };
+      if (!verifyMandate(req.mandate)) throw new EngineError("MANDATE_TAMPERED", { en: "This authority failed its integrity check and was rejected. Grant it again.", ar: "فشلت هذه الصلاحية في فحص السلامة ورُفضت. امنحها مجددًا." });
+      out.session = signSession(who);
+    }
     switch (req.action) {
       case "login": {
         const { persona } = ctx(req.personaId);
@@ -207,6 +225,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
           summary: { en: "Signed in with simulated national single sign-on + one-time code", ar: "تسجيل دخول عبر محاكاة النفاذ الوطني الموحد + رمز التحقق" },
           data: { method: "simulated-sso-otp" },
         });
+        out.session = signSession(persona.id);
         break;
       }
 
@@ -234,7 +253,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
           expiresAt: new Date(Date.now() + hours * 3600_000).toISOString(),
           ...(actions.includes("pay") && Number.isFinite(req.grant.spendLimit) ? { spendLimit: Math.min(Math.max(Math.round(req.grant.spendLimit!), 0), 10_000) } : {}),
         };
-        out.mandate = mandate;
+        out.mandate = signMandate(mandate);
         events.push({
           actor: "user",
           type: "MANDATE_GRANTED",
@@ -251,7 +270,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
       case "revoke": {
         const { persona } = ctx(req.personaId);
         if (!req.mandate) throw new EngineError("NO_MANDATE", { en: "No authority to revoke.", ar: "لا توجد صلاحية لإلغائها." });
-        out.mandate = { ...req.mandate, revokedAt: now() };
+        out.mandate = signMandate({ ...req.mandate, revokedAt: now() });
         events.push({
           actor: "user",
           type: "MANDATE_REVOKED",
@@ -505,6 +524,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
         const tx = requireTx(req);
         const { persona, service } = ctx(tx.personaId, tx.serviceId);
         const r = req.review;
+        if (!verifyMandate(req.mandate)) throw new EngineError("MANDATE_TAMPERED", { en: "The case's authority failed its integrity check.", ar: "فشلت صلاحية الحالة في فحص السلامة." });
         if (tx.state !== "HUMAN_REVIEW" || !r || !["approve", "return", "reject"].includes(r.decision))
           throw new EngineError("BAD_REVIEW", { en: "This case is not waiting for review.", ar: "هذه الحالة ليست بانتظار المراجعة." });
         // the officer's note is untrusted text: bounded, and carried as data, never as instructions

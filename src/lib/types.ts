@@ -137,6 +137,8 @@ export interface Mandate {
   revokedAt?: string;
   /** most the agent may pay under this mandate, in SAR; the policy engine blocks anything above */
   spendLimit?: number;
+  /** server HMAC; a copy with a wider scope, later expiry or no revocation fails it */
+  sig?: string;
 }
 
 export type ConnectorHealth = "up" | "degraded" | "down";

@@ -41,6 +41,8 @@ export const DEFAULT_CONFIG: AdminConfig = {
 interface State {
   lang: Lang;
   personaId: string | null;
+  /** signed session token from the server (demo: kept in this browser) */
+  session: string | null;
   audit: AuditEvent[];
   mandates: Mandate[];
   txs: Transaction[];
@@ -53,6 +55,7 @@ interface State {
   selectedTxId: string | null;
   setLang: (l: Lang) => void;
   setPersona: (id: string | null) => void;
+  setSession: (token: string | null) => void;
   appendAudit: (e: AuditEvent[]) => void;
   upsertTx: (tx: Transaction) => void;
   upsertMandate: (m: Mandate) => void;
@@ -74,6 +77,7 @@ export const useStore = create<State>()(
     (set) => ({
       lang: "ar",
       personaId: null,
+      session: null,
       audit: [],
       mandates: [],
       txs: [],
@@ -84,7 +88,8 @@ export const useStore = create<State>()(
       config: DEFAULT_CONFIG,
       selectedTxId: null,
       setLang: (lang) => set({ lang }),
-      setPersona: (personaId) => set({ personaId, selectedTxId: null }),
+      setPersona: (personaId) => set((s) => ({ personaId, selectedTxId: null, session: personaId ? s.session : null })),
+      setSession: (session) => set({ session }),
       appendAudit: (e) => set((s) => ({ audit: [...s.audit, ...e] })),
       upsertTx: (tx) =>
         set((s) => ({ txs: s.txs.some((t) => t.id === tx.id) ? s.txs.map((t) => (t.id === tx.id ? tx : t)) : [...s.txs, tx], selectedTxId: tx.id })),
