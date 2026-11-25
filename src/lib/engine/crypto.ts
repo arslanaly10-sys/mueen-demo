@@ -92,3 +92,17 @@ export function verifyMandate(m: { sig?: string } | null | undefined): boolean {
   const { sig, ...rest } = m;
   return !!sig && hmac("mandate:" + JSON.stringify(rest)) === sig;
 }
+
+const STEP_UP_MS = 5 * 60_000;
+
+/** Fresh re-verification for Tier 3 (submit) and Tier 4 (pay) approvals; short-lived on purpose. */
+export function signStepUp(personaId: string): string {
+  const body = `${personaId}.${Date.now() + STEP_UP_MS}`;
+  return `${body}.${hmac("stepup:" + body)}`;
+}
+
+export function verifyStepUp(token: string | undefined, personaId: string): boolean {
+  if (!token || typeof token !== "string") return false;
+  const [pid, exp, sig] = token.split(".");
+  return pid === personaId && hmac(`stepup:${pid}.${exp}`) === sig && Number(exp) > Date.now();
+}

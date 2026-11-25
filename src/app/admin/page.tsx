@@ -217,7 +217,7 @@ export default function Admin() {
                       </td>
                       <td className="px-2 py-3 text-muted">{t(svc.agency)}</td>
                       <td className="px-2 py-3">
-                        <StatusPill tone="plain">{lang === "ar" ? `المستوى ${fmtNum(svc.tier, lang)} · إرسال ودفع` : `Tier ${svc.tier} · submit & pay`}</StatusPill>
+                        <StatusPill tone="plain">{lang === "ar" ? `إرسال: المستوى ${fmtNum(3, lang)} · دفع: المستوى ${fmtNum(4, lang)}` : "Submit: Tier 3 · Pay: Tier 4"}</StatusPill>
                       </td>
                     </tr>
                   );

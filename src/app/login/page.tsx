@@ -39,7 +39,7 @@ export default function Login() {
     }
     setBusy(true);
     setPersona(picked.id);
-    await engine({ action: "login", personaId: picked.id }).catch(() => null);
+    await engine({ action: "login", personaId: picked.id, code }).catch(() => null);
     router.push("/workspace");
   }
 

@@ -17,7 +17,7 @@ import { getPersona } from "../personas";
 import { SERVICE_MAP, type ServiceDef } from "../services";
 import { evaluate } from "./policy";
 import { canTransition, STATE_LABEL } from "./states";
-import { chain, shortHash, signMandate, signSession, signTx, verifyMandate, verifySession, verifyTx, type NewEvent } from "./crypto";
+import { chain, shortHash, signMandate, signSession, signStepUp, signTx, verifyMandate, verifySession, verifyStepUp, verifyTx, type NewEvent } from "./crypto";
 import * as connectors from "./connectors";
 
 export type EngineAction =
@@ -25,6 +25,7 @@ export type EngineAction =
   | "session"
   | "review"
   | "appointment"
+  | "stepup"
   | "grant"
   | "revoke"
   | "start"
@@ -54,6 +55,10 @@ export interface EngineRequest {
   sessionEvent?: SessionEvent;
   /** signed session from login; person-scoped actions act only for its persona */
   session?: string;
+  /** a fresh step-up token, required for Tier 3 (submit) and Tier 4 (pay) approvals */
+  stepUp?: string;
+  /** the demo one-time code, checked by the server at login and step-up (never a real credential) */
+  code?: string;
   /** a human service officer's decision on a case in the review queue */
   review?: { decision: "approve" | "return" | "reject"; note?: string; officer?: string };
 }
@@ -95,6 +100,7 @@ function slotsFor(purpose: AppointmentPurpose): Slot[] {
 export interface EngineResponse {
   /** a renewed session token (the server-side session expires after 30 minutes without activity) */
   session?: string;
+  stepUp?: string;
   tx?: Transaction;
   slots?: Slot[];
   booking?: Booking;
@@ -197,7 +203,24 @@ const SESSION_SUMMARY: Record<SessionEvent, L> = {
   DATA_DELETED: { en: "Deleted their requests, authorities and conversation from this device", ar: "حذف طلباته وصلاحياته ومحادثته من هذا الجهاز" },
 };
 
-const PERSON_ACTIONS: EngineAction[] = ["grant", "revoke", "start", "confirm", "pay", "reconcile", "submit", "track", "cancel", "escalate", "session", "appointment"];
+const PERSON_ACTIONS: EngineAction[] = ["grant", "revoke", "start", "confirm", "pay", "reconcile", "submit", "track", "cancel", "escalate", "session", "appointment", "stepup"];
+
+// the demo's one-time code; a real deployment verifies through the national identity platform instead
+const DEMO_CODE = "246810";
+const APPROVAL_WINDOW_MS = 15 * 60_000;
+const openApprovalWindow = (tx: Transaction) => { tx.approvalExpiresAt = new Date(Date.now() + APPROVAL_WINDOW_MS).toISOString(); };
+
+/** Tier 3 and 4 approvals need a fresh step-up and an open approval window. */
+function approvalGate(tx: Transaction, req: EngineRequest, events: NewEvent[]): boolean {
+  if (!verifyStepUp(req.stepUp, tx.personaId))
+    throw new EngineError("STEP_UP_REQUIRED", { en: "Confirm it's you before approving. Nothing was sent.", ar: "أكّد هويتك قبل الموافقة. لم يُرسل أي شيء." });
+  if (tx.approvalExpiresAt && new Date(tx.approvalExpiresAt).getTime() < Date.now()) {
+    tx.blocker = { reason: { en: "The approval window closed after 15 minutes, so the checks must run again before anything is sent.", ar: "أُغلقت نافذة الموافقة بعد 15 دقيقة، فيجب إعادة الفحوص قبل إرسال أي شيء." }, nextStep: { en: "Ask again to re-run the checks.", ar: "اطلب مجددًا لإعادة الفحوص." } };
+    move(tx, "BLOCKED", { en: "Approval window expired; nothing was sent", ar: "انتهت نافذة الموافقة؛ لم يُرسل أي شيء" }, events);
+    return false;
+  }
+  return true;
+}
 
 export function runEngine(req: EngineRequest): EngineResponse {
   const events: NewEvent[] = [];
@@ -218,6 +241,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
     switch (req.action) {
       case "login": {
         const { persona } = ctx(req.personaId);
+        if (req.code !== DEMO_CODE) throw new EngineError("BAD_CODE", { en: "That code is not correct. Enter the 6 digits again or use the demo code.", ar: "الرمز غير صحيح. أدخل الأرقام الستة مرة أخرى أو استخدم رمز العرض." });
         events.push({
           actor: "system",
           type: "IDENTITY_VERIFIED",
@@ -352,9 +376,18 @@ export function runEngine(req: EngineRequest): EngineResponse {
           move(tx, "HUMAN_REVIEW", { en: "Unverified information — human review", ar: "معلومات غير موثقة — مراجعة بشرية" }, events);
         } else if (policyGate(tx, persona, service, req.mandate, "prepare", req.config, events)) {
           buildPreview(tx, persona, service);
-          move(tx, "PREPARED", { en: "Request prepared — nothing has been sent", ar: "تم تجهيز الطلب — لم يُرسل أي شيء" }, events);
+          openApprovalWindow(tx);
+            move(tx, "PREPARED", { en: "Request prepared — nothing has been sent", ar: "تم تجهيز الطلب — لم يُرسل أي شيء" }, events);
         }
         out.tx = signTx(tx);
+        break;
+      }
+
+      case "stepup": {
+        const { persona } = ctx(req.personaId);
+        if (req.code !== DEMO_CODE) throw new EngineError("BAD_CODE", { en: "That code is not correct. Enter the 6 digits again or use the demo code.", ar: "الرمز غير صحيح. أدخل الأرقام الستة مرة أخرى أو استخدم رمز العرض." });
+        out.stepUp = signStepUp(persona.id);
+        events.push({ actor: "user", type: "STEP_UP_VERIFIED", personaId: persona.id, summary: { en: "Re-verified identity for a Tier 3/4 approval (simulated, 5 minutes)", ar: "أعاد التحقق من الهوية لموافقة من المستوى 3 أو 4 (محاكاة، 5 دقائق)" }, data: { method: "simulated-otp" } });
         break;
       }
 
@@ -362,6 +395,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
         const tx = requireTx(req);
         const { persona, service } = ctx(tx.personaId, tx.serviceId);
         if (tx.state !== "PREPARED") throw new EngineError("BAD_STATE", { en: "This request is not awaiting approval.", ar: "هذا الطلب لا ينتظر الموافقة." });
+        if (!approvalGate(tx, req, events)) { out.tx = signTx(tx); break; }
         if (typeof req.durationIndex === "number" && service.durations[req.durationIndex]) tx.durationIndex = req.durationIndex;
         if (policyGate(tx, persona, service, req.mandate, "submit", req.config, events)) {
           buildPreview(tx, persona, service);
@@ -374,6 +408,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
             data: { fields: tx.preview!.fields.map((f) => f.label.en), fee: tx.preview!.fee },
           });
           move(tx, "USER_CONFIRMED", { en: "You approved the details. Payment needs a separate approval.", ar: "وافقت على التفاصيل. الدفع يحتاج موافقة مستقلة." }, events);
+          openApprovalWindow(tx);
         }
         out.tx = signTx(tx);
         break;
@@ -383,6 +418,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
         const tx = requireTx(req);
         const { persona, service } = ctx(tx.personaId, tx.serviceId);
         if (tx.state !== "USER_CONFIRMED") throw new EngineError("BAD_STATE", { en: "Payment is not expected at this step.", ar: "الدفع غير متوقع في هذه المرحلة." });
+        if (!approvalGate(tx, req, events)) { out.tx = signTx(tx); break; }
         if (tx.payment && tx.payment.status !== "pending")
           throw new EngineError("DUPLICATE_PAYMENT", { en: "A payment already exists for this request. It will not be repeated.", ar: "يوجد دفع سابق لهذا الطلب، ولن يُكرر." });
         if (!policyGate(tx, persona, service, req.mandate, "pay", req.config, events)) {
@@ -550,6 +586,7 @@ export function runEngine(req: EngineRequest): EngineResponse {
           tx.blocker = undefined;
           if (policyGate(tx, persona, service, req.mandate, "prepare", req.config, events)) {
             buildPreview(tx, persona, service);
+            openApprovalWindow(tx);
             move(tx, "PREPARED", { en: "Officer verified the case. Waiting for your approval; nothing has been sent", ar: "تحقق الموظف من الحالة. بانتظار موافقتك؛ لم يُرسل أي شيء" }, events);
           }
         } else if (r.decision === "return") {

@@ -43,6 +43,8 @@ interface State {
   personaId: string | null;
   /** signed session token from the server (demo: kept in this browser) */
   session: string | null;
+  /** short-lived step-up token for Tier 3/4 approvals */
+  stepUp: string | null;
   audit: AuditEvent[];
   mandates: Mandate[];
   txs: Transaction[];
@@ -56,6 +58,7 @@ interface State {
   setLang: (l: Lang) => void;
   setPersona: (id: string | null) => void;
   setSession: (token: string | null) => void;
+  setStepUp: (token: string | null) => void;
   appendAudit: (e: AuditEvent[]) => void;
   upsertTx: (tx: Transaction) => void;
   upsertMandate: (m: Mandate) => void;
@@ -78,6 +81,7 @@ export const useStore = create<State>()(
       lang: "ar",
       personaId: null,
       session: null,
+      stepUp: null,
       audit: [],
       mandates: [],
       txs: [],
@@ -88,8 +92,9 @@ export const useStore = create<State>()(
       config: DEFAULT_CONFIG,
       selectedTxId: null,
       setLang: (lang) => set({ lang }),
-      setPersona: (personaId) => set((s) => ({ personaId, selectedTxId: null, session: personaId ? s.session : null })),
+      setPersona: (personaId) => set((s) => ({ personaId, selectedTxId: null, session: personaId ? s.session : null, stepUp: null })),
       setSession: (session) => set({ session }),
+      setStepUp: (stepUp) => set({ stepUp }),
       appendAudit: (e) => set((s) => ({ audit: [...s.audit, ...e] })),
       upsertTx: (tx) =>
         set((s) => ({ txs: s.txs.some((t) => t.id === tx.id) ? s.txs.map((t) => (t.id === tx.id ? tx : t)) : [...s.txs, tx], selectedTxId: tx.id })),

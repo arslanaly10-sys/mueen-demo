@@ -4,7 +4,7 @@ import { ArrowsClockwiseIcon, BellIcon, CheckCircleIcon, CircleNotchIcon, ClockI
 import { useStore, uid } from "@/lib/store";
 import { getPersona } from "@/lib/personas";
 import { SERVICES, SERVICE_MAP, daysUntil } from "@/lib/services";
-import { T, fmtDate, fmtDaysLeft, fmtDuration, fmtSAR, fmtHijri } from "@/lib/i18n";
+import { T, fmtDate, fmtDaysLeft, fmtDuration, fmtSAR, fmtHijri, fmtTime } from "@/lib/i18n";
 import { ACTION_LABEL } from "@/lib/engine/policy";
 import { brandStatus } from "@/lib/engine/states";
 import type { Action, Intent, L, ServiceId, Transaction } from "@/lib/types";
@@ -12,6 +12,7 @@ import { ServiceIcon } from "../ServiceIcon";
 import { StatusPill } from "../StatusPill";
 import { useT } from "../useT";
 import * as agent from "./agent";
+import { useStepUp } from "./StepUp";
 
 export function Card({ children, accent = "line" }: { children: React.ReactNode; accent?: "line" | "green" | "warn" | "err" }) {
   const border = { line: "border-line", green: "border-green/40", warn: "border-warn/40", err: "border-err/40" }[accent];
@@ -427,7 +428,12 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
   const selectTx = useStore((s) => s.selectTx);
   const [durationIndex, setDurationIndex] = useState(0);
   const { busy, run } = useBusy();
+  const stepUp = useStepUp(personaId);
   if (!tx) return null;
+  const windowNote = (tier: 3 | 4) =>
+    lang === "ar"
+      ? `موافقة من المستوى ${tier}: تتحقق من هويتك أولًا${tx.approvalExpiresAt ? `، وتُغلق النافذة ${fmtTime(tx.approvalExpiresAt, lang)}` : ""}.`
+      : `Tier ${tier} approval: you confirm it's you first${tx.approvalExpiresAt ? `; the window closes at ${fmtTime(tx.approvalExpiresAt, lang)}` : ""}.`;
   const persona = getPersona(personaId)!;
   const svc = SERVICE_MAP[tx.serviceId];
   const target = svc.targets(persona).find((x) => x.id === tx.targetId);
@@ -437,6 +443,7 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
 
   return (
     <Card accent={accent}>
+      {stepUp.dialog}
       <button className="w-full text-start" onClick={() => selectTx(tx.id)} aria-label={lang === "ar" ? "عرض المسار" : "Show timeline"}>
         <CardHead
           icon={<ServiceIcon id={svc.id} />}
@@ -478,8 +485,9 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
               </div>
             </fieldset>
           )}
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Btn busy={busy} onClick={() => run(() => agent.approveDetails(tx, durationIndex))}>
+          <p className="mt-3 text-xs text-muted">{windowNote(3)}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Btn busy={busy} onClick={() => run(async () => { if (await stepUp.ensure()) await agent.approveDetails(tx, durationIndex); })}>
               <CheckCircleIcon size={16} aria-hidden="true" /> {t(T.approveDetails)}
             </Btn>
             <Btn variant="ghost" disabled={busy} onClick={() => run(() => agent.cancelTx(tx))}>
@@ -501,8 +509,9 @@ export function TxCard({ personaId, txId }: { personaId: string; txId: string })
             <KV k={t(T.duration)} v={fmtDuration(tx.preview.duration, lang)} />
           </dl>
           <p className="mt-2 text-xs text-muted">{t(T.simulatedPayment)}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Btn busy={busy} onClick={() => run(() => agent.approvePayment(tx))}>
+          <p className="mt-3 text-xs text-muted">{windowNote(4)}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Btn busy={busy} onClick={() => run(async () => { if (await stepUp.ensure()) await agent.approvePayment(tx); })}>
               <CreditCardIcon size={16} aria-hidden="true" /> {t(T.approvePay)} {fmtSAR(tx.preview.fee, lang)}
             </Btn>
             <Btn variant="ghost" disabled={busy} onClick={() => run(() => agent.cancelTx(tx))}>

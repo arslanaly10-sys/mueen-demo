@@ -10,7 +10,7 @@ export async function engine(req: Omit<EngineRequest, "auditHead" | "config">): 
   const res = await fetch("/api/tx", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ ...req, session: s.session ?? undefined, auditHead: last ? { seq: last.seq, hash: last.hash } : null, config: s.config }),
+    body: JSON.stringify({ ...req, session: s.session ?? undefined, stepUp: s.stepUp ?? undefined, auditHead: last ? { seq: last.seq, hash: last.hash } : null, config: s.config }),
   });
   if (!res.ok) throw new Error("engine_http_" + res.status);
   const data = (await res.json()) as EngineResponse;
@@ -19,6 +19,7 @@ export async function engine(req: Omit<EngineRequest, "auditHead" | "config">): 
   if (data.tx) st.upsertTx(data.tx);
   if (data.mandate) st.upsertMandate(data.mandate);
   if (data.session) st.setSession(data.session);
+  if (data.stepUp) st.setStepUp(data.stepUp);
   return data;
 }
 

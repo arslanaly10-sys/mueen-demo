@@ -205,6 +205,8 @@ export interface Transaction {
     agency: L;
   };
   blocker?: { reason: L; nextStep?: L };
+  /** the open approval (submission or payment) must be given before this time, or the checks run again */
+  approvalExpiresAt?: string;
   review?: { reason: L; caseId: string };
   createdAt: string;
   updatedAt: string;
