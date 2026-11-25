@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MUEEN: AI agent for Saudi government renewals</title>
+<title>Saudi Government AI Services Platform: a governed agent for public services</title>
 <meta name="description" content="A concept demo of a governed AI agent that renews seven Saudi government documents, with your approval before every submission and payment.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="MUEEN: AI agent for Saudi government renewals">
+<meta property="og:title" content="Saudi Government AI Services Platform: a governed agent for public services">
 <meta property="og:description" content="A concept demo of a governed AI agent that renews seven Saudi government documents, with your approval at every step.">
 <meta property="og:image" content="share.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -62,6 +62,9 @@
   @media (min-width: 640px) and (max-width: 1023px) { #how { --h: 2 } }
   .nav__actions button.nav__link { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
   .close__word { line-height: 1.04; }
+  .nav__bar > .nav__logo > span { font-size: 16px; font-weight: 600; }
+  @media (max-width: 1199px) { .nav__bar > .nav__logo > span { display: none; } } /* the mark alone below 1200px; the link keeps its full name */
+  @media (max-width: 639px) { html[lang="ar"] .close__word { font-size: clamp(36px, 11vw, 96px); } } /* the two-word Arabic name on one line at phone width */
   @media (max-width: 639px) { #how .panel { --p-h: 290px; } #controls .panel { --p-h: 160px; } #controls .ui-chat__day { display: none; } }
   .hero__window > .app { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
   .app > .app__pane { min-width: 0; }
@@ -84,7 +87,7 @@
 </head>
 <body>
 <!-- type: software (site-kind software, page-type software)
-     deal: hero centred (the MUEEN window; chosen with the client from the supahero.io pattern of product heroes), nav nav-mega (a navbar.gallery mega-menu pattern, chosen with the client),
+     deal: hero centred (the platform window; chosen with the client from the supahero.io pattern of product heroes), nav nav-mega (a navbar.gallery mega-menu pattern, chosen with the client),
            close close-word, footer footer-statement, rhythm surface-pairs, buttons pill, mark: the client's own doorway logo,
            palette: the client's own colours (start.mjs brand), pairing host (+ Noto Sans Arabic for the Arabic page)
      moments: line-carries-colour on #controls (the one .ground-surface band) -->
@@ -92,9 +95,9 @@
 <header class="nav">
   <div class="wrap nav__bar">
     <a class="skip-link" href="#top" data-ar="تخطَّ إلى المحتوى">Skip to content</a>
-    <a class="nav__logo" href="#top" aria-label="MUEEN, home" data-ar-aria="مُعين، الصفحة الرئيسية">
+    <a class="nav__logo" href="#top" aria-label="Saudi Government AI Services Platform, home" data-ar-aria="منصة الخدمات الحكومية بالذكاء الاصطناعي، الصفحة الرئيسية">
       <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#123B3A"/><path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#E4F1EB" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="25" r="2.4" fill="#C6A96B"/><circle cx="16" cy="8" r="2.4" fill="#E4F1EB"/><circle cx="23" cy="25" r="2.4" fill="#187A62" stroke="#E4F1EB" stroke-width="1.2"/></svg>
-      <span data-ar="مُعين">MUEEN</span>
+      <span data-ar="منصة الخدمات الحكومية بالذكاء الاصطناعي">Saudi Government AI Services Platform</span>
     </a>
     <nav class="nav__links" aria-label="Main" data-ar-aria="القائمة الرئيسية">
       <div class="nav__item"><a class="nav__link" href="#how" data-ar="الخطوات">Steps</a></div>
@@ -145,21 +148,21 @@
   <section class="hero hero--centred" data-enter aria-labelledby="hero-h">
     <div class="wrap"><div class="hero-text">
       <div class="hero__c">
-        <a class="pill" href="#questions"><span data-ar="مفهوم للنقاش">Concept for discussion</span><span class="muted" data-ar="سبع خدمات، بيانات افتراضية">7 services, synthetic data</span></a>
-        <h1 id="hero-h" data-ar="وكيل ذكي لتجديد الوثائق في السعودية">AI agent for Saudi renewals</h1>
-        <p class="hero__lead" data-ar="يتحقق من شروط كل جهة، ويستأذنك قبل أي إرسال أو دفع، ويعرض الإيصال. نموذج مفاهيمي لسبع خدمات حكومية.">It checks each agency’s rules, asks before it submits or pays, and shows the receipt. A concept demo of 7 government services.</p>
+        <a class="pill" href="#questions"><span data-ar="مفهوم للنقاش">Concept for discussion</span><span class="muted" data-ar="منصة الخدمات الحكومية بالذكاء الاصطناعي">Saudi Government AI Services Platform</span></a>
+        <h1 id="hero-h" data-ar="وكيل واحد محكوم للخدمات الحكومية السعودية">One governed agent for Saudi public services</h1>
+        <p class="hero__lead" data-ar="يخطّط طلبك عبر الجهات، ويتحقق من قواعد كل جهة، ويستأذنك قبل أي إرسال أو دفع، ويعيد الإيصال الرسمي. القرار والسجل يبقيان لدى الجهة.">It plans your request across agencies, checks each rule, asks before it submits or pays, and returns the official receipt. Agencies keep every decision.</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="/login"><span data-ar="ابدأ تجديدًا تجريبيًا">Start a demo renewal</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
           <a class="btn btn--secondary" href="/admin" data-ar="اطّلع على لوحة الحوكمة">See the governance console</a>
         </div>
       </div>
-      <div class="hero__window" role="group" aria-label="MUEEN checking a domestic worker's iqama renewal with Passports and asking for approval before it submits" data-ar-aria="مُعين يتحقق من تجديد إقامة عاملة منزلية لدى الجوازات ويطلب الموافقة قبل الإرسال">
+      <div class="hero__window" role="group" aria-label="The agent checking a domestic worker's iqama renewal with Passports and asking for approval before it submits" data-ar-aria="الوكيل يتحقق من تجديد إقامة عاملة منزلية لدى الجوازات ويطلب الموافقة قبل الإرسال">
         <div class="ly-piece app" data-ui-pause-host>
         <div class="app__pane app__pane--list" aria-hidden="true">
           <div class="ui ui-panel ui-win" data-ui="window" data-open="Waiting" data-work="Checking" data-done="Confirmed">
             <div class="ui-win__bar">
               <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-win__crumb"><span data-ar="مُعين">MUEEN</span> <i>/</i> <b data-ar="الطلبات">Requests</b></span>
+              <span class="ui-win__crumb"><span data-ar="الوكيل">Agent</span> <i>/</i> <b data-ar="الطلبات">Requests</b></span>
               <span class="ui-spacer"></span>
               <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph" data-ar="بحث">Search</span><span class="ui-kbd">/</span></span>
             </div>
@@ -194,7 +197,7 @@
           <div class="ui ui-panel ui-chat" data-ui="chat">
             <div class="ui-head">
               <span class="ui-agent" aria-hidden="true"></span>
-              <div class="ui-title" data-ar="مُعين">MUEEN</div>
+              <div class="ui-title" data-ar="الوكيل">Agent</div>
               <span class="ui-chat__online" data-ar="متصل">Online</span>
               <span class="ui-spacer"></span>
             </div>
@@ -241,7 +244,7 @@
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px" data-ui-loop>
               <div class="ui ui-panel ui-apps" data-ui="integrations" inert>
-                <div class="ui-head"><div class="ui-title" data-ar="ما يُسمح لمُعين به">What MUEEN may do</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count data-ar="3 مسموحة">3 allowed</div></div>
+                <div class="ui-head"><div class="ui-title" data-ar="ما يُسمح للوكيل به">What the agent may do</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count data-ar="3 مسموحة">3 allowed</div></div>
                 <ul class="ui-apps__list">
                   <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 256 256" aria-hidden="true"><!-- Phosphor file-magnifying-glass, duotone (MIT) --><path d="M208,88H152V32Z" opacity="0.2"/><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-45.54-48.85a36.05,36.05,0,1,0-11.31,11.31l11.19,11.2a8,8,0,0,0,11.32-11.32ZM104,148a20,20,0,1,1,20,20A20,20,0,0,1,104,148Z"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="قراءة السجلات">Read records</span><span class="ui-app__sub" data-ar="الرخصة، المخالفات، الفحص الطبي">Licence, fines, medical exam</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
                   <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 256 256" aria-hidden="true"><!-- Phosphor note-pencil, duotone (MIT) --><path d="M200,88l-72,72H96V128l72-72Z" opacity="0.2"/><path d="M229.66,58.34l-32-32a8,8,0,0,0-11.32,0l-96,96A8,8,0,0,0,88,128v32a8,8,0,0,0,8,8h32a8,8,0,0,0,5.66-2.34l96-96A8,8,0,0,0,229.66,58.34ZM124.69,152H104V131.31l64-64L188.69,88ZM200,76.69,179.31,56,192,43.31,212.69,64ZM224,128v80a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32h80a8,8,0,0,1,0,16H48V208H208V128a8,8,0,0,1,16,0Z"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="تجهيز الطلب">Prepare the request</span><span class="ui-app__sub" data-ar="لا يُرسل شيء بعد">Nothing is sent yet</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
@@ -254,7 +257,7 @@
         </article>
         <article class="card card--row card--open span-4">
           <span class="step-num">2</span>
-          <h3 data-ar="تحقّق من شروط التجديد">Check the renewal rules</h3>
+          <h3 data-ar="تحقّق من سجل المرور">Check Traffic’s record</h3>
           <p data-ar="قراءة فقط من سجل الجهة: الفحص الطبي، والمخالفات، وفترة التجديد.">Read-only checks against the agency’s record: medical exam, fines, the renewal window.</p>
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:340px;--ax:max(24px, 50% - 170px);--ay:40px;--ay-sm:24px">
@@ -334,7 +337,7 @@
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:400px;--ax:max(24px, 50% - 200px);--ay:40px;--ay-sm:24px">
               <div class="ui ui-panel ui-chat" data-ui="chat">
-                <div class="ui-head"><span class="ui-agent" aria-hidden="true"></span><div class="ui-title" data-ar="مُعين">MUEEN</div><span class="ui-chat__online" data-ar="متصل">Online</span><span class="ui-spacer"></span></div>
+                <div class="ui-head"><span class="ui-agent" aria-hidden="true"></span><div class="ui-title" data-ar="الوكيل">Agent</div><span class="ui-chat__online" data-ar="متصل">Online</span><span class="ui-spacer"></span></div>
                 <div class="ui-chat__body">
                   <div class="ui-chat__day" data-ar="اليوم، 10:12">Today, 10:12</div>
                   <div class="ui-msg ui-msg--me" data-chat-q><span class="ui-msg__text" data-ar="جدّد إقامة لاكشمي.">Renew Lakshmi’s iqama.</span></div>
@@ -383,9 +386,9 @@
         <div class="faq span-6 start-7">
           <div class="faq__item"><h3 data-ar="هل هذه خدمة حكومية رسمية؟">Is this an official government service?</h3><p data-ar="لا. هذا مفهوم مستقل للنقاش، غير مرتبط بأي نظام حكومي، وكل السجلات فيه افتراضية.">No. It is an independent concept for discussion, not connected to any government system. Every record in it is synthetic.</p></div>
           <div class="faq__item"><h3 data-ar="هل يرى الوكيل كلمة مروري أو رموز التحقق؟">Does the agent see my password or codes?</h3><p data-ar="لا. يحصل الوكيل على صلاحية محددة بوقت، لا على كلمة المرور أو الرموز أو الجلسة.">No. The agent gets a time-limited mandate, never your password, one-time codes or session.</p></div>
+          <div class="faq__item"><h3 data-ar="هل يحل هذا محل أبشر أو توكلنا؟">Does this replace Absher or Tawakkalna?</h3><p data-ar="لا. هو طبقة تنسيق فوق الخدمات القائمة. الهوية والأهلية والرسوم والقرار والسجل الرسمي تبقى لدى الجهة المالكة لكل خدمة.">No. It is a coordination layer over existing services. Identity, eligibility, fees, the decision and the official record stay with the agency that owns each service.</p></div>
           <div class="faq__item"><h3 data-ar="هل يمكن للوكيل الدفع دون أن يسألني؟">Can the agent pay without asking me?</h3><p data-ar="لا. التفاصيل والدفع موافقتان منفصلتان، وكل منهما تعرض المبلغ والجهة المستفيدة بدقة.">No. The details and the payment are two separate approvals, each showing the exact amount and who receives it.</p></div>
-          <div class="faq__item"><h3 data-ar="ماذا لو انقطع دفع التجديد؟">What if a renewal payment times out?</h3><p data-ar="يعتبر الحالة مجهولة ويسأل جهة الدفع، ولا يدفع مرتين ليعرف.">It marks the status unknown and asks the payment authority. It never pays twice to find out.</p></div>
-          <div class="faq__item"><h3 data-ar="هل يمكنني سحب صلاحية الوكيل؟">Can I take the agent’s authority back?</h3><p data-ar="نعم، في أي وقت. تُمنع الخطوة التالية تحت تلك الصلاحية.">Yes, at any time. The next step under that mandate is blocked.</p></div>
+                    <div class="faq__item"><h3 data-ar="هل يمكنني سحب صلاحية الوكيل؟">Can I take the agent’s authority back?</h3><p data-ar="نعم، في أي وقت. تُمنع الخطوة التالية تحت تلك الصلاحية.">Yes, at any time. The next step under that mandate is blocked.</p></div>
           
         <div class="faq__item"><h3 data-ar="بأي لغة يتحدث الوكيل؟">Which languages does the agent speak?</h3><p data-ar="العربية والإنجليزية، كتابةً أو صوتًا في متصفحي كروم وإيدج.">Arabic and English, by text or by voice in Chrome and Edge.</p></div>
         </div>
@@ -396,7 +399,7 @@
   <section class="section" id="services" aria-labelledby="services-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="services-h"><span data-ar="خدماتك الحكومية، بخطوات أوضح.">Your services, clearly connected.</span> <span class="muted" data-ar="سبع خدمات تجديد لدى خمس جهات.">Seven renewals across five government bodies.</span></h2>
+        <h2 id="services-h"><span data-ar="سبع خدمات تجديد، وثلاث رحلات أخرى.">Seven renewals, and three more journeys.</span> <span class="muted" data-ar="كل جهة تبقى صاحبة خدمتها.">Each agency keeps its service.</span></h2>
       </div>
       <div class="grid grid--top">
         <ul class="rows span-5">
@@ -405,8 +408,11 @@
           <li><span class="rows__name" data-ar="وزارة الموارد البشرية">Human Resources ministry</span><span class="rows__value" data-ar="رخصة العمل">Work permit</span></li>
           <li><span class="rows__name" data-ar="وزارة البلديات والإسكان">Municipalities ministry</span><span class="rows__value" data-ar="الشهادة الصحية">Health certificate</span></li>
           <li><span class="rows__name" data-ar="وزارة التجارة">Ministry of Commerce</span><span class="rows__value" data-ar="الترخيص الاستشاري">Consulting licence</span></li>
+          <li><span class="rows__name" data-ar="رحلة حياتية عبر الجهات">Life event across agencies</span><span class="rows__value" data-ar="توظيف عاملة منزلية">Hiring a domestic worker</span></li>
+          <li><span class="rows__name" data-ar="خدمة غير التجديد">Beyond renewals</span><span class="rows__value" data-ar="حجز موعد صحي">Booking a health appointment</span></li>
+          <li><span class="rows__name" data-ar="لأصحاب العمل">For employers</span><span class="rows__value" data-ar="قائمة تجديد لكل عامل">A renewal queue per worker</span></li>
         </ul>
-        <div class="panel span-6 start-7"><div class="dg" data-diagram><script type="application/json">{"layout": "hub", "alt": "MUEEN in the centre, connected to seven renewal services: driving licence, Istimara, passport, domestic-worker iqama, work permit, health certificate and consulting licence.", "center": {"label": "MUEEN"}, "spokes": [{"label": "Driving licence"}, {"label": "Istimara"}, {"label": "Passport"}, {"label": "Iqama"}, {"label": "Work permit"}, {"label": "Health certificate"}, {"label": "Consulting licence"}], "motion": {"pulse": "none"}}</script><script type="application/json" data-ar-json>{"layout": "hub", "alt": "مُعين في المركز، متصل بسبع خدمات تجديد: رخصة القيادة، الاستمارة، الجواز، إقامة العمالة المنزلية، رخصة العمل، الشهادة الصحية، والترخيص الاستشاري.", "center": {"label": "مُعين"}, "spokes": [{"label": "رخصة القيادة"}, {"label": "الاستمارة"}, {"label": "الجواز"}, {"label": "الإقامة"}, {"label": "رخصة العمل"}, {"label": "الشهادة الصحية"}, {"label": "الترخيص الاستشاري"}], "motion": {"pulse": "none"}}</script></div></div>
+        <div class="panel span-6 start-7"><div class="dg" data-diagram><script type="application/json">{"layout": "hub", "alt": "The agent in the centre, connected to seven renewal services: driving licence, Istimara, passport, domestic-worker iqama, work permit, health certificate and consulting licence.", "center": {"label": "Agent"}, "spokes": [{"label": "Driving licence"}, {"label": "Istimara"}, {"label": "Passport"}, {"label": "Iqama"}, {"label": "Work permit"}, {"label": "Health certificate"}, {"label": "Consulting licence"}], "motion": {"pulse": "none"}}</script><script type="application/json" data-ar-json>{"layout": "hub", "alt": "الوكيل في المركز، متصل بسبع خدمات تجديد: رخصة القيادة، الاستمارة، الجواز، إقامة العمالة المنزلية، رخصة العمل، الشهادة الصحية، والترخيص الاستشاري.", "center": {"label": "الوكيل"}, "spokes": [{"label": "رخصة القيادة"}, {"label": "الاستمارة"}, {"label": "الجواز"}, {"label": "الإقامة"}, {"label": "رخصة العمل"}, {"label": "الشهادة الصحية"}, {"label": "الترخيص الاستشاري"}], "motion": {"pulse": "none"}}</script></div></div>
       </div>
     </div>
   </section>
@@ -417,15 +423,15 @@
   <div class="wrap">
     <div class="closing__cta close--word">
       <div class="section-head--split">
-        <div><h2 id="close-h" data-ar="جدّد وثيقة مع مُعين">Renew a document with MUEEN</h2><p class="t-lead" data-ar="اختر إحدى خمس شخصيات افتراضية. لا حاجة إلى حساب، ولا يصل أي شيء إلى جهة حقيقية.">Pick one of five synthetic personas. No account needed, and nothing reaches a real agency.</p></div>
+        <div><h2 id="close-h" data-ar="جدّد وثيقة، بموافقتك في كل خطوة">Renew a document, approving each step</h2><p class="t-lead" data-ar="اختر إحدى خمس شخصيات افتراضية. لا حاجة إلى حساب، ولا يصل أي شيء إلى جهة حقيقية.">Pick one of five synthetic personas. No account needed, and nothing reaches a real agency.</p></div>
         <a class="btn btn--primary" href="/login"><span data-ar="ابدأ تجديدًا تجريبيًا">Start a demo renewal</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
       </div>
-      <p class="close__word" aria-hidden="true" data-ar="مُعين">MUEEN</p>
+      <p class="close__word" aria-hidden="true" data-ar="الخدمات الذكية">AI Services</p>
     </div>
     <div class="closing__links">
       <div class="grid">
         <div class="span-4 stack-4">
-          <a class="nav__logo" href="#top"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#123B3A"/><path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#E4F1EB" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="25" r="2.4" fill="#C6A96B"/><circle cx="16" cy="8" r="2.4" fill="#E4F1EB"/><circle cx="23" cy="25" r="2.4" fill="#187A62" stroke="#E4F1EB" stroke-width="1.2"/></svg><span data-ar="مُعين">MUEEN</span></a>
+          <a class="nav__logo" href="#top"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#123B3A"/><path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#E4F1EB" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="25" r="2.4" fill="#C6A96B"/><circle cx="16" cy="8" r="2.4" fill="#E4F1EB"/><circle cx="23" cy="25" r="2.4" fill="#187A62" stroke="#E4F1EB" stroke-width="1.2"/></svg><span data-ar="منصة الخدمات الحكومية بالذكاء الاصطناعي">Saudi Government AI Services Platform</span></a>
           <p class="footer__lede" data-ar="وكيل خدمات ذكي تحكمه الجهات الحكومية، معروض كمفهوم للنقاش.">A government-governed AI service agent, shown as a concept for discussion.</p>
         </div>
         <div class="span-2 footer__col"><h3 data-ar="المنتج">Product</h3><ul><li><a href="#how" data-ar="الخطوات">Steps</a></li><li><a href="#controls" data-ar="القواعد">Rules</a></li></ul></div>
@@ -433,7 +439,7 @@
         <div class="span-3 footer__col"><h3 data-ar="العرض">Demo</h3><ul><li><a href="/login" data-ar="مساحة المستفيد">Beneficiary workspace</a></li><li><a href="/admin" data-ar="لوحة الحوكمة">Governance console</a></li><li><a href="/privacy" data-ar="إشعار الخصوصية">Privacy notice</a></li><li><a href="/accessibility" data-ar="إمكانية الوصول">Accessibility</a></li></ul></div>
       </div>
       <div class="footer__legal">
-        <span>&copy; 2026 <span data-ar="مُعين، مفهوم للنقاش. ليس خدمة حكومية رسمية؛ جميع البيانات افتراضية.">MUEEN, a concept for discussion. Not an official government service; all data is synthetic.</span></span>
+        <span>&copy; 2026 <span data-ar="منصة الخدمات الحكومية بالذكاء الاصطناعي، مفهوم للنقاش. ليس خدمة حكومية رسمية؛ جميع البيانات افتراضية.">Saudi Government AI Services Platform, a concept for discussion. Not an official government service; all data is synthetic.</span></span>
         <div class="socials"></div>
       </div>
     </div>

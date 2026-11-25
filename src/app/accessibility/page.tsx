@@ -7,8 +7,8 @@ export default function Accessibility() {
       title={{ en: "Accessibility statement", ar: "بيان إمكانية الوصول" }}
       updated="2026-11-25"
       lede={{
-        en: "MUEEN aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA, in Arabic and English. It is partially conformant: we test it ourselves, and it has not yet had an independent audit.",
-        ar: "يسعى مُعين إلى استيفاء إرشادات إمكانية الوصول إلى محتوى الويب (WCAG) 2.2 بالمستوى AA، باللغتين العربية والإنجليزية. وهو متوافق جزئيًا: نختبره بأنفسنا ولم يخضع بعد لتدقيق مستقل.",
+        en: "The platform aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA, in Arabic and English. It is partially conformant: we test it ourselves, and it has not yet had an independent audit.",
+        ar: "تسعى المنصة إلى استيفاء إرشادات إمكانية الوصول إلى محتوى الويب (WCAG) 2.2 بالمستوى AA، باللغتين العربية والإنجليزية. وهو متوافق جزئيًا: نختبره بأنفسنا ولم يخضع بعد لتدقيق مستقل.",
       }}
       sections={[
         { h: { en: "What we check", ar: "ما نتحقق منه" }, p: [{ en: "Every release is checked with an automated audit in both languages, a keyboard-only walk through each flow, reflow at 320 pixels wide and the reduced-motion setting.", ar: "يُفحص كل إصدار بتدقيق آلي باللغتين، وتجربة كل مسار بلوحة المفاتيح فقط، وإعادة التدفق بعرض 320 بكسل، وإعداد تقليل الحركة." }] },

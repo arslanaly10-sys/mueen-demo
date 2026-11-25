@@ -19,7 +19,7 @@ export function Wordmark() {
   return (
     <span className="flex items-center gap-2.5">
       <LogoMark size={28} />
-      <span className="hidden text-xl font-medium text-ink sm:inline">{lang === "ar" ? "مُعين" : "MUEEN"}</span>
+      <span className="hidden text-[15px] font-semibold leading-tight text-ink xl:inline">{lang === "ar" ? "منصة الخدمات الحكومية بالذكاء الاصطناعي" : "Saudi Government AI Services Platform"}</span>
     </span>
   );
 }

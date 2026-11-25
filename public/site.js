@@ -12,7 +12,7 @@
   const labels = [...document.querySelectorAll('[data-ar-aria]')].map(el => [el, el.getAttribute('aria-label')]);
   const meta = { title: document.title, desc: document.querySelector('meta[name="description"]')?.content };
   const AR = {
-    title: 'مُعين: وكيل ذكي لتجديد الوثائق الحكومية في السعودية',
+    title: 'منصة الخدمات الحكومية بالذكاء الاصطناعي: وكيل محكوم للخدمات الحكومية',
     desc: 'نموذج مفاهيمي لوكيل ذكي تحكمه الجهات الحكومية، يجدّد سبع وثائق حكومية سعودية بموافقتك قبل كل إرسال ودفع.',
   };
   const toggle = document.querySelector('[data-lang-toggle]');

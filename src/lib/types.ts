@@ -1,4 +1,4 @@
-// Shared domain types for the MUEEN concept demonstrator.
+// Shared domain types for the Saudi Government AI Services Platform concept demonstrator.
 // Everything here describes SYNTHETIC data and MOCK government services.
 
 export type Lang = "ar" | "en";

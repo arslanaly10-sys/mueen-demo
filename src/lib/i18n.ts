@@ -29,7 +29,7 @@ export function fmtDaysLeft(days: number, lang: Lang) {
 
 // UI copy. Product language follows the brand guide: calm, precise, never overstating.
 export const T = {
-  brand: { en: "MUEEN", ar: "مُعين" },
+  brand: { en: "Saudi Government AI Services Platform", ar: "منصة الخدمات الحكومية بالذكاء الاصطناعي" },
   placeholderName: { en: "Working name — subject to naming clearance", ar: "اسم مؤقت — يخضع لفحص العلامة التجارية" },
   concept: { en: "Concept for discussion", ar: "مفهوم للنقاش" },
   tagline: { en: "Your services, clearly connected.", ar: "خدماتك الحكومية، بخطوات أوضح" },
@@ -158,8 +158,8 @@ export const T = {
   notAuthorizedTitle: { en: "Not authorized", ar: "غير مصرّح" },
   daysLeft: { en: "days left", ar: "يوم متبقٍ" },
   hijri: { en: "Hijri", ar: "هجري" },
-  agentSays: { en: "MUEEN", ar: "مُعين" },
+  agentSays: { en: "Agent", ar: "الوكيل" },
   you: { en: "You", ar: "أنت" },
   thinking: { en: "Understanding your request…", ar: "أفهم طلبك…" },
-  error: { en: "MUEEN couldn't answer. Nothing was submitted. Send your message again.", ar: "تعذّر على مُعين الرد. لم يُرسل أي شيء. أرسل رسالتك مرة أخرى." },
+  error: { en: "The agent couldn't answer. Nothing was submitted. Send your message again.", ar: "تعذّر على الوكيل الرد. لم يُرسل أي شيء. أرسل رسالتك مرة أخرى." },
 } satisfies Record<string, L | { en: string[]; ar: string[] }>;

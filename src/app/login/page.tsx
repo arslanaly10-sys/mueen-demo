@@ -53,13 +53,13 @@ export default function Login() {
       <div className="wrap grid flex-1 gap-10 py-10 lg:grid-cols-2 lg:items-center">
         <div className="mx-auto w-full min-w-0 max-w-md">
           {timedOut && (
-            <p role="status" className="mb-6 rounded-xl bg-warn-bg p-3 text-sm text-warn">
+            <p role="status" className="mb-6 rounded-xl bg-warn-bg p-3 text-sm text-warn-ink">
               {ar ? "سجّلنا خروجك بعد 10 دقائق دون نشاط. لم يُرسل أي شيء. سجّل الدخول للمتابعة." : "We signed you out after 10 minutes without activity. Nothing was submitted. Sign in to continue."}
             </p>
           )}
           {!picked ? (
             <>
-              <h1 className="text-3xl font-semibold text-teal">{ar ? "تسجيل الدخول إلى مُعين" : "Sign in to MUEEN"}</h1>
+              <h1 className="text-3xl font-semibold text-teal">{ar ? "تسجيل الدخول إلى المنصة" : "Sign in to the platform"}</h1>
               <p className="mt-2 text-ink">{ar ? "اختر شخصية تجريبية. كل الشخصيات افتراضية بالكامل." : "Choose a demo persona. Every persona is fully synthetic."}</p>
               <ul className="mt-6 divide-y divide-line overflow-hidden rounded-[20px] border border-line bg-white">
                 {PERSONAS.map((p) => (
@@ -144,12 +144,12 @@ export default function Login() {
           <ShieldCheckIcon size={40} className="text-mint" aria-hidden="true" />
           <div>
             {reduce ? (
-              <p className="text-2xl font-semibold leading-snug">{ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}</p>
+              <p className="text-2xl font-semibold leading-snug">{ar ? "الوكيل يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "The agent prepares the renewal. You approve twice: the details, then the payment."}</p>
             ) : (
               <BlurText
                 key={ar ? "ar" : "en"}
                 className="text-2xl font-semibold leading-snug"
-                text={ar ? "مُعين يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "MUEEN prepares the renewal. You approve twice: the details, then the payment."}
+                text={ar ? "الوكيل يجهّز التجديد، وأنت توافق مرتين: على التفاصيل ثم على الدفع." : "The agent prepares the renewal. You approve twice: the details, then the payment."}
                 delay={50}
               />
             )}

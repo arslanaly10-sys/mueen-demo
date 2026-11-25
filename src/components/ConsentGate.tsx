@@ -10,13 +10,13 @@ import { useT } from "./useT";
 
 const POINTS = {
   en: [
-    ["What MUEEN reads", "Your verified identity and the records each agency holds for the services you ask about: licences, residency, vehicles, permits."],
+    ["What the agent reads", "Your verified identity and the records each agency holds for the services you ask about: licences, residency, vehicles, permits."],
     ["Why", "Only to check eligibility, prepare the renewal you asked for and show you its status. Nothing is used for profiling or advertising."],
     ["Who receives it", "Only the agency that owns the service, and the government payment gateway when you approve a payment."],
     ["Your control", "Nothing is submitted or paid without your approval. You can revoke an authority, export or delete your data, or withdraw this consent at any time."],
   ],
   ar: [
-    ["ما الذي يطّلع عليه مُعين", "هويتك الموثّقة والسجلات التي تحتفظ بها كل جهة للخدمات التي تطلبها: الرخص والإقامة والمركبات والتصاريح."],
+    ["ما الذي يطّلع عليه الوكيل", "هويتك الموثّقة والسجلات التي تحتفظ بها كل جهة للخدمات التي تطلبها: الرخص والإقامة والمركبات والتصاريح."],
     ["لماذا", "فقط للتحقق من الأهلية وتجهيز التجديد الذي طلبته وإطلاعك على حالته. لا يُستخدم شيء للتنميط أو الإعلان."],
     ["من يتسلّمها", "الجهة المالكة للخدمة فقط، وبوابة الدفع الحكومية عند موافقتك على الدفع."],
     ["تحكّمك", "لا يُرسل شيء ولا يُدفع دون موافقتك. يمكنك إلغاء أي صلاحية أو تصدير بياناتك أو حذفها أو سحب هذه الموافقة متى شئت."],
@@ -40,7 +40,7 @@ export function ConsentGate({ personaId }: { personaId: string }) {
     <main className="wrap flex-1 overflow-y-auto py-8">
       <section aria-labelledby="consent-title" className="mx-auto max-w-2xl rounded-[20px] border border-line bg-white p-6 sm:p-8">
         <span className="grid size-11 place-items-center rounded-xl bg-mint text-green"><ShieldCheckIcon size={22} aria-hidden="true" /></span>
-        <h1 id="consent-title" className="mt-4 text-2xl font-semibold text-teal">{ar ? "قبل أن يعمل مُعين نيابةً عنك" : "Before MUEEN acts for you"}</h1>
+        <h1 id="consent-title" className="mt-4 text-2xl font-semibold text-teal">{ar ? "قبل أن يعمل الوكيل نيابةً عنك" : "Before the agent acts for you"}</h1>
         <p className="mt-2 text-ink">{ar ? "اقرأ كيف نستخدم بياناتك. نحتاج موافقتك مرة واحدة على هذا الجهاز." : "Read how your data is used. We ask once on this device."}</p>
         <dl className="mt-6 space-y-4">
           {POINTS[lang].map(([dt, dd]) => (

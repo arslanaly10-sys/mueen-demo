@@ -80,7 +80,7 @@ export default function MyData() {
       <main className="wrap py-10">
         <h1 className="text-3xl font-semibold text-teal">{ar ? "بياناتي" : "My data"}</h1>
         <p className="mt-2 max-w-[68ch] text-ink">
-          {ar ? "ما يحتفظ به مُعين عنك، وما يمكنك فعله به. التفاصيل في " : "What MUEEN holds about you, and what you can do with it. Details are in the "}
+          {ar ? "ما تحتفظ به المنصة عنك، وما يمكنك فعله به. التفاصيل في " : "What the platform holds about you, and what you can do with it. Details are in the "}
           <Link href="/privacy" className="text-green underline underline-offset-2">{ar ? "إشعار الخصوصية" : "privacy notice"}</Link>.
         </p>
 
@@ -103,7 +103,7 @@ export default function MyData() {
               </button>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="max-w-md text-sm text-ink">{ar ? "أوقف مُعين عن التصرف نيابةً عنك. ستُسأل مجددًا قبل أي استخدام." : "Stop MUEEN acting for you. You will be asked again before any further use."}</p>
+              <p className="max-w-md text-sm text-ink">{ar ? "أوقف الوكيل عن التصرف نيابةً عنك. ستُسأل مجددًا قبل أي استخدام." : "Stop the agent acting for you. You will be asked again before any further use."}</p>
               <button onClick={withdraw} disabled={!consentAt} className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-teal hover:bg-mint disabled:opacity-50">
                 <ProhibitIcon size={16} aria-hidden="true" /> {ar ? "اسحب الموافقة" : "Withdraw consent"}
               </button>

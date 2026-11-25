@@ -49,7 +49,7 @@ const JSON_SCHEMA = {
 
 function systemPrompt(): string {
   const catalogue = SERVICES.map((s) => `- ${s.id}: ${s.name.en} / ${s.name.ar} — ${s.description.en} (agency: ${s.agency.en})`).join("\n");
-  return `You are the request interpreter for MUEEN, a CONCEPT DEMO of a Saudi-governed AI service agent. It is not an official government service.
+  return `You are the request interpreter for the Saudi Government AI Services Platform, a CONCEPT DEMO of a Saudi-governed AI service agent. It is not an official government service.
 
 Your only job: understand what the person wants and map it to the approved service catalogue below. You do not decide eligibility, identity, fees, payment or completion — deterministic policy code and the responsible agency do that after you. Never claim a renewal is done, approved or eligible.
 

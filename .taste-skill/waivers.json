@@ -16,12 +16,7 @@
   },
   {
     "check": "container-edges",
-    "target": "div.bits-lead > p.hero__lead > span:nth-of-type(2)",
-    "reason": "the centred hero's lead, centred on the page's axis; React Bits BlurText sets it as a centred flex row of word spans, so each wrapped line's first word reads as a left edge (line 1)"
-  },
-  {
-    "check": "container-edges",
-    "target": "div.bits-lead > p.hero__lead > span:nth-of-type(15)",
-    "reason": "the centred hero's lead, centred on the page's axis; React Bits BlurText sets it as a centred flex row of word spans, so each wrapped line's first word reads as a left edge (line 2)"
+    "target": "div.bits-lead > p.hero__lead",
+    "reason": "the centred hero's lead, centred on the page's axis; React Bits BlurText sets it as a centred flex row of word spans, so each wrapped line's first word reads as a left edge"
   }
 ]

@@ -8,7 +8,7 @@ import { useT } from "./useT";
 import type { ServiceId } from "@/lib/types";
 
 type L = { en: string; ar: string };
-// The landing page's mega menu, same groups and grey lines; `ask` is what a click says to MUEEN.
+// The landing page's mega menu, same groups and grey lines; `ask` is what a click says to the agent.
 const GROUPS: { title: L; items: { id: ServiceId; name: L; line: L; ask: L }[] }[] = [
   { title: { en: "Traffic", ar: "الإدارة العامة للمرور" }, items: [
     { id: "driving_license", name: { en: "Driving licence", ar: "رخصة القيادة" }, line: { en: "Medical exam and fines checked", ar: "يتحقق من الفحص الطبي والمخالفات" }, ask: { en: "Renew my driving license", ar: "جدد رخصة القيادة" } },
@@ -88,7 +88,7 @@ export function AppNav({ children, menu = false }: { children: React.ReactNode; 
   return (
     <header className="sticky top-0 z-20 shrink-0 border-b border-line bg-warm">
       <div className="wrap flex h-14 items-center gap-2 sm:h-[72px] sm:gap-3">
-        <a href="/" aria-label="MUEEN"><Wordmark /></a>
+        <a href="/" aria-label="Saudi Government AI Services Platform, home"><Wordmark /></a>
         <span className="hidden sm:inline"><ConceptBadge /></span>
         {menu && <ServicesMenu />}
         <div className="ms-auto flex items-center gap-2">{children}</div>

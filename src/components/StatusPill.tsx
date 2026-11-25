@@ -3,7 +3,7 @@ import { CheckCircleIcon, InfoIcon, MinusCircleIcon, RadioButtonIcon, WarningIco
 const TONES = {
   ok: { cls: "bg-mint text-green border-green/30", Icon: CheckCircleIcon },
   info: { cls: "bg-sky/40 text-teal border-sky", Icon: RadioButtonIcon },
-  warn: { cls: "bg-warn-bg text-warn border-warn/30", Icon: WarningIcon },
+  warn: { cls: "bg-warn-bg text-warn-ink border-warn/30", Icon: WarningIcon },
   error: { cls: "bg-err-bg text-err border-err/30", Icon: WarningIcon },
   neutral: { cls: "bg-white text-muted border-line", Icon: MinusCircleIcon },
   plain: { cls: "bg-white text-teal border-line", Icon: InfoIcon },

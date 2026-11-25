@@ -10,6 +10,7 @@
   --color-sand: #c6a96b;
   --color-warn: #a86712;
   --color-warn-bg: #fbf1e2;
+  --color-warn-ink: #8a540f; /* text on warn-bg: 5.6:1 (the brand warning is 4.07:1 there) */
   --color-err: #b4463d;
   --color-err-bg: #f8e7e5;
   --color-ink: #24313a;
@@ -22,6 +23,8 @@
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 }
 
+/* chart series: the dataviz reference palette's validated slots 1 and 2 (the app is light-only) */
+:root { --series-1: #257de0; --series-2: #f47230; }
 html { -webkit-text-size-adjust: 100%; }
 .wrap { width: min(100% - 48px, 1280px); margin-inline: auto; }
 @media (min-width: 640px) { .wrap { width: min(100% - 96px, 1280px); } }

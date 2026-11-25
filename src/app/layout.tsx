@@ -8,7 +8,7 @@ import { LangSync } from "@/components/LangSync";
 import { IconWeight } from "@/components/IconWeight";
 
 export const metadata: Metadata = {
-  title: "MUEEN · مُعين — Concept demo",
+  title: "Saudi Government AI Services Platform · منصة الخدمات الحكومية بالذكاء الاصطناعي — concept demo",
   description: "Concept for discussion: a Saudi-governed AI service agent demonstrator. Synthetic data and mock services only.",
   icons: { icon: "/icon.svg" },
 };

@@ -188,7 +188,7 @@ export default function Admin() {
                                   ? h.tone === "ok"
                                     ? "border-green bg-mint font-semibold text-green"
                                     : h.tone === "warn"
-                                      ? "border-warn bg-warn-bg font-semibold text-warn"
+                                      ? "border-warn bg-warn-bg font-semibold text-warn-ink"
                                       : "border-err bg-err-bg font-semibold text-err"
                                   : "border-line text-muted hover:bg-warm"
                               }`}
