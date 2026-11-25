@@ -66,8 +66,8 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 
 `/` serves `public/index.html`, a static page built with [Taste Skill](https://github.com/Leonxlnx/taste-skill)'s kit (`public/assets`) and rewritten to `/index.html` in `next.config.ts`. It is Arabic first; `public/site.js` switches the language (`?lang=en` or the toggle) and shares the choice with the demo app.
 
-- **Deal:** software page, product-stage hero, centred nav, close-word ending with the statement footer, surface-pairs rhythm, pill buttons, and the `line-carries-colour` moment on the rules section. It uses the brand's own colours and the Host Grotesk + JetBrains Mono pairing, with Noto Sans Arabic for Arabic.
-- **3D hero:** the doorway of connected steps is a product-render spec (`public/assets/objects/product-render/specs/doorway.json`), drawn live with one WebGL context. Phones and reduced-motion visitors get the rendered still. Run `make-posters.mjs` from the skill after changing the spec.
+- **Deal:** software page, centred product-window hero (Supahero's product-hero pattern, chosen with the client), centred nav, close-word ending with the statement footer, surface-pairs rhythm, pill buttons, and the `line-carries-colour` moment on the rules section. It uses the brand's own colours and the Host Grotesk + JetBrains Mono pairing, with Noto Sans Arabic for Arabic.
+- **Hero:** the real MUEEN window, request list beside the conversation, built from the kit's UI fragments in the kit's `centred` hero slot. No WebGL on the page.
 - **App pages:** the workspace, governance console and sign-in use the same system. That means the landing's nav bar and edge lines, the dealt fonts (self-hosted through Fontsource), one app frame with hairline panes, two boxes deep at most, and nothing under 13px. The gate does not apply to them, because they are app screens, not pages.
 - **Checks:** `gate.mjs` passes, with three waivers listed in `.taste-skill/waivers.json`. copy-lint and `perf.mjs` pass with 0 FAIL, and the layout check is clean at 1440, 1024, 820, 768 and 390.
 

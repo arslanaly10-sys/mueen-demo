@@ -61,50 +61,31 @@
   #controls .ui-win__body { grid-template-columns: minmax(0, 1fr); } /* the audit window has no sidebar column */
   @media (min-width: 640px) and (max-width: 1023px) { #how { --h: 2 } }
   .nav__actions button.nav__link { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
-  /* the render's focus target is empty in the kit: give it the stage, so its focus ring shows */
-  .hero__stage .print3d__hit { position: absolute; inset: 0; }
-  .hero__stage .print3d__hit:focus-visible { outline: 2px solid var(--action); outline-offset: -2px; }
-  /* keep the render frame inside the stage, so nothing of it crosses the fold */
-  .hero--product .hero__stage > [data-product] { inset: 0; }
-  /* the kit sizes its poster canvas from the poster's own ratio (inline styles), which spills past a short stage: fit it to the stage */
-  .hero--product .hero__stage .print3d__still { inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: contain; }
   .close__word { line-height: 1.04; }
   @media (max-width: 639px) { #how .panel { --p-h: 290px; } #controls .panel { --p-h: 160px; } #controls .ui-chat__day { display: none; } }
-  .app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
-  .app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
-  .app > .app__pane + .app__pane { border-inline-start: 1px solid var(--u-line); }
-  .app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
-  .app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
-  @media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
-  @media (max-width: 1023px) {
-    .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
-    .app > .app__pane--list { max-height: 252px; }
-    .app > .app__pane--list::after { display: none; }
-    .app .ui-win__side { display: none; }
-    .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
-    .app > .app__pane + .app__pane { border-inline-start: 0; border-top: 1px solid var(--u-line); }
-  }
-  @media (max-width: 639px) {
-    .app.ui { grid-template-rows: minmax(0, 1fr); }
-    .app > .app__pane--list { display: none; }
-    .app > .app__pane + .app__pane { border-top: 0; }
-  }
+  .hero__window > .app { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  .app > .app__pane { min-width: 0; }
+  @media (max-width: 639px) { .hero__window > .app { grid-template-columns: minmax(0, 1fr); } .app > .app__pane--list { display: none; } }
+  /* the frame hands its ground to an effect through --fx-*: the window keeps the fragments' own white */
+  .hero__window > .app { --fx-bg: initial; --fx-surface: initial; --fx-ink: initial; --fx-accent: initial; }
+  .hero--centred .hero__lead { color: var(--ink); } /* body text in the ink, 7:1 */
+  /* nav-mega: each service with its Phosphor duotone icon (the client asked for icons in the columns) */
+  @media (max-width: 1023px) { [dir="rtl"] .nav__toggle { margin-left: 0; margin-right: auto; } } /* the menu button at the far end in Arabic too */
+  .mm-name { display: flex; align-items: center; gap: var(--s-2); font-weight: 500; }
+  .mm-ic { width: 20px; height: 20px; flex: none; fill: var(--action); }
   .ui-glyph { width: 18px; height: 18px; fill: currentColor; } /* Phosphor duotone glyphs */
   html[lang="ar"] { --font-display: "Noto Sans Arabic", "Host Grotesk", system-ui, sans-serif; --font-text: "Noto Sans Arabic", "Host Grotesk", system-ui, sans-serif; --display-tracking: 0; --display-tracking-xl: 0; }
   html[lang="ar"] body, html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] .close__word { letter-spacing: 0; }
-  /* the path reads in the page's direction: from the request on the start side to the confirmation on the end side */
-  html[dir="rtl"] .hero__stage .frame > :not(button) { transform: scaleX(-1); }
 </style>
 </head>
 <body>
 <!-- type: software (site-kind software, page-type software)
-     deal: hero product (the MUEEN doorway, product-render, live turn: the brief asks for a 3D hero), nav nav-centre,
+     deal: hero centred (the MUEEN window; chosen with the client from the supahero.io pattern of product heroes), nav nav-mega (a navbar.gallery mega-menu pattern, chosen with the client),
            close close-word, footer footer-statement, rhythm surface-pairs, buttons pill, mark: the client's own doorway logo,
            palette: the client's own colours (start.mjs brand), pairing host (+ Noto Sans Arabic for the Arabic page)
-     effect: the hero's product render (the one live WebGL context)
      moments: line-carries-colour on #controls (the one .ground-surface band) -->
 
-<header class="nav nav--centre">
+<header class="nav">
   <div class="wrap nav__bar">
     <a class="skip-link" href="#top" data-ar="تخطَّ إلى المحتوى">Skip to content</a>
     <a class="nav__logo" href="#top" aria-label="MUEEN, home" data-ar-aria="مُعين، الصفحة الرئيسية">
@@ -112,26 +93,35 @@
       <span data-ar="مُعين">MUEEN</span>
     </a>
     <nav class="nav__links" aria-label="Main" data-ar-aria="القائمة الرئيسية">
-      <div class="nav__item"><a class="nav__link" href="#agent" data-ar="التجديدات">Renewals</a></div>
       <div class="nav__item"><a class="nav__link" href="#how" data-ar="الخطوات">Steps</a></div>
       <div class="nav__item"><a class="nav__link" href="#controls" data-ar="القواعد">Rules</a></div>
       <div class="nav__item">
         <a class="nav__link" href="#services"><span data-ar="الخدمات">Services</span> <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <div class="nav__menu">
           <div class="wrap grid">
-            <div class="menu-col span-4">
-              <p class="t-label" data-ar="وزارة الداخلية">Ministry of Interior</p>
-              <a href="#services"><span data-ar="رخصة القيادة">Driving licence</span><span data-ar="الإدارة العامة للمرور">General Directorate of Traffic</span></a>
-              <a href="#services"><span data-ar="رخصة السير (الاستمارة)">Istimara</span><span data-ar="الإدارة العامة للمرور">General Directorate of Traffic</span></a>
-              <a href="#services"><span data-ar="الجواز السعودي">Saudi passport</span><span data-ar="المديرية العامة للجوازات">General Directorate of Passports</span></a>
-              <a href="#services"><span data-ar="إقامة العمالة المنزلية">Domestic-worker iqama</span><span data-ar="المديرية العامة للجوازات">General Directorate of Passports</span></a>
+            <div class="menu-col span-3">
+              <p class="t-label" data-ar="الإدارة العامة للمرور">Traffic</p>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M184,176h40v24a8,8,0,0,1-8,8H192a8,8,0,0,1-8-8ZM32,200a8,8,0,0,0,8,8H64a8,8,0,0,0,8-8V176H32ZM194.11,44.75A8,8,0,0,0,186.8,40H69.2a8,8,0,0,0-7.31,4.75L32,112H224Z" opacity="0.2"/><path d="M240,104H229.2L201.42,41.5A16,16,0,0,0,186.8,32H69.2a16,16,0,0,0-14.62,9.5L26.8,104H16a8,8,0,0,0,0,16h8v80a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V184h96v16a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16V120h8a8,8,0,0,0,0-16ZM69.2,48H186.8l24.89,56H44.31ZM64,200H40V184H64Zm128,0V184h24v16Zm24-32H40V120H216ZM56,144a8,8,0,0,1,8-8H80a8,8,0,0,1,0,16H64A8,8,0,0,1,56,144Zm112,0a8,8,0,0,1,8-8h16a8,8,0,0,1,0,16H176A8,8,0,0,1,168,144Z"/></svg><span data-ar="رخصة القيادة">Driving licence</span></strong><span data-ar="يتحقق من الفحص الطبي والمخالفات">Medical exam and fines checked</span></a>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M88,176a24,24,0,1,1-24-24A24,24,0,0,1,88,176Zm104-24a24,24,0,1,0,24,24A24,24,0,0,0,192,152ZM162.34,74.34A8,8,0,0,0,156.69,72H44.28a8,8,0,0,0-6.66,3.56L8,120H208Z" opacity="0.2"/><path d="M240,112H211.31L168,68.69A15.86,15.86,0,0,0,156.69,64H44.28A16,16,0,0,0,31,71.12L1.34,115.56A8.07,8.07,0,0,0,0,120v48a16,16,0,0,0,16,16H33a32,32,0,0,0,62,0h66a32,32,0,0,0,62,0h17a16,16,0,0,0,16-16V128A16,16,0,0,0,240,112ZM44.28,80H156.69l32,32H23ZM64,192a16,16,0,1,1,16-16A16,16,0,0,1,64,192Zm128,0a16,16,0,1,1,16-16A16,16,0,0,1,192,192Zm48-24H223a32,32,0,0,0-62,0H95a32,32,0,0,0-62,0H16V128H240Z"/></svg><span data-ar="الاستمارة">Istimara</span></strong><span data-ar="يتحقق من التأمين والفحص الدوري">Checks insurance, inspection</span></a>
             </div>
-            <div class="menu-col span-4">
+            <div class="menu-col span-3">
+              <p class="t-label" data-ar="المديرية العامة للجوازات">Passports</p>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M232,56V200H160a32,32,0,0,0-32,32,32,32,0,0,0-32-32H24V56H96a32,32,0,0,1,32,32,32,32,0,0,1,32-32Z" opacity="0.2"/><path d="M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z"/></svg><span data-ar="الجواز السعودي">Saudi passport</span></strong><span data-ar="للمواطنين، 5 أو 10 سنوات">Citizens, 5 or 10 years</span></a>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M216,48H40a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H216a8,8,0,0,0,8-8V56A8,8,0,0,0,216,48ZM96,144a24,24,0,1,1,24-24A24,24,0,0,1,96,144Z" opacity="0.2"/><path d="M200,112a8,8,0,0,1-8,8H152a8,8,0,0,1,0-16h40A8,8,0,0,1,200,112Zm-8,24H152a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm40-80V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM216,200V56H40V200H216Zm-80.26-34a8,8,0,1,1-15.5,4c-2.63-10.26-13.06-18-24.25-18s-21.61,7.74-24.25,18a8,8,0,1,1-15.5-4,39.84,39.84,0,0,1,17.19-23.34,32,32,0,1,1,45.12,0A39.76,39.76,0,0,1,135.75,166ZM96,136a16,16,0,1,0-16-16A16,16,0,0,0,96,136Z"/></svg><span data-ar="إقامة العمالة المنزلية">Domestic-worker iqama</span></strong><span data-ar="لأصحاب العمل المسجّلين">For registered sponsors</span></a>
+            </div>
+            <div class="menu-col span-3">
               <p class="t-label" data-ar="العمل والأعمال">Work and business</p>
-              <a href="#services"><span data-ar="رخصة العمل">Work permit</span><span data-ar="وزارة الموارد البشرية">Human Resources ministry</span></a>
-              <a href="#services"><span data-ar="الشهادة الصحية">Health certificate</span><span data-ar="وزارة البلديات والإسكان">Municipalities ministry</span></a>
-              <a href="#services"><span data-ar="الترخيص الاستشاري">Consulting licence</span><span data-ar="وزارة التجارة">Ministry of Commerce</span></a>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,118.31V200a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V118.31h0A191.14,191.14,0,0,0,128,144,191.08,191.08,0,0,0,224,118.31Z" opacity="0.2"/><path d="M104,112a8,8,0,0,1,8-8h32a8,8,0,0,1,0,16H112A8,8,0,0,1,104,112ZM232,72V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V72A16,16,0,0,1,40,56H80V48a24,24,0,0,1,24-24h48a24,24,0,0,1,24,24v8h40A16,16,0,0,1,232,72ZM96,56h64V48a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8ZM40,72v41.62A184.07,184.07,0,0,0,128,136a184,184,0,0,0,88-22.39V72ZM216,200V131.63A200.25,200.25,0,0,1,128,152a200.19,200.19,0,0,1-88-20.36V200H216Z"/></svg><span data-ar="رخصة العمل">Work permit</span></strong><span data-ar="يتحقق من نطاق المنشأة أولًا">Nitaqat zone checked first</span></a>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M232,102c0,66-104,122-104,122S24,168,24,102A54,54,0,0,1,78,48c22.59,0,41.94,12.31,50,32,8.06-19.69,27.41-32,50-32A54,54,0,0,1,232,102Z" opacity="0.2"/><path d="M72,144H32a8,8,0,0,1,0-16H67.72l13.62-20.44a8,8,0,0,1,13.32,0l25.34,38,9.34-14A8,8,0,0,1,136,128h24a8,8,0,0,1,0,16H140.28l-13.62,20.44a8,8,0,0,1-13.32,0L88,126.42l-9.34,14A8,8,0,0,1,72,144ZM178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,.75,0,1.5,0,2.25a8,8,0,1,0,16-.5c0-.58,0-1.17,0-1.75A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46c0,53.61-77.76,102.15-96,112.8-10.83-6.31-42.63-26-66.68-52.21a8,8,0,1,0-11.8,10.82c31.17,34,72.93,56.68,74.69,57.63a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40Z"/></svg><span data-ar="الشهادة الصحية">Health certificate</span></strong><span data-ar="للعاملين في الأغذية">For food-handling staff</span></a>
+              <a href="#services"><strong class="mm-name"><svg class="mm-ic" viewBox="0 0 256 256" aria-hidden="true"><path d="M176,96a48,48,0,1,1-48-48A48,48,0,0,1,176,96Z" opacity="0.2"/><path d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96ZM168,227.06l-36.43-18.21a8,8,0,0,0-7.16,0L88,227.06V174.37a87.89,87.89,0,0,0,80,0ZM128,152A56,56,0,1,0,72,96,56.06,56.06,0,0,0,128,152Zm0-96A40,40,0,1,1,88,96,40,40,0,0,1,128,56Z"/></svg><span data-ar="الترخيص الاستشاري">Consulting licence</span></strong><span data-ar="ترخيص مهني لثلاث سنوات">Three-year professional term</span></a>
             </div>
+            <a class="menu-card span-3 start-10" href="/login">
+              <div class="panel"><div class="stage stage--fade-br"><div class="at-corner" style="--ax:24px;--ay:24px">
+                <div class="ui ui-notify" data-ui="notify" inert><ul class="ui-notify__list"><li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="تم تأكيد التجديد">Renewal confirmed</span><time data-ar="الآن">now</time></span><span class="ui-note__body" data-ar="الإيصال RCPT-D422">Receipt RCPT-D422</span></span></li></ul></div>
+              </div></div></div>
+              <span class="t-card" data-ar="خمس شخصيات افتراضية">Five synthetic personas</span>
+              <span class="t-small muted" data-ar="ادخل برمز العرض، دون حساب">Sign in with the demo code</span>
+            </a>
           </div>
         </div>
       </div>
@@ -148,31 +138,19 @@
 </header>
 
 <main id="top">
-  <section class="hero hero--product" data-enter aria-labelledby="hero-h">
-    <div class="wrap"><div class="hero-text hero__in">
-      <div class="hero__head">
-        <div>
-          <h1 id="hero-h" data-ar="وكيل ذكي لتجديد الوثائق في السعودية">AI agent for Saudi renewals</h1>
-          <p class="hero__lead" data-ar="يتحقق من شروط كل جهة، ويستأذنك قبل أي إرسال أو دفع، ويعرض الإيصال. نموذج مفاهيمي لسبع خدمات حكومية.">It checks each agency’s rules, asks before it submits or pays, and shows the receipt. A concept demo of 7 government services.</p>
-        </div>
+  <section class="hero hero--centred" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text">
+      <div class="hero__c">
+        <a class="pill" href="#questions"><span data-ar="مفهوم للنقاش">Concept for discussion</span><span class="muted" data-ar="سبع خدمات، بيانات افتراضية">7 services, synthetic data</span></a>
+        <h1 id="hero-h" data-ar="وكيل ذكي لتجديد الوثائق في السعودية">AI agent for Saudi renewals</h1>
+        <p class="hero__lead" data-ar="يتحقق من شروط كل جهة، ويستأذنك قبل أي إرسال أو دفع، ويعرض الإيصال. نموذج مفاهيمي لسبع خدمات حكومية.">It checks each agency’s rules, asks before it submits or pays, and shows the receipt. A concept demo of 7 government services.</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="/login"><span data-ar="جرّب العرض">Try the demo</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
           <a class="btn btn--secondary" href="/admin" data-ar="اطّلع على لوحة الحوكمة">See the governance console</a>
         </div>
       </div>
-      <div class="hero__stage">
-        <div class="frame" data-product="assets/objects/product-render/specs/doorway.json" data-product-place="stage" data-product-view="side" data-product-color="green" data-product-mode="live" data-product-params='{"turn":1}'></div>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="section" id="agent" aria-labelledby="agent-h">
-    <div class="wrap">
-      <div class="grid">
-        <h2 id="agent-h" class="span-5" data-ar="كل تجديد في محادثة واحدة">Every renewal followed in one conversation</h2>
-        <p class="span-6 start-7"><span data-ar="الطلبات على اليمين بحالتها كما تراها الجهة. الطلب المفتوح يبيّن ما تم التحقق منه، وما ينتظر موافقتك، وما ردّت به الجهة.">Requests sit on the left with the status the agency gave them. The open one shows what was checked, what waits for you, and the agency’s reply.</span> <a class="link" href="#services" data-ar="اطّلع على الخدمات السبع">See the seven services</a></p>
-      </div>
-      <div class="ui app fill" role="img" aria-label="The MUEEN window: nine renewal requests beside an open conversation about renewing a domestic worker's iqama" data-ar-aria="نافذة مُعين: تسعة طلبات تجديد بجانب محادثة مفتوحة لتجديد إقامة عاملة منزلية" data-ui-pause-host>
+      <div class="hero__window" role="img" aria-label="MUEEN checking a domestic worker's iqama renewal with Passports and asking for approval before it submits" data-ar-aria="مُعين يتحقق من تجديد إقامة عاملة منزلية لدى الجوازات ويطلب الموافقة قبل الإرسال">
+        <div class="ly-piece app" aria-hidden="true" data-ui-pause-host>
         <div class="app__pane app__pane--list">
           <div class="ui ui-panel ui-win" data-ui="window" data-open="Waiting" data-work="Checking" data-done="Confirmed">
             <div class="ui-win__bar">
@@ -242,7 +220,8 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </div></div>
   </section>
 
   <section class="section" id="how" style="--hm: 2" aria-labelledby="how-h">
@@ -257,7 +236,7 @@
           <p data-ar="اختر الخدمة والشخص والمدة. يمكنك إلغاؤها في أي لحظة.">Pick the service, the person and how long. Revoke it at any moment.</p>
           <div class="panel">
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px" data-ui-loop>
-              <div class="ui ui-panel ui-apps" data-ui="integrations">
+              <div class="ui ui-panel ui-apps" data-ui="integrations" inert>
                 <div class="ui-head"><div class="ui-title" data-ar="ما يُسمح لمُعين به">What MUEEN may do</div><span class="ui-spacer"></span><div class="ui-meta" data-apps-count data-ar="3 مسموحة">3 allowed</div></div>
                 <ul class="ui-apps__list">
                   <li class="ui-app is-on"><span class="ui-logo ui-logo--sm"><svg class="ui-glyph" viewBox="0 0 256 256" aria-hidden="true"><!-- Phosphor file-magnifying-glass, duotone (MIT) --><path d="M208,88H152V32Z" opacity="0.2"/><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-45.54-48.85a36.05,36.05,0,1,0-11.31,11.31l11.19,11.2a8,8,0,0,0,11.32-11.32ZM104,148a20,20,0,1,1,20,20A20,20,0,0,1,104,148Z"/></svg></span><span class="ui-app__text"><span class="ui-app__name" data-ar="قراءة السجلات">Read records</span><span class="ui-app__sub" data-ar="الرخصة، المخالفات، الفحص الطبي">Licence, fines, medical exam</span></span><span class="ui-app__state"><span class="ui-chip ui-app__on" data-ar="مسموح">Allowed</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span data-ar="اسمح">Allow</span></button></span></li>
@@ -296,7 +275,7 @@
             <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:40px;--ay-sm:24px">
               <div class="ui ui-notify" data-ui="notify">
                 <ul class="ui-notify__list" data-notify-list>
-                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="أكد المرور تجديدك">Traffic confirmed your renewal</span><time data-ar="الآن">now</time></span><span class="ui-note__body" data-ar="الإيصال RCPT-D422، ساري حتى 2029">Receipt RCPT-D422, valid to 2029</span></span></li>
+                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="تم تأكيد التجديد">Renewal confirmed</span><time data-ar="الآن">now</time></span><span class="ui-note__body" data-ar="الإيصال RCPT-D422، ساري حتى 2029">Receipt RCPT-D422, valid to 2029</span></span></li>
                   <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 5h11v7h-11z"/><path d="M2.5 7.5h11"/></svg></span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="تم تأكيد الدفع">Payment confirmed</span><time data-ar="1د">1m</time></span><span class="ui-note__body" data-ar="80 ريال للإدارة العامة للمرور">SAR 80 to General Directorate of Traffic</span></span></li>
                   <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="1">FH</span><span class="ui-note__text"><span class="ui-note__title"><span data-ar="وافقت على التفاصيل">You approved the details</span><time data-ar="2د">2m</time></span><span class="ui-note__body" data-ar="رخصة خاصة، سنتان">Private licence, 2 years</span></span></li>
                 </ul>
@@ -445,7 +424,7 @@
           <a class="nav__logo" href="#top"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#123B3A"/><path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#E4F1EB" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="25" r="2.4" fill="#C6A96B"/><circle cx="16" cy="8" r="2.4" fill="#E4F1EB"/><circle cx="23" cy="25" r="2.4" fill="#187A62" stroke="#E4F1EB" stroke-width="1.2"/></svg><span data-ar="مُعين">MUEEN</span></a>
           <p class="footer__lede" data-ar="وكيل خدمات ذكي تحكمه الجهات الحكومية، معروض كمفهوم للنقاش.">A government-governed AI service agent, shown as a concept for discussion.</p>
         </div>
-        <div class="span-2 footer__col"><h3 data-ar="المنتج">Product</h3><ul><li><a href="#agent" data-ar="التجديدات">Renewals</a></li><li><a href="#how" data-ar="الخطوات">Steps</a></li><li><a href="#controls" data-ar="القواعد">Rules</a></li></ul></div>
+        <div class="span-2 footer__col"><h3 data-ar="المنتج">Product</h3><ul><li><a href="#how" data-ar="الخطوات">Steps</a></li><li><a href="#controls" data-ar="القواعد">Rules</a></li></ul></div>
         <div class="span-3 footer__col"><h3 data-ar="الخدمات">Services</h3><ul><li><a href="#services" data-ar="الجهات السبع">Seven services</a></li><li><a href="#questions" data-ar="الأسئلة">Questions</a></li></ul></div>
         <div class="span-3 footer__col"><h3 data-ar="العرض">Demo</h3><ul><li><a href="/login" data-ar="مساحة المستفيد">Beneficiary workspace</a></li><li><a href="/admin" data-ar="لوحة الحوكمة">Governance console</a></li></ul></div>
       </div>
@@ -462,6 +441,5 @@
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
 <script type="module" src="assets/diagrams/mount.js"></script>
-<script type="module" src="assets/objects/product-render/auto.js"></script>
 </body>
 </html>

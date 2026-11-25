@@ -1,5 +1,12 @@
 [
-  { "check": "button-styles", "target": "(one screen)", "reason": "the four 'styles' besides the primary are the kit's own lanes diagram nodes (assets/diagrams) inside a drawn card: they have no action and take no focus" },
-  { "check": "scroll-reveal", "target": "div.grid.grid--top > div.panel.span-6 > div.dg", "reason": "the kit diagram (assets/diagrams, motion pulse none) draws its node colour once on first view; nothing is hidden at rest and it holds still afterwards" },
-  { "check": "hero-lines", "target": "section.hero h1", "reason": "the page's final h1, 'AI agent for Saudi renewals', takes two lines at 390 (measured); the check pads it to the hero's 38-character maxChars" }
+  {
+    "check": "button-styles",
+    "target": "(one screen)",
+    "reason": "the four 'styles' besides the primary are the kit's own lanes diagram nodes (assets/diagrams) inside a drawn card: they have no action and take no focus"
+  },
+  {
+    "check": "text-contrast",
+    "target": "article.card.card--row:nth-of-type(1) > p",
+    "reason": "the controls moment's pre-reveal state: the cards fade in from the mint ground as the scene plays, and settle in the ink at 7:1"
+  }
 ]

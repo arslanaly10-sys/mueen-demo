@@ -45,6 +45,8 @@
     for (const w of document.querySelectorAll('[data-ui="window"]')) for (const k of ['open', 'work', 'done']) w.dataset[k] = WORDS[w.dataset[k]] ?? w.dataset[k];
   }
   apply(lang);
+  // system.js labels the phone sheet's expand button in English after this runs
+  if (lang === 'ar') addEventListener('load', () => document.querySelectorAll('.nav__expand').forEach(b => b.setAttribute('aria-label', 'إظهار روابط الخدمات')));
   // The kit draws its diagrams and loops once, so a switch reloads the page in the other language.
   toggle?.addEventListener('click', () => { apply(lang === 'ar' ? 'en' : 'ar'); location.search = '?lang=' + root.lang; });
 })();
