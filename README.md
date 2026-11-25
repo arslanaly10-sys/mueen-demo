@@ -68,4 +68,4 @@ Then open http://localhost:3000. The sign-in code for the demo is shown on scree
 
 ## Working on this repo with an AI agent
 
-This repo uses [Ponytail](https://github.com/DietrichGebert/ponytail) (MIT), a "lazy senior dev" ruleset: the smallest complete change, with no cuts to validation, security or accessibility. Claude Code offers to install it from `.claude/settings.json` when you trust the folder. Other agents read `AGENTS.md`.
+This repo uses [Ponytail](https://github.com/DietrichGebert/ponytail) (MIT), a "lazy senior dev" ruleset: the smallest complete change, with no cuts to validation, security or accessibility. It also uses [Taste Skill](https://github.com/Leonxlnx/taste-skill) (MIT), a design-quality skill for website and UI work. Claude Code offers to install both plugins from `.claude/settings.json` when you trust the folder. Other agents read `AGENTS.md`, which holds the Ponytail rules.

@@ -1,6 +1,10 @@
 {
   "extraKnownMarketplaces": {
-    "ponytail": { "source": { "source": "github", "repo": "DietrichGebert/ponytail" } }
+    "ponytail": { "source": { "source": "github", "repo": "DietrichGebert/ponytail" } },
+    "taste-skill": { "source": { "source": "github", "repo": "Leonxlnx/taste-skill" } }
   },
-  "enabledPlugins": { "ponytail@ponytail": true }
+  "enabledPlugins": {
+    "ponytail@ponytail": true,
+    "taste-skill@taste-skill": true
+  }
 }
