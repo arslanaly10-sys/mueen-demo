@@ -1,4 +1,6 @@
 "use client";
+import { motion } from "motion/react";
+import { EASE } from "../IconWeight";
 import { tabKeys } from "@/components/tabKeys";
 import StatusMark from "@/components/bits/StatusMark";
 import { useState } from "react";
@@ -39,20 +41,23 @@ export function SidePanel({ personaId }: { personaId: string }) {
             aria-controls="side-panel"
             tabIndex={tab === id ? 0 : -1}
             onClick={() => setTab(id)}
-            className={`flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-xs font-medium transition ${
-              tab === id ? "bg-mint text-green" : "text-muted hover:bg-warm"
+            className={`relative flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-xs font-medium transition-colors ${
+              tab === id ? "text-green" : "text-muted hover:bg-warm"
             }`}
           >
-            <Icon size={16} aria-hidden="true" />
-            <span className="text-center leading-tight">{label}</span>
+            {tab === id && <motion.span layoutId="side-tab" aria-hidden="true" className="absolute inset-0 rounded-xl bg-mint" transition={{ type: "spring", bounce: 0.15, duration: 0.4 }} />}
+            <Icon size={16} aria-hidden="true" className="relative" />
+            <span className="relative text-center leading-tight">{label}</span>
           </button>
         ))}
       </div>
       <div id="side-panel" role="tabpanel" tabIndex={0} aria-labelledby={`tab-${tab}`} className="scroll-thin min-h-0 flex-1 overflow-y-auto p-4">
-        {tab === "timeline" && <Timeline personaId={personaId} />}
-        {tab === "records" && <Records personaId={personaId} />}
-        {tab === "authorities" && <Authorities personaId={personaId} />}
-        {tab === "activity" && <Activity personaId={personaId} />}
+        <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: EASE }}>
+          {tab === "timeline" && <Timeline personaId={personaId} />}
+          {tab === "records" && <Records personaId={personaId} />}
+          {tab === "authorities" && <Authorities personaId={personaId} />}
+          {tab === "activity" && <Activity personaId={personaId} />}
+        </motion.div>
       </div>
     </section>
   );
@@ -99,7 +104,9 @@ function Timeline({ personaId }: { personaId: string }) {
           const done = reached.has(st);
           return (
             <li key={st} className="relative flex gap-3 pb-4 last:pb-0">
-              {i < HAPPY_PATH.length - 1 && <span className={`absolute top-6 h-[calc(100%-1rem)] w-px ${done ? "bg-green/50" : "bg-line"} start-[9px]`} aria-hidden="true" />}
+              {i < HAPPY_PATH.length - 1 && <span className="absolute start-[9px] top-6 h-[calc(100%-1rem)] w-px bg-line" aria-hidden="true">
+                <motion.span className="absolute inset-0 origin-top bg-green/60" initial={false} animate={{ scaleY: reached.has(HAPPY_PATH[i + 1]) ? 1 : 0 }} transition={{ duration: 0.45, ease: EASE }} />
+              </span>}
               {/* React Bits StatusMark; hidden from screen readers, the step's own text says the same in both languages */}
               <span className="relative z-10 mt-0.5 rounded-full bg-white" aria-hidden="true">
                 <StatusMark

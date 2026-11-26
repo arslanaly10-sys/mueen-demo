@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChatTextIcon, LayoutIcon, ShieldWarningIcon, SquaresFourIcon } from "@phosphor-icons/react";
@@ -67,9 +68,10 @@ export default function Workspace() {
             aria-controls={`mpanel-${id}`}
             tabIndex={mobileTab === id ? 0 : -1}
             onClick={() => setMobileTab(id)}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-medium ${mobileTab === id ? "bg-mint text-green" : "text-muted"}`}
+            className={`relative flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-medium transition-colors ${mobileTab === id ? "text-green" : "text-muted"}`}
           >
-            <Icon size={16} aria-hidden="true" /> {label}
+            {mobileTab === id && <motion.span layoutId="mobile-tab" aria-hidden="true" className="absolute inset-0 rounded-lg bg-mint" transition={{ type: "spring", bounce: 0.15, duration: 0.4 }} />}
+            <Icon size={16} aria-hidden="true" className="relative" /> <span className="relative">{label}</span>
           </button>
         ))}
       </div>

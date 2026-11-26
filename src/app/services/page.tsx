@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useId, useState } from "react";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE } from "@/components/IconWeight";
 import {
   AirplaneTiltIcon, ArrowRightIcon, BabyIcon, BellIcon, BuildingsIcon, CalendarCheckIcon, CaretDownIcon,
   CreditCardIcon, EyeIcon, MagnifyingGlassIcon, NotePencilIcon, PaperPlaneTiltIcon, UserPlusIcon,
@@ -17,7 +18,6 @@ import { REGISTRY_MAP } from "@/lib/registry";
 import { ROLE_LABEL, SERVICE_MAP } from "@/lib/services";
 import type { L, ServiceId } from "@/lib/types";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
 const enter = (i: number) => ({
   initial: { opacity: 0, y: 12 },
   whileInView: { opacity: 1, y: 0 },
@@ -122,7 +122,6 @@ export default function Services() {
   const items = GROUPS.flatMap((g, gi) => g.items.map((s) => ({ ...s, group: String(gi) }))).filter((s) => filter === "all" || s.group === filter);
 
   return (
-    <MotionConfig reducedMotion="user">
       <div className="min-h-dvh">
         <AppNav menu>
           <LangToggle />
@@ -203,6 +202,5 @@ export default function Services() {
           <div className="mt-14"><Disclaimer /></div>
         </main>
       </div>
-    </MotionConfig>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE } from "../IconWeight";
 import ShinyText from "@/components/bits/ShinyText";
 import { CpuIcon, MicrophoneIcon, MicrophoneSlashIcon, PaperPlaneRightIcon, SparkleIcon } from "@phosphor-icons/react";
 import { useStore, type ChatMessage } from "@/lib/store";
@@ -103,7 +105,7 @@ function Bubble({ m, personaId }: { m: ChatMessage; personaId: string }) {
   const { t } = useT();
   if (m.role === "user")
     return (
-      <div className="rise flex justify-end">
+      <div className="flex justify-end">
         <p className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-ee-md bg-teal px-4 py-2.5 text-[15px] leading-relaxed text-white">{m.text}</p>
       </div>
     );
@@ -156,6 +158,9 @@ export function Chat({ personaId }: { personaId: string }) {
   const [thinking, setThinking] = useState(false);
   const [error, setError] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  // messages already in the store when the page opens appear at once; only new ones animate in
+  const seen = useRef<Set<string> | null>(null);
+  if (seen.current === null) seen.current = new Set(messages.map((m) => m.id));
   const prompts = PROMPTS[personaId] ?? [];
 
   async function send(value: string) {
@@ -198,16 +203,24 @@ export function Chat({ personaId }: { personaId: string }) {
             <p className="mt-2 text-sm text-muted">{t(T.message)}</p>
           </div>
         )}
-        {messages.map((m) => (
-          <Bubble key={m.id} m={m} personaId={personaId} />
-        ))}
+        {messages.map((m) => {
+          const fromEnd = (m.role === "user") !== (lang === "ar");
+          return (
+            <motion.div key={m.id} initial={seen.current!.has(m.id) ? false : { opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.32, ease: EASE }} style={{ transformOrigin: fromEnd ? "100% 100%" : "0% 100%" }}>
+              <Bubble m={m} personaId={personaId} />
+            </motion.div>
+          );
+        })}
+        <AnimatePresence>
         {thinking && (
-          <div className="flex items-center gap-2.5 text-sm text-muted">
+          <motion.div key="thinking" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, transition: { duration: 0.12 } }} transition={{ duration: 0.2, ease: EASE }} className="flex items-center gap-2.5 text-sm text-muted">
             <LogoMark size={28} />
             <ShinyText text={t(T.thinking)} color="#5B6B73" shineColor="#187A62" speed={1.6} />
             <span aria-hidden="true"><span className="dot">•</span><span className="dot">•</span><span className="dot">•</span></span>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
         {error && <p className="text-sm text-err" role="alert">{t(T.error)}</p>}
         <div ref={endRef} />
       </div>

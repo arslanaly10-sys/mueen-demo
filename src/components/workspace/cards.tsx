@@ -16,7 +16,7 @@ import { useStepUp } from "./StepUp";
 
 export function Card({ children, accent = "line" }: { children: React.ReactNode; accent?: "line" | "green" | "warn" | "err" }) {
   const border = { line: "border-line", green: "border-green/40", warn: "border-warn/40", err: "border-err/40" }[accent];
-  return <div className={`rise w-full rounded-2xl border ${border} bg-white p-4 sm:p-5`}>{children}</div>;
+  return <div className={`w-full rounded-2xl border ${border} bg-white p-4 sm:p-5`}>{children}</div>;
 }
 
 export function CardHead({ icon, title, pill }: { icon: React.ReactNode; title: string; pill?: React.ReactNode }) {

@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { motion } from "motion/react";
+import { EASE } from "../IconWeight";
 import { ArrowUUpLeftIcon, CheckIcon, CircleNotchIcon, WarningOctagonIcon, XIcon } from "@phosphor-icons/react";
 import { engine } from "@/lib/client";
 import { fmtDate, fmtTime } from "@/lib/i18n";
@@ -33,7 +35,7 @@ export function ReviewCase({ tx }: { tx: Transaction }) {
   }
 
   return (
-    <li className="rounded-xl border border-warn/30 bg-white">
+    <motion.li layout initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: 24, transition: { duration: 0.2 } }} transition={{ duration: 0.3, ease: EASE }} className="rounded-xl border border-warn/30 bg-white">
       <div className="flex flex-wrap items-center gap-2 border-b border-warn/20 bg-warn-bg px-4 py-2.5">
         <WarningOctagonIcon size={16} className="text-warn" aria-hidden="true" />
         <h3 className="text-sm font-semibold text-teal">{t(svc.name)}</h3>
@@ -89,6 +91,6 @@ export function ReviewCase({ tx }: { tx: Transaction }) {
           )}
         </div>
       </div>
-    </li>
+    </motion.li>
   );
 }

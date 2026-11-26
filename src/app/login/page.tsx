@@ -25,7 +25,11 @@ export default function Login() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<"short" | "wrong" | null>(null);
-  const reduce = useReducedMotion();
+  // the server cannot know the preference, so the first client render matches it and the still text swaps in after
+  const prefersReduce = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const reduce = mounted && prefersReduce;
   const [timedOut, setTimedOut] = useState(false);
   useEffect(() => setTimedOut(new URLSearchParams(location.search).has("timeout")), []);
   const Arrow = ar ? ArrowLeftIcon : ArrowRightIcon;

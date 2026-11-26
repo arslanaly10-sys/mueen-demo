@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { EASE } from "@/components/IconWeight";
 import { ArrowCounterClockwiseIcon, CheckCircleIcon, CircleNotchIcon, PlugsConnectedIcon, PowerIcon, ProhibitIcon, PulseIcon, ScrollIcon, SealCheckIcon, ShieldCheckIcon, ShieldSlashIcon, UsersIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import CountUp from "@/components/bits/CountUp";
 import { tabKeys } from "@/components/tabKeys";
@@ -48,10 +50,13 @@ export default function Admin() {
   const [verify, setVerify] = useState<{ ok: boolean; count: number; brokenAt?: number } | null>(null);
   const [verifying, setVerifying] = useState(false);
   const [confirmKill, setConfirmKill] = useState(false);
+  const firstSeq = useRef<number | null>(null);
 
   if (!hydrated) return <div className="min-h-dvh bg-warm" />;
 
   const { config, txs, audit } = s;
+  // events already logged when the page opened appear at once; only newer ones animate in
+  if (firstSeq.current === null) firstSeq.current = audit.at(-1)?.seq ?? 0;
   const logAdmin = (type: string, summary: L, data?: Record<string, unknown>) => engine({ action: "admin", adminEvent: { type, summary, data } });
 
   async function setKill(on: boolean) {
@@ -189,17 +194,15 @@ export default function Admin() {
                               aria-checked={health === h.v}
                               tabIndex={health === h.v ? 0 : -1}
                               onClick={() => setHealth(svc.id, h.v)}
-                              className={`rounded-full border px-2.5 py-1 text-xs ${
+                              className={`relative rounded-full border px-2.5 py-1 text-xs transition-colors ${
                                 health === h.v
-                                  ? h.tone === "ok"
-                                    ? "border-green bg-mint font-semibold text-green"
-                                    : h.tone === "warn"
-                                      ? "border-warn bg-warn-bg font-semibold text-warn-ink"
-                                      : "border-err bg-err-bg font-semibold text-err"
+                                  ? `border-transparent font-semibold ${h.tone === "ok" ? "text-green" : h.tone === "warn" ? "text-warn-ink" : "text-err"}`
                                   : "border-line text-muted hover:bg-warm"
                               }`}
                             >
-                              {t(h.l)}
+                              {health === h.v && <motion.span layoutId={`health-${svc.id}`} aria-hidden="true" transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}
+                                className={`absolute -inset-px rounded-full border ${h.tone === "ok" ? "border-green bg-mint" : h.tone === "warn" ? "border-warn bg-warn-bg" : "border-err bg-err-bg"}`} />}
+                              <span className="relative">{t(h.l)}</span>
                             </button>
                           ))}
                         </div>
@@ -260,7 +263,7 @@ export default function Admin() {
             <p className="flex items-center gap-2 text-sm text-muted"><CheckCircleIcon size={16} className="text-green" aria-hidden="true" /> {lang === "ar" ? "لا توجد حالات بانتظار المراجعة." : "No cases waiting for review."}</p>
           ) : (
             <div className="space-y-4">
-              {queue.length > 0 && <ul className="space-y-3">{queue.map((x) => <ReviewCase key={x.id} tx={x} />)}</ul>}
+              {queue.length > 0 && <ul className="space-y-3"><AnimatePresence initial={false}>{queue.map((x) => <ReviewCase key={x.id} tx={x} />)}</AnimatePresence></ul>}
               {unknown.length > 0 && (
                 <div>
                   <p className="text-sm font-medium text-teal">{lang === "ar" ? "نتيجة غير معروفة: تجري المطابقة مع الجهة قبل أي إعادة" : "Outcome unknown: reconciling with the authority before any retry"}</p>
@@ -328,12 +331,13 @@ export default function Admin() {
           {/* the live region is on the page before its result, so screen readers announce it */}
           <div role="status">
           {verify && (
-            <div className={`mb-4 flex items-center gap-2 rounded-xl p-3 text-sm font-medium ${verify.ok ? "bg-mint text-green" : "bg-err-bg text-err"}`}>
+            <motion.div key={`${verify.ok}-${verify.count}-${verify.brokenAt}`} initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.25, ease: EASE }}
+              className={`mb-4 flex items-center gap-2 rounded-xl p-3 text-sm font-medium ${verify.ok ? "bg-mint text-green" : "bg-err-bg text-err"}`}>
               {verify.ok ? <CheckCircleIcon size={18} aria-hidden="true" /> : <ShieldSlashIcon size={18} aria-hidden="true" />}
               {verify.ok
                 ? lang === "ar" ? `السلسلة سليمة — ${fmtNum(verify.count, lang)} حدثًا موقّعًا.` : `Chain intact — ${verify.count} signed events.`
                 : lang === "ar" ? `تم كشف تلاعب عند الحدث #${verify.brokenAt}.` : `Tampering detected at event #${verify.brokenAt}.`}
-            </div>
+            </motion.div>
           )}
           </div>
           <p className="mb-3 text-xs text-muted">
@@ -358,14 +362,15 @@ export default function Admin() {
                 </thead>
                 <tbody>
                   {[...audit].reverse().slice(0, 150).map((e) => (
-                    <tr key={e.seq} className={`border-t border-line ${verify && !verify.ok && verify.brokenAt === e.seq ? "bg-err-bg" : ""}`}>
+                    <motion.tr key={e.seq} initial={e.seq > firstSeq.current! ? { opacity: 0, y: -6 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: EASE }}
+                      className={`border-t border-line ${verify && !verify.ok && verify.brokenAt === e.seq ? "bg-err-bg" : ""}`}>
                       <td className="px-4 py-2 font-mono text-muted sm:px-2">{e.seq}</td>
                       <td className="num-ltr whitespace-nowrap px-2 py-2 text-muted">{fmtTime(e.at, lang)}</td>
                       <td className="px-2 py-2 font-medium capitalize text-teal">{e.actor}</td>
                       <td className="px-2 py-2 font-mono text-muted">{e.type}</td>
                       <td className="px-2 py-2 text-ink">{t(e.summary)}</td>
                       <td className="px-2 py-2 font-mono text-muted" title={e.hash}>{e.hash.slice(0, 12)}…</td>
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
               </table>
