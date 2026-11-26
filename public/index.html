@@ -60,6 +60,7 @@
   #services .panel { --p-h: 440px; }
   #controls .ui-win__body { grid-template-columns: minmax(0, 1fr); } /* the audit window has no sidebar column */
   @media (min-width: 640px) and (max-width: 1023px) { #how { --h: 2 } }
+  @media (min-width: 1280px) and (max-height: 899px) { main > .section:not(.g2) { height: auto; min-height: 100vh; min-height: 100svh; } } /* on short laptop screens a long list grows the section instead of running over the next one */
   .nav__actions button.nav__link { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
   .close__word { line-height: 1.04; }
   .nav__bar > .nav__logo > span { font-size: 16px; font-weight: 600; }
