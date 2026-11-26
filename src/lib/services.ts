@@ -73,7 +73,7 @@ export interface ServiceDef {
 }
 
 const lit = (s: string): L => ({ en: s, ar: s });
-const ROLE_LABEL: Record<Role, L> = {
+export const ROLE_LABEL: Record<Role, L> = {
   individual: { en: "the document holder", ar: "صاحب الوثيقة" },
   sponsor: { en: "a registered domestic-worker sponsor", ar: "صاحب عمل منزلي مسجّل" },
   establishment_rep: { en: "an authorized establishment representative", ar: "ممثل مفوَّض عن المنشأة" },

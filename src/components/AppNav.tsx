@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { CaretDownIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, CaretDownIcon } from "@phosphor-icons/react";
 import { Wordmark } from "./Logo";
 import { ConceptBadge } from "./Disclaimer";
 import { ServiceIcon } from "./ServiceIcon";
@@ -9,7 +9,7 @@ import type { ServiceId } from "@/lib/types";
 
 type L = { en: string; ar: string };
 // The landing page's mega menu, same groups and grey lines; `ask` is what a click says to the agent.
-const GROUPS: { title: L; items: { id: ServiceId; name: L; line: L; ask: L }[] }[] = [
+export const GROUPS: { title: L; items: { id: ServiceId; name: L; line: L; ask: L }[] }[] = [
   { title: { en: "Traffic", ar: "الإدارة العامة للمرور" }, items: [
     { id: "driving_license", name: { en: "Driving licence", ar: "رخصة القيادة" }, line: { en: "Medical exam and fines checked", ar: "يتحقق من الفحص الطبي والمخالفات" }, ask: { en: "Renew my driving license", ar: "جدد رخصة القيادة" } },
     { id: "vehicle_registration", name: { en: "Istimara", ar: "الاستمارة" }, line: { en: "Checks insurance, inspection", ar: "يتحقق من التأمين والفحص الدوري" }, ask: { en: "Renew my vehicle registration", ar: "جدد استمارة مركبتي" } },
@@ -77,6 +77,11 @@ function ServicesMenu() {
               </ul>
             </div>
           ))}
+        </div>
+        <div className="wrap mt-6 border-t border-line pt-4">
+          <a href="/services" className="inline-flex min-h-11 items-center gap-1.5 font-medium text-green underline-offset-4 hover:underline">
+            {t({ en: "All services, checks and fees", ar: "كل الخدمات وشروطها ورسومها" })} <ArrowRightIcon size={14} weight="bold" className="rtl:-scale-x-100" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </nav>
